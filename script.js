@@ -1,11 +1,17 @@
 const shopId = '126209'; // Укажите ваш ID магазина EasyDonate
-const apiUrl = `https://easydonate.ru/api/v3/shop/${shopId}/products`;
+const shopKey = '126209'; // Укажите ваш ключ магазина
+const apiUrl = 'https://easydonate.ru/api/v3/shop/products';
 const productsContainer = document.getElementById('products');
 
 // Функция для загрузки товаров
 async function loadProducts() {
     try {
-        const response = await fetch(apiUrl);
+        const response = await fetch(apiUrl, {
+            method: 'GET',
+            headers: {
+                'Shop-Key': shopKey
+            }
+        });
         const data = await response.json();
 
         if (data.success) {
@@ -28,7 +34,7 @@ function displayProducts(products) {
         productElement.innerHTML = `
             <h3>${product.name}</h3>
             <p>Цена: ${product.price} ₽</p>
-            <a href="https://easydonate.ru/shop/${shopId}/buy/${product.id}" class="buy-button" target="_blank">Купить</a>
+            <a href="https://easydonate.ru/shop/${product.id}/buy" class="buy-button" target="_blank">Купить</a>
         `;
         productsContainer.appendChild(productElement);
     });
@@ -36,3 +42,4 @@ function displayProducts(products) {
 
 // Загрузка товаров при загрузке страницы
 loadProducts();
+
