@@ -1,5 +1,5 @@
 const shopId = '126209'; // Укажите ваш ID магазина EasyDonate
-const shopKey = '126209'; // Укажите ваш ключ магазина
+const shopKey = '18e17550711255e7316ef1b4eb5399ee'; // Укажите ваш ключ магазина
 const apiUrl = 'https://easydonate.ru/api/v3/shop/products';
 const productsContainer = document.getElementById('products');
 
