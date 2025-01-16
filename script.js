@@ -1,4 +1,4 @@
-const shopId = 'ВАШ_SHOP_ID'; // Укажите ваш ID магазина EasyDonate
+const shopId = '126209'; // Укажите ваш ID магазина EasyDonate
 const apiUrl = `https://easydonate.ru/api/v3/shop/${shopId}/products`;
 const productsContainer = document.getElementById('products');
 
