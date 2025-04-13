@@ -111,6 +111,30 @@ body {
     margin-top: 15px;
 }
 
+.project-meta {
+    display: flex;
+    gap: 15px;
+    margin-top: 15px;
+    color: #bbb;
+    font-size: 0.9rem;
+}
+
+.project-meta span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.project-meta i {
+    color: var(--secondary-color);
+}
+
+@media (max-width: 600px) {
+    .project-meta {
+        flex-direction: column;
+        gap: 8px;
+    }
+}
 .likes {
     color: #e74c3c;
     font-weight: bold;
