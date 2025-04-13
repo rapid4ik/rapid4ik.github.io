@@ -58,130 +58,156 @@ document.addEventListener('DOMContentLoaded', function() {
     "retina_detect": true
 });
 
-// Замените на ваш GitHub username
-const username = 'slavazaharov';
+    const username = 'slavazaharov';
+    const MAX_RETRIES = 2;
+    let retryCount = 0;
 
-// Получаем информацию о пользователе
-fetch(`https://api.github.com/users/${username}`)
-    .then(response => response.json())
-    .then(user => {
-        // Устанавливаем аватар
-        const avatar = document.getElementById('github-avatar');
-        avatar.src = user.avatar_url;
-        
-        // Анимация появления аватара
-        setTimeout(() => {
-            avatar.style.opacity = '1';
-            avatar.style.transform = 'scale(1)';
-        }, 300);
-        
-        // Обновляем количество репозиториев
-        document.getElementById('repo-count').textContent = `${user.public_repos} проектов`;
-    })
-    .catch(error => {
-        console.error('Error loading user data:', error);
-        document.getElementById('github-avatar').src = 'https://via.placeholder.com/150';
-    });
-
-// Получаем репозитории пользователя
-fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=100`)
-    .then(response => response.json())
-    .then(repos => {
-        const projectsContainer = document.getElementById('projects-container');
-        const nonForkedRepos = repos.filter(repo => !repo.fork);
-        
-        // Удаляем скелетоны
-        projectsContainer.innerHTML = '';
-        
-        // Обновляем общее количество звезд
-        const totalStars = nonForkedRepos.reduce((acc, repo) => acc + repo.stargazers_count, 0);
-        document.getElementById('total-stars').textContent = `${totalStars} звёзд`;
-        
-        // Обновляем дату последнего обновления
-        if (nonForkedRepos.length > 0) {
-            const lastUpdated = new Date(nonForkedRepos[0].updated_at);
-            document.getElementById('last-updated').textContent = `Обновлено ${formatDate(lastUpdated)}`;
+    // Функция для обработки ошибок
+    function showError(elementId, message) {
+        const element = document.getElementById(elementId);
+        if (element) {
+            element.innerHTML = `<p class="error-message">${message}</p>`;
         }
-        
-        // Отображаем проекты (первые 6)
-        const displayedRepos = nonForkedRepos.slice(0, 6);
-        displayedRepos.forEach((repo, index) => {
-            setTimeout(() => {
-                const projectCard = createProjectCard(repo);
-                projectsContainer.appendChild(projectCard);
-            }, index * 150); // Задержка для последовательной анимации
-        });
-        
-        // Получаем релизы для всех репозиториев
-        return Promise.all(nonForkedRepos.map(repo => 
-            fetch(`https://api.github.com/repos/${username}/${repo.name}/releases`)
-                .then(response => response.json())
-                .catch(() => []) // На случай ошибки (например, если нет релизов)
-        ));
-    })
-    .then(allReleases => {
-        const releasesContainer = document.getElementById('releases-container');
-        const lastReleaseElement = document.getElementById('last-release');
-        
-        // Удаляем скелетоны
-        releasesContainer.innerHTML = '';
-        
-        // Собираем все релизы в один массив и сортируем по дате
-        const allReleasesFlat = allReleases.flat();
-        allReleasesFlat.sort((a, b) => new Date(b.published_at) - new Date(a.published_at));
-        
-        // Отображаем последний релиз в футере
-        if (allReleasesFlat.length > 0) {
-            const lastRelease = allReleasesFlat[0];
-            lastReleaseElement.textContent = `Последний релиз: ${lastRelease.name} (${formatDate(new Date(lastRelease.published_at))})`;
+    }
+
+    // Универсальная функция для запросов с повторами
+    async function fetchWithRetry(url, options = {}, retries = MAX_RETRIES) {
+        try {
+            const response = await fetch(url, options);
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            return await response.json();
+        } catch (error) {
+            if (retries > 0) {
+                console.log(`Повтор запроса (осталось попыток: ${retries})`);
+                await new Promise(resolve => setTimeout(resolve, 1000 * (MAX_RETRIES - retries + 1)));
+                return fetchWithRetry(url, options, retries - 1);
+            }
+            throw error;
+        }
+    }
+
+    // Загрузка данных пользователя
+    loadUserData();
+    loadProjects();
+    loadReleases();
+
+    async function loadUserData() {
+        try {
+            const user = await fetchWithRetry(`https://api.github.com/users/${username}`);
             
-            // Анимация для последнего релиза
-            lastReleaseElement.style.opacity = '0';
-            lastReleaseElement.style.transform = 'translateY(10px)';
-            setTimeout(() => {
-                lastReleaseElement.style.transition = 'all 0.5s ease';
-                lastReleaseElement.style.opacity = '1';
-                lastReleaseElement.style.transform = 'translateY(0)';
-            }, 500);
-        } else {
-            lastReleaseElement.textContent = 'Релизы не найдены';
-        }
-        
-        // Отображаем последние 5 релизов
-        const displayedReleases = allReleasesFlat.slice(0, 5);
-        if (displayedReleases.length > 0) {
-            displayedReleases.forEach((release, index) => {
+            // Аватар
+            const avatar = document.getElementById('github-avatar');
+            if (avatar) {
+                avatar.src = user.avatar_url;
                 setTimeout(() => {
-                    const releaseItem = createReleaseItem(release);
-                    releasesContainer.appendChild(releaseItem);
-                }, index * 200); // Задержка для последовательной анимации
+                    avatar.style.opacity = '1';
+                    avatar.style.transform = 'scale(1)';
+                }, 300);
+            }
+            
+            // Статистика
+            updateElementText('repo-count', `${user.public_repos} проектов`);
+            
+            // Загружаем репозитории для подсчёта звёзд
+            const repos = await fetchWithRetry(`https://api.github.com/users/${username}/repos?per_page=100`);
+            const totalStars = repos.filter(r => !r.fork).reduce((acc, repo) => acc + repo.stargazers_count, 0);
+            updateElementText('total-stars', `${totalStars} звёзд`);
+            
+            if (repos.length > 0) {
+                const lastUpdated = new Date(repos[0].updated_at);
+                updateElementText('last-updated', `Обновлено ${formatDate(lastUpdated)}`);
+            }
+            
+        } catch (error) {
+            console.error('Ошибка загрузки данных пользователя:', error);
+            showError('repo-count', 'Не удалось загрузить данные');
+            document.getElementById('github-avatar').src = 'https://via.placeholder.com/150';
+        }
+    }
+
+    async function loadProjects() {
+        try {
+            const repos = await fetchWithRetry(
+                `https://api.github.com/users/${username}/repos?sort=updated&per_page=6`
+            );
+            
+            const projectsContainer = document.getElementById('projects-container');
+            if (!projectsContainer) return;
+            
+            projectsContainer.innerHTML = '';
+            
+            const nonForkedRepos = repos.filter(repo => !repo.fork && !repo.archived);
+            
+            if (nonForkedRepos.length === 0) {
+                projectsContainer.innerHTML = '<p class="no-projects">Нет публичных проектов</p>';
+                return;
+            }
+            
+            nonForkedRepos.forEach((repo, index) => {
+                setTimeout(() => {
+                    const projectCard = createProjectCard(repo);
+                    projectsContainer.appendChild(projectCard);
+                }, index * 150);
             });
-        } else {
-            releasesContainer.innerHTML = '<p class="no-releases">Релизы не найдены</p>';
+            
+        } catch (error) {
+            console.error('Ошибка загрузки проектов:', error);
+            showError('projects-container', 'Не удалось загрузить проекты');
         }
-    })
-    .catch(error => {
-        console.error('Error fetching GitHub data:', error);
-        document.getElementById('projects-container').innerHTML = '<p class="error-message">Ошибка загрузки проектов. Пожалуйста, попробуйте позже.</p>';
-        document.getElementById('releases-container').innerHTML = '<p class="error-message">Ошибка загрузки релизов. Пожалуйста, попробуйте позже.</p>';
-    });
+    }
 
-// Анимация при скролле
-const animateOnScroll = () => {
-    const elements = document.querySelectorAll('.project-card, .release-item');
-    elements.forEach(element => {
-        const elementPosition = element.getBoundingClientRect().top;
-        const screenPosition = window.innerHeight / 1.3;
-        
-        if (elementPosition < screenPosition) {
-            element.style.opacity = '1';
-            element.style.transform = 'translateY(0)';
+    async function loadReleases() {
+        try {
+            const repos = await fetchWithRetry(
+                `https://api.github.com/users/${username}/repos?sort=updated&per_page=10`
+            );
+            
+            const releasesContainer = document.getElementById('releases-container');
+            const lastReleaseElement = document.getElementById('last-release');
+            if (!releasesContainer || !lastReleaseElement) return;
+            
+            releasesContainer.innerHTML = '';
+            
+            // Получаем релизы только для репозиториев с релизами
+            const releases = await Promise.all(
+                repos.map(repo => 
+                    fetchWithRetry(
+                        `https://api.github.com/repos/${username}/${repo.name}/releases?per_page=1`
+                    ).catch(() => [])
+                )
+            );
+            
+            const flatReleases = releases.flat().filter(Boolean);
+            flatReleases.sort((a, b) => new Date(b.published_at) - new Date(a.published_at));
+            
+            if (flatReleases.length > 0) {
+                updateElementText('last-release', 
+                    `Последний релиз: ${flatReleases[0].name || flatReleases[0].tag_name} (${formatDate(new Date(flatReleases[0].published_at))})`);
+                
+                flatReleases.slice(0, 5).forEach((release, index) => {
+                    setTimeout(() => {
+                        const releaseItem = createReleaseItem(release);
+                        releasesContainer.appendChild(releaseItem);
+                    }, index * 200);
+                });
+            } else {
+                updateElementText('last-release', 'Нет релизов');
+                releasesContainer.innerHTML = '<p class="no-releases">Релизы не найдены</p>';
+            }
+            
+        } catch (error) {
+            console.error('Ошибка загрузки релизов:', error);
+            showError('releases-container', 'Не удалось загрузить релизы');
+            updateElementText('last-release', 'Ошибка загрузки релизов');
         }
-    });
-};
+    }
 
-window.addEventListener('scroll', animateOnScroll);
-});
+    function updateElementText(elementId, text) {
+        const element = document.getElementById(elementId);
+        if (element) {
+            element.textContent = text;
+        }
+    }
 
 function createProjectCard(repo) {
 const card = document.createElement('div');
