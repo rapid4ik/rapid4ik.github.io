@@ -1,59 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EasyDonate Shop</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-            color: #333;
-        }
-        header {
-            background: #4CAF50;
-            color: white;
-            padding: 10px 20px;
-            text-align: center;
-        }
-        .container {
-            padding: 20px;
-        }
-        .product {
-            border: 1px solid #ddd;
-            margin-bottom: 15px;
-            padding: 10px;
-            border-radius: 5px;
-            background: white;
-        }
-        .product h3 {
-            margin: 0 0 10px;
-        }
-        .buy-button {
-            background: #4CAF50;
-            color: white;
-            padding: 10px;
-            text-decoration: none;
-            border-radius: 5px;
-            display: inline-block;
-        }
-        .buy-button:hover {
-            background: #45a049;
-        }
-    </style>
+    <title>Мои проекты | slavazaharov</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    <header>
-        <h1>EasyDonate Shop</h1>
-        <p>Покупайте товары легко и быстро!</p>
-    </header>
     <div class="container">
-        <div id="products">
-            <p>Загрузка товаров...</p>
-        </div>
+        <header class="header">
+            <div class="profile">
+                <img src="https://avatars.githubusercontent.com/u/YOUR_GITHUB_ID" alt="Аватар" class="avatar" id="avatar">
+                <div class="profile-info">
+                    <h1>slavazaharov</h1>
+                    <p id="last-updated">Последнее обновление: загрузка...</p>
+                    <p id="last-release">Последний релиз: загрузка...</p>
+                </div>
+            </div>
+        </header>
+
+        <main class="projects" id="projects">
+            <!-- Проекты будут загружены через JavaScript -->
+            <div class="loader"><i class="fas fa-spinner fa-spin"></i> Загрузка проектов...</div>
+        </main>
+
+        <footer class="footer">
+            <p>© 2023 slavazaharov | Hosted on GitHub Pages</p>
+        </footer>
     </div>
+
     <script src="script.js"></script>
 </body>
 </html>
