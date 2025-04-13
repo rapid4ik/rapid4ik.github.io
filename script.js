@@ -228,8 +228,6 @@ function createReleaseItem(release) {
 const item = document.createElement('div');
 item.className = 'release-item';
 
-markdown
-Copy
 item.innerHTML = `
     <h3 class="release-title">
         <span class="release-version">${release.tag_name}</span>
