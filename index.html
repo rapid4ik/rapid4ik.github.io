@@ -1,81 +1,705 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Slava Zaharov | Проекты</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <title>Slava Zaharov | CyberDev</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=VT323&display=swap');
+        
+        :root {
+            --neon-green: #39ff14;
+            --neon-purple: #bc13fe;
+            --neon-blue: #1b03a3;
+            --dark-bg: #0a0a0a;
+        }
+        
+        body {
+            font-family: 'Share Tech Mono', monospace;
+            background-color: var(--dark-bg);
+            color: var(--neon-green);
+            overflow-x: hidden;
+        }
+        
+        .hacker-font {
+            font-family: 'VT323', monospace;
+        }
+        
+        .scanline {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to bottom,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0) 50%,
+                rgba(0, 0, 0, 0.2) 51%,
+                rgba(0, 0, 0, 0) 52%,
+                rgba(0, 0, 0, 0) 100%
+            );
+            background-size: 100% 8px;
+            pointer-events: none;
+            z-index: 9999;
+            animation: scanline 8s linear infinite;
+            opacity: 0.4;
+        }
+        
+        .glitch {
+            position: relative;
+        }
+        
+        .glitch::before, .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.8;
+        }
+        
+        .glitch::before {
+            color: var(--neon-purple);
+            animation: glitch-effect 3s infinite;
+            z-index: -2;
+        }
+        
+        .glitch::after {
+            color: var(--neon-blue);
+            animation: glitch-effect 2s infinite reverse;
+            z-index: -1;
+        }
+        
+        .terminal {
+            border: 1px solid var(--neon-green);
+            box-shadow: 0 0 10px var(--neon-green), 
+                        inset 0 0 10px var(--neon-green);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .terminal::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(57, 255, 20, 0.05),
+                rgba(57, 255, 20, 0.05) 1px,
+                transparent 1px,
+                transparent 2px
+            );
+            pointer-events: none;
+        }
+        
+        .matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.1;
+        }
+        
+        .hacker-btn {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+        
+        .hacker-btn::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(57, 255, 20, 0.4),
+                transparent
+            );
+            transition: all 0.5s;
+        }
+        
+        .hacker-btn:hover::before {
+            left: 100%;
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        .flicker {
+            animation: flicker 0.5s infinite alternate;
+        }
+        
+        .typing {
+            border-right: 3px solid var(--neon-green);
+            white-space: nowrap;
+            overflow: hidden;
+            animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+        
+        .loading-bar {
+            height: 4px;
+            background: linear-gradient(90deg, transparent, var(--neon-green), transparent);
+            background-size: 200% 100%;
+            animation: loading 2s linear infinite;
+        }
+        
+        .hexagon {
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+        }
+        
+        .hexagon-bg {
+            background: conic-gradient(
+                from 45deg,
+                var(--neon-purple),
+                var(--neon-blue),
+                var(--neon-green),
+                var(--neon-purple)
+            );
+            animation: rotateColors 8s linear infinite;
+        }
+        
+        .repo-card {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .repo-card::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                rgba(57, 255, 20, 0.1) 0%,
+                rgba(57, 255, 20, 0) 20%,
+                rgba(57, 255, 20, 0) 80%,
+                rgba(57, 255, 20, 0.1) 100%
+            );
+            transform: rotate(45deg);
+            transition: all 0.5s;
+        }
+        
+        .repo-card:hover::before {
+            top: 0;
+            left: 0;
+        }
+        
+        .binary-rain {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to bottom,
+                rgba(0, 0, 0, 0.9) 0%,
+                rgba(0, 0, 0, 0) 50%,
+                rgba(0, 0, 0, 0.9) 100%
+            );
+            z-index: -1;
+        }
+        
+        /* Animations */
+        @keyframes scanline {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
+        }
+        
+        @keyframes glitch-effect {
+            0% { transform: translate(0); }
+            20% { transform: translate(-3px, 3px); }
+            40% { transform: translate(-3px, -3px); }
+            60% { transform: translate(3px, 3px); }
+            80% { transform: translate(3px, -3px); }
+            100% { transform: translate(0); }
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(57, 255, 20, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(57, 255, 20, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(57, 255, 20, 0); }
+        }
+        
+        @keyframes flicker {
+            0%, 19.999%, 22%, 62.999%, 64%, 64.999%, 70%, 100% { opacity: 1; }
+            20%, 21.999%, 63%, 63.999%, 65%, 69.999% { opacity: 0.4; }
+        }
+        
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+        
+        @keyframes blink-caret {
+            from, to { border-color: transparent; }
+            50% { border-color: var(--neon-green); }
+        }
+        
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        
+        @keyframes rotateColors {
+            0% { filter: hue-rotate(0deg); }
+            100% { filter: hue-rotate(360deg); }
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes neon-flicker {
+            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+                text-shadow: 0 0 5px var(--neon-green),
+                             0 0 10px var(--neon-green),
+                             0 0 20px var(--neon-green),
+                             0 0 40px var(--neon-purple),
+                             0 0 80px var(--neon-purple),
+                             0 0 90px var(--neon-purple),
+                             0 0 100px var(--neon-purple),
+                             0 0 150px var(--neon-purple);
+            }
+            20%, 24%, 55% {       
+                text-shadow: none;
+            }
+        }
+        
+        @keyframes border-glow {
+            0%, 100% {
+                box-shadow: 0 0 5px var(--neon-green),
+                            inset 0 0 5px var(--neon-green);
+            }
+            50% {
+                box-shadow: 0 0 20px var(--neon-green),
+                            inset 0 0 20px var(--neon-green);
+            }
+        }
+        
+        @keyframes binary-fall {
+            0% {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
+        }
+        
+        /* Custom animations classes */
+        .animate-float {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .animate-shake {
+            animation: shake 0.5s ease-in-out infinite;
+        }
+        
+        .animate-spin-slow {
+            animation: spin 8s linear infinite;
+        }
+        
+        .animate-neon-flicker {
+            animation: neon-flicker 1.5s infinite;
+        }
+        
+        .animate-border-glow {
+            animation: border-glow 2s infinite;
+        }
+        
+        .animate-binary-fall {
+            position: absolute;
+            animation: binary-fall linear;
+            font-family: 'VT323', monospace;
+            color: var(--neon-green);
+            text-shadow: 0 0 5px var(--neon-green);
+        }
+    </style>
 </head>
-<body>
-    <div class="particles" id="particles-js"></div>
-    <div class="container">
-        <header class="header animate__animated animate__fadeInDown">
-            <div class="profile">
-                <div class="avatar-container">
-                    <img src="" alt="Avatar" class="avatar" id="github-avatar">
-                    <div class="avatar-border"></div>
+<body class="relative">
+    <!-- Matrix background effect -->
+    <div class="matrix-bg" id="matrix-bg"></div>
+    
+    <!-- Scanlines overlay -->
+    <div class="scanline"></div>
+    
+    <!-- Binary rain effect -->
+    <div class="binary-rain" id="binary-rain"></div>
+    
+    <!-- Main container -->
+    <div class="container mx-auto px-4 py-8 relative z-10">
+        <!-- Hacking terminal header -->
+        <div class="terminal mb-8 p-6 animate-border-glow">
+            <div class="flex items-center mb-4">
+                <div class="w-3 h-3 rounded-full bg-red-500 mr-2"></div>
+                <div class="w-3 h-3 rounded-full bg-yellow-500 mr-2"></div>
+                <div class="w-3 h-3 rounded-full bg-green-500 mr-2"></div>
+                <div class="ml-4 hacker-font text-xl">
+                    <span class="text-gray-400">root@cyberdev:</span>
+                    <span class="text-white">~</span>
+                    <span class="text-gray-400">$</span>
+                    <span class="typing"> loading user profile...</span>
                 </div>
-                <div class="profile-info">
-                    <h1>Slava Zaharov</h1>
-                    <p class="bio">Разработчик & Дизайнер</p>
-                    <div class="stats">
-                        <div class="stat-item">
-                            <i class="fas fa-code-branch"></i>
-                            <span id="repo-count">Загрузка...</span>
+            </div>
+            
+            <div class="loading-bar mb-4"></div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Profile section -->
+                <div class="col-span-1 flex flex-col items-center">
+                    <div class="hexagon hexagon-bg w-40 h-40 flex items-center justify-center mb-4 animate-spin-slow">
+                        <img id="avatar" src="https://github.com/slavazaharov.png" alt="Profile" class="hexagon w-[90%] h-[90%] object-cover">
+                    </div>
+                    
+                    <h1 class="glitch text-3xl font-bold mb-2 text-center" data-text="Slava Zaharov">
+                        <span class="animate-neon-flicker">Slava Zaharov</span>
+                    </h1>
+                    
+                    <div class="hacker-font text-lg text-center mb-4">
+                        <span class="flicker" id="bio">[LOADING BIO...]</span>
+                    </div>
+                </div>
+                
+                <!-- Stats section -->
+                <div class="col-span-1 md:col-span-2">
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div class="terminal p-4 text-center hover:animate-shake">
+                            <div class="hacker-font text-4xl mb-2" id="repos">--</div>
+                            <div class="text-sm uppercase tracking-wider">Repositories</div>
                         </div>
-                        <div class="stat-item">
-                            <i class="fas fa-star"></i>
-                            <span id="total-stars">Загрузка...</span>
+                        <div class="terminal p-4 text-center hover:animate-shake">
+                            <div class="hacker-font text-4xl mb-2" id="stars">--</div>
+                            <div class="text-sm uppercase tracking-wider">Stars</div>
                         </div>
-                        <div class="stat-item">
-                            <i class="fas fa-clock"></i>
-                            <span id="last-updated">Загрузка...</span>
+                        <div class="terminal p-4 text-center hover:animate-shake">
+                            <div class="hacker-font text-4xl mb-2" id="followers">--</div>
+                            <div class="text-sm uppercase tracking-wider">Followers</div>
+                        </div>
+                        <div class="terminal p-4 text-center hover:animate-shake">
+                            <div class="hacker-font text-4xl mb-2" id="following">--</div>
+                            <div class="text-sm uppercase tracking-wider">Following</div>
+                        </div>
+                    </div>
+                    
+                    <div class="terminal mt-4 p-4">
+                        <div class="flex flex-wrap gap-2">
+                            <div class="hacker-btn px-3 py-1 border border-green-500 rounded hacker-font text-sm">
+                                <i class="fas fa-code mr-1"></i> Developer
+                            </div>
+                            <div class="hacker-btn px-3 py-1 border border-purple-500 rounded hacker-font text-sm">
+                                <i class="fas fa-terminal mr-1"></i> Hacker
+                            </div>
+                            <div class="hacker-btn px-3 py-1 border border-blue-500 rounded hacker-font text-sm">
+                                <i class="fas fa-project-diagram mr-1"></i> Open Source
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </header>
-
-        <main class="main-content">
-            <section class="projects-section animate__animated animate__fadeIn">
-                <h2><i class="fas fa-project-diagram"></i> Мои проекты</h2>
-                <div class="projects-grid" id="projects-container">
-                    <!-- Проекты будут загружаться через JavaScript -->
-                    <div class="project-card-skeleton"></div>
-                    <div class="project-card-skeleton"></div>
-                    <div class="project-card-skeleton"></div>
+        </div>
+        
+        <!-- Repositories section -->
+        <div class="terminal p-6 mb-8 animate-border-glow">
+            <div class="flex items-center mb-6">
+                <div class="w-3 h-3 rounded-full bg-red-500 mr-2"></div>
+                <div class="w-3 h-3 rounded-full bg-yellow-500 mr-2"></div>
+                <div class="w-3 h-3 rounded-full bg-green-500 mr-2"></div>
+                <div class="ml-4 hacker-font text-xl">
+                    <span class="text-gray-400">root@cyberdev:</span>
+                    <span class="text-white">~</span>
+                    <span class="text-gray-400">$</span>
+                    <span class="typing"> scanning repositories...</span>
                 </div>
-                <!-- В секции проектов -->
-                <div class="projects-grid" id="projects-container">
-                    <div class="loading-dots">Загрузка проектов</div>
+            </div>
+            
+            <div class="loading-bar mb-6"></div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="repositories">
+                <!-- Loading spinner -->
+                <div class="col-span-1 md:col-span-2 lg:col-span-3 flex justify-center py-12">
+                    <div class="terminal w-16 h-16 flex items-center justify-center animate-spin-slow">
+                        <i class="fas fa-circle-notch text-2xl"></i>
+                    </div>
                 </div>
-            </section>
-
-            <section class="releases-section animate__animated animate__fadeIn">
-                <h2><i class="fas fa-tags"></i> Последние релизы</h2>
-                <div class="releases-list" id="releases-container">
-                    <!-- Релизы будут загружаться через JavaScript -->
-                    <div class="release-item-skeleton"></div>
-                    <div class="release-item-skeleton"></div>
-                </div>
-                <!-- В секции релизов -->
-                <div class="releases-list" id="releases-container">
-                    <div class="loading-dots">Загрузка релизов</div>
-                </div>
-            </section>
-        </main>
-
-        <footer class="footer animate__animated animate__fadeInUp">
-            <p>© 2023 Slava Zaharov | <a href="https://github.com/slavazaharov" target="_blank">GitHub</a></p>
-            <p id="last-release">Последний релиз: загрузка...</p>
-        </footer>
+            </div>
+        </div>
+        
+        <!-- Access denied joke -->
+        <div class="terminal p-6 text-center mb-8 animate-border-glow">
+            <div class="hacker-font text-xl mb-4 text-red-500 animate-shake">
+                <i class="fas fa-lock mr-2"></i> ACCESS DENIED
+            </div>
+            <p class="mb-4">Just kidding! Everything is open source here.</p>
+            <div class="flex justify-center">
+                <a href="https://github.com/slavazaharov" target="_blank" class="hacker-btn px-6 py-2 border border-green-500 rounded hacker-font text-lg hover:animate-float">
+                    <i class="fab fa-github mr-2"></i> View Full Profile
+                </a>
+            </div>
+        </div>
     </div>
+    
+    <!-- Footer -->
+    <footer class="terminal mx-4 mb-4 p-4 text-center hacker-font animate-border-glow">
+        <p class="mb-2">System Status: <span class="text-green-500">OPERATIONAL</span></p>
+        <p>© 2023 Slava Zaharov | All systems secured</p>
+    </footer>
 
-    <!-- Подключаем библиотеки для анимаций -->
-    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Create matrix background
+            createMatrixEffect();
+            
+            // Create binary rain effect
+            createBinaryRain();
+            
+            // Fetch user data
+            axios.get('https://api.github.com/users/slavazaharov')
+                .then(function(response) {
+                    const user = response.data;
+                    
+                    // Update profile section
+                    document.getElementById('bio').textContent = user.bio || 'Cyber Security Enthusiast | Code Hacker';
+                    
+                    // Animate stats counting
+                    animateCount('followers', user.followers);
+                    animateCount('following', user.following);
+                    animateCount('repos', user.public_repos);
+                    
+                    // Fetch all repositories to calculate stars
+                    axios.get(user.repos_url + '?per_page=100')
+                        .then(function(repoResponse) {
+                            const stars = repoResponse.data.reduce((acc, repo) => acc + repo.stargazers_count, 0);
+                            animateCount('stars', stars);
+                        });
+                })
+                .catch(function(error) {
+                    console.error('Error fetching user data:', error);
+                    document.getElementById('bio').textContent = 'ERROR LOADING PROFILE';
+                });
+            
+            // Fetch repositories
+            axios.get('https://api.github.com/users/slavazaharov/repos?sort=updated&direction=desc&per_page=30')
+                .then(function(response) {
+                    const repos = response.data;
+                    const reposContainer = document.getElementById('repositories');
+                    
+                    // Clear loading spinner
+                    reposContainer.innerHTML = '';
+                    
+                    if (repos.length === 0) {
+                        reposContainer.innerHTML = `
+                            <div class="col-span-3 text-center py-8">
+                                <div class="terminal p-4">
+                                    <i class="fas fa-exclamation-triangle text-yellow-500 text-4xl mb-4"></i>
+                                    <p>NO REPOSITORIES FOUND</p>
+                                </div>
+                            </div>
+                        `;
+                        return;
+                    }
+                    
+                    repos.forEach(repo => {
+                        if (repo.fork) return; // Skip forks
+                        
+                        const repoCard = document.createElement('div');
+                        repoCard.className = 'repo-card terminal p-4 hover:animate-float';
+                        
+                        // Format last updated date
+                        const updatedDate = new Date(repo.updated_at);
+                        const formattedDate = updatedDate.toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'short',
+                            day: 'numeric'
+                        });
+                        
+                        // Get primary language (fallback to empty string)
+                        const language = repo.language || '';
+                        
+                        // Check if repo has releases
+                        const hasReleases = repo.has_releases || repo.has_downloads;
+                        
+                        repoCard.innerHTML = `
+                            <div class="h-full flex flex-col">
+                                <div class="flex justify-between items-start mb-3">
+                                    <h3 class="text-lg font-semibold truncate">
+                                        <a href="${repo.html_url}" target="_blank" class="hover:text-green-500 transition-colors">${repo.name}</a>
+                                    </h3>
+                                    <div class="flex items-center text-yellow-500">
+                                        <i class="fas fa-star mr-1"></i>
+                                        <span class="hacker-font">${repo.stargazers_count}</span>
+                                    </div>
+                                </div>
+                                
+                                <p class="text-gray-400 text-sm mb-4 flex-grow">${repo.description || 'No description provided.'}</p>
+                                
+                                <div class="flex flex-wrap gap-2 mb-4">
+                                    ${language ? `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-900 text-green-400">${language}</span>` : ''}
+                                    ${repo.license ? `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-900 text-purple-400">${repo.license.spdx_id || 'License'}</span>` : ''}
+                                    ${hasReleases ? `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-900 text-blue-400">Releases</span>` : ''}
+                                </div>
+                                
+                                <div class="flex justify-between items-center text-xs text-gray-500 hacker-font">
+                                    <span>UPDATED ${formattedDate.toUpperCase()}</span>
+                                    <span>${repo.size} KB</span>
+                                </div>
+                            </div>
+                        `;
+                        
+                        reposContainer.appendChild(repoCard);
+                    });
+                })
+                .catch(function(error) {
+                    console.error('Error fetching repositories:', error);
+                    document.getElementById('repositories').innerHTML = `
+                        <div class="col-span-3 text-center py-8">
+                            <div class="terminal p-4">
+                                <i class="fas fa-skull-crossbones text-red-500 text-4xl mb-4"></i>
+                                <p>CONNECTION TERMINATED</p>
+                                <p class="text-sm mt-2">Failed to load repositories. System will retry...</p>
+                            </div>
+                        </div>
+                    `;
+                });
+        });
+        
+        function animateCount(elementId, targetNumber) {
+            const element = document.getElementById(elementId);
+            const duration = 2000; // Animation duration in ms
+            const startTime = performance.now();
+            const startNumber = 0;
+            
+            function updateNumber(currentTime) {
+                const elapsedTime = currentTime - startTime;
+                const progress = Math.min(elapsedTime / duration, 1);
+                const currentNumber = Math.floor(progress * targetNumber);
+                
+                element.textContent = currentNumber;
+                
+                if (progress < 1) {
+                    requestAnimationFrame(updateNumber);
+                } else {
+                    element.textContent = targetNumber;
+                }
+            }
+            
+            requestAnimationFrame(updateNumber);
+        }
+        
+        function createMatrixEffect() {
+            const canvas = document.createElement('canvas');
+            canvas.id = 'matrix-canvas';
+            document.getElementById('matrix-bg').appendChild(canvas);
+            
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            
+            const katakana = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン';
+            const latin = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            const nums = '0123456789';
+            const alphabet = katakana + latin + nums;
+            
+            const fontSize = 16;
+            const columns = canvas.width / fontSize;
+            const rainDrops = [];
+            
+            for (let x = 0; x < columns; x++) {
+                rainDrops[x] = 1;
+            }
+            
+            const draw = () => {
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                ctx.fillStyle = '#39ff14';
+                ctx.font = fontSize + 'px monospace';
+                
+                for (let i = 0; i < rainDrops.length; i++) {
+                    const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+                    ctx.fillText(text, i * fontSize, rainDrops[i] * fontSize);
+                    
+                    if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                        rainDrops[i] = 0;
+                    }
+                    rainDrops[i]++;
+                }
+            };
+            
+            setInterval(draw, 30);
+            
+            window.addEventListener('resize', () => {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            });
+        }
+        
+        function createBinaryRain() {
+            const container = document.getElementById('binary-rain');
+            const characters = '01';
+            const fontSize = 16;
+            const columns = Math.floor(window.innerWidth / fontSize);
+            
+            for (let i = 0; i < columns; i++) {
+                const binaryChar = document.createElement('div');
+                binaryChar.className = 'animate-binary-fall';
+                binaryChar.style.left = `${i * fontSize}px`;
+                binaryChar.style.animationDuration = `${Math.random() * 3 + 2}s`;
+                binaryChar.style.animationDelay = `${Math.random() * 2}s`;
+                binaryChar.textContent = characters.charAt(Math.floor(Math.random() * characters.length));
+                container.appendChild(binaryChar);
+                
+                // Make it rain continuously
+                setInterval(() => {
+                    const newChar = document.createElement('div');
+                    newChar.className = 'animate-binary-fall';
+                    newChar.style.left = `${i * fontSize}px`;
+                    newChar.style.animationDuration = `${Math.random() * 3 + 2}s`;
+                    newChar.textContent = characters.charAt(Math.floor(Math.random() * characters.length));
+                    container.appendChild(newChar);
+                    
+                    // Remove after animation completes
+                    setTimeout(() => {
+                        newChar.remove();
+                    }, (parseFloat(newChar.style.animationDuration) * 1000));
+                }, Math.random() * 2000 + 1000);
+            }
+        }
+    </script>
 </body>
 </html>
