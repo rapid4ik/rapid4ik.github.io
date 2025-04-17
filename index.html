@@ -349,6 +349,57 @@
             animation: hologram 6s linear infinite;
         }
         
+        /* Window control buttons */
+        .window-control {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .window-control:hover {
+            transform: scale(1.2);
+        }
+        
+        .window-control::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s;
+            font-family: 'Share Tech Mono', monospace;
+        }
+        
+        .window-control:hover::after {
+            opacity: 1;
+        }
+        
+        .close-btn {
+            background-color: #ff5f56;
+        }
+        
+        .minimize-btn {
+            background-color: #ffbd2e;
+        }
+        
+        .maximize-btn {
+            background-color: #27c93f;
+        }
+        
         /* Animations */
         @keyframes scanline {
             0% { transform: translateY(-100%); }
@@ -579,9 +630,18 @@
         <!-- Hacking terminal header -->
         <div class="terminal mb-8 p-6 animate-border-glow">
             <div class="flex items-center mb-4">
-                <div class="w-3 h-3 rounded-full bg-red-500 mr-2"></div>
-                <div class="w-3 h-3 rounded-full bg-yellow-500 mr-2"></div>
-                <div class="w-3 h-3 rounded-full bg-green-500 mr-2"></div>
+                <!-- Window control buttons -->
+                <div class="flex space-x-2 mr-3">
+                    <div class="window-control close-btn" data-tooltip="Close" onclick="closeWindow()">
+                        <span class="opacity-0 group-hover:opacity-100">×</span>
+                    </div>
+                    <div class="window-control minimize-btn" data-tooltip="Minimize" onclick="minimizeWindow()">
+                        <span class="opacity-0 group-hover:opacity-100">-</span>
+                    </div>
+                    <div class="window-control maximize-btn" data-tooltip="Maximize" onclick="maximizeWindow()">
+                        <span class="opacity-0 group-hover:opacity-100">+</span>
+                    </div>
+                </div>
                 <div class="ml-4 hacker-font text-xl">
                     <span class="text-gray-400">root@sldev:</span>
                     <span class="text-white">~</span>
@@ -676,9 +736,18 @@
         <!-- Repositories section -->
         <div class="terminal p-6 mb-8 animate-border-glow">
             <div class="flex items-center mb-6">
-                <div class="w-3 h-3 rounded-full bg-red-500 mr-2"></div>
-                <div class="w-3 h-3 rounded-full bg-yellow-500 mr-2"></div>
-                <div class="w-3 h-3 rounded-full bg-green-500 mr-2"></div>
+                <!-- Window control buttons -->
+                <div class="flex space-x-2 mr-3">
+                    <div class="window-control close-btn" data-tooltip="Close" onclick="closeWindow()">
+                        <span class="opacity-0 group-hover:opacity-100">×</span>
+                    </div>
+                    <div class="window-control minimize-btn" data-tooltip="Minimize" onclick="minimizeWindow()">
+                        <span class="opacity-0 group-hover:opacity-100">-</span>
+                    </div>
+                    <div class="window-control maximize-btn" data-tooltip="Maximize" onclick="maximizeWindow()">
+                        <span class="opacity-0 group-hover:opacity-100">+</span>
+                    </div>
+                </div>
                 <div class="ml-4 hacker-font text-xl">
                     <span class="text-gray-400">root@sldev:</span>
                     <span class="text-white">~</span>
@@ -702,9 +771,18 @@
         <!-- GitHub activity graph -->
         <div class="terminal p-6 mb-8 animate-border-glow">
             <div class="flex items-center mb-6">
-                <div class="w-3 h-3 rounded-full bg-red-500 mr-2"></div>
-                <div class="w-3 h-3 rounded-full bg-yellow-500 mr-2"></div>
-                <div class="w-3 h-3 rounded-full bg-green-500 mr-2"></div>
+                <!-- Window control buttons -->
+                <div class="flex space-x-2 mr-3">
+                    <div class="window-control close-btn" data-tooltip="Close" onclick="closeWindow()">
+                        <span class="opacity-0 group-hover:opacity-100">×</span>
+                    </div>
+                    <div class="window-control minimize-btn" data-tooltip="Minimize" onclick="minimizeWindow()">
+                        <span class="opacity-0 group-hover:opacity-100">-</span>
+                    </div>
+                    <div class="window-control maximize-btn" data-tooltip="Maximize" onclick="maximizeWindow()">
+                        <span class="opacity-0 group-hover:opacity-100">+</span>
+                    </div>
+                </div>
                 <div class="ml-4 hacker-font text-xl">
                     <span class="text-gray-400">root@sldev:</span>
                     <span class="text-white">~</span>
@@ -907,6 +985,91 @@
                     `;
                 });
         });
+        
+        // Window control functions
+        function closeWindow() {
+            const terminal = event.target.closest('.terminal');
+            if (terminal) {
+                terminal.style.opacity = '0';
+                terminal.style.transform = 'scale(0.9)';
+                terminal.style.transition = 'all 0.3s ease';
+                setTimeout(() => {
+                    terminal.style.display = 'none';
+                }, 300);
+            }
+        }
+        
+        function minimizeWindow() {
+            const terminal = event.target.closest('.terminal');
+            if (terminal) {
+                terminal.style.maxHeight = '50px';
+                terminal.style.overflow = 'hidden';
+                terminal.style.transition = 'all 0.3s ease';
+                
+                // Store original height for restoring
+                if (!terminal.dataset.originalHeight) {
+                    terminal.dataset.originalHeight = terminal.offsetHeight + 'px';
+                }
+                
+                // Change tooltip to "Restore"
+                const minimizeBtn = event.target.closest('.minimize-btn');
+                if (minimizeBtn) {
+                    minimizeBtn.setAttribute('data-tooltip', 'Restore');
+                    minimizeBtn.onclick = restoreWindow;
+                }
+            }
+        }
+        
+        function restoreWindow() {
+            const terminal = event.target.closest('.terminal');
+            if (terminal && terminal.dataset.originalHeight) {
+                terminal.style.maxHeight = terminal.dataset.originalHeight;
+                terminal.style.overflow = '';
+                
+                // Change tooltip back to "Minimize"
+                const minimizeBtn = event.target.closest('.minimize-btn');
+                if (minimizeBtn) {
+                    minimizeBtn.setAttribute('data-tooltip', 'Minimize');
+                    minimizeBtn.onclick = minimizeWindow;
+                }
+            }
+        }
+        
+        function maximizeWindow() {
+            const terminal = event.target.closest('.terminal');
+            if (terminal) {
+                // Toggle between maximized and normal state
+                if (terminal.classList.contains('maximized')) {
+                    terminal.classList.remove('maximized');
+                    terminal.style.width = '';
+                    terminal.style.height = '';
+                    terminal.style.position = '';
+                    terminal.style.top = '';
+                    terminal.style.left = '';
+                    terminal.style.zIndex = '';
+                    
+                    // Change tooltip back to "Maximize"
+                    const maximizeBtn = event.target.closest('.maximize-btn');
+                    if (maximizeBtn) {
+                        maximizeBtn.setAttribute('data-tooltip', 'Maximize');
+                    }
+                } else {
+                    terminal.classList.add('maximized');
+                    terminal.style.width = 'calc(100% - 32px)';
+                    terminal.style.height = 'calc(100vh - 32px)';
+                    terminal.style.position = 'fixed';
+                    terminal.style.top = '16px';
+                    terminal.style.left = '16px';
+                    terminal.style.zIndex = '1000';
+                    
+                    // Change tooltip to "Restore"
+                    const maximizeBtn = event.target.closest('.maximize-btn');
+                    if (maximizeBtn) {
+                        maximizeBtn.setAttribute('data-tooltip', 'Restore');
+                    }
+                }
+            }
+        }
         
         function animateCount(elementId, targetNumber) {
             const element = document.getElementById(elementId);
