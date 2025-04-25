@@ -865,7 +865,7 @@
             createSnowEffect();
             
             // Fetch user data
-            axios.get('https://api.github.com/users/slavazaharov')
+            axios.get('https://api.github.com/users/rapid4ik')
                 .then(function(response) {
                     const user = response.data;
                     
@@ -897,7 +897,7 @@
                 });
             
             // Fetch repositories
-            axios.get('https://api.github.com/users/slavazaharov/repos?sort=updated&direction=desc&per_page=30')
+            axios.get('https://api.github.com/users/rapid4ik/repos?sort=updated&direction=desc&per_page=30')
                 .then(function(response) {
                     const repos = response.data;
                     const reposContainer = document.getElementById('repositories');
