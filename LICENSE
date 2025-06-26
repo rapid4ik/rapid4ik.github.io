@@ -101,6 +101,9 @@ This license grants permission to use the software "SlCore" ("the Code") under t
 19. License Updates
     If the Author releases a new version of the Code under a modified license, the new license applies only to the new version; existing versions remain governed by the version of the license under which they were released.
 
+20. Applicability to All GitHub Repositories
+    All source code hosted in any repository under the account https://github.com/rapid4ik, regardless of any other license files present, license versions, or project names indicated in those files, shall automatically be deemed a “Project” distributed under the terms of this SlDEV Custom License v1.0.
+
 ---
 
 Contact for agreements and inquiries:
