@@ -1,21 +1,109 @@
-MIT License
+SlDEV Custom License v1.0
+Copyright (c) 2025 Vyacheslav Zakharov (rapid4ik — vk.com/slaviktop4ik)
 
-Copyright (c) 2025 rapid4ik
+This license grants permission to use the software "SlCore" ("the Code") under the following conditions:
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+1. Definitions:
+   1.1. “Code” refers to the source code and any associated files of SlCore.
+   1.2. “Project” means any software that includes or uses the Code.
+   1.3. “Commercial Project” means any Project that is sold, licensed for a fee, or generates revenue.
+   1.4. “Author” refers to Vyacheslav Zakharov (rapid4ik).
+   1.5. “Use” or “Using” the Code means any of the following actions:
+        - Importing any class, method, or package from SlCore into your source code;
+        - Linking against any compiled module or JAR of SlCore;
+        - Including SlCore source files or compiled artifacts in your project’s distribution;
+        - Copying any fragments of SlCore code into your own codebase.
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+2. Right to Use
+   Permission is granted to use, copy, and include the Code in your own projects, both free and commercial.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+3. Mandatory Attribution
+   Any project that includes or uses the Code must clearly and visibly credit the author as:
+   Vyacheslav Zakharov (rapid4ik — vk.com/slaviktop4ik).
+
+4. Prohibition of Modification Without Permission
+   It is forbidden to modify, alter, create derivative works from, or distribute modified versions of the Code without prior written consent from the Author.
+
+5. Prohibition of Selling as a Separate Product
+   The Code may not be sold separately or as part of other libraries, plugins, or frameworks without the Author’s permission.
+
+6. Terms for Commercial Projects
+   6.1. Notification: Authors of any Commercial Project using the Code must send a notification to one of the following email addresses and duplicate it via VK message to vk.com/slaviktop4ik:
+        - slavazaharov095@gmail.com
+        - slavazaharov0952@gmail.com
+        - slavazaharov0953@gmail.com
+
+   6.2. Approval and License Grant:
+        6.2.1. Upon reviewing the notification, the Author may reply with the exact text:
+             “I confirm!”
+        6.2.2. Receipt of such a reply constitutes the written agreement and automatic grant of a free license to use the Code in the specified Commercial Project.
+        6.2.3. As part of this agreement, the Licensee must provide the Author with free, unlimited access to all features of the Commercial Project equivalent to the maximum privileges available to any user. For example, if regular users have a balance of 1000 crystals, the Author’s account shall be granted infinite crystals or a comparable unlimited resource.
+
+   6.3. License Scope:
+        Upon receipt of the “I confirm!” reply, the Commercial Project is entitled to free, perpetual use of the Code without limitation on time or number of copies, provided that all terms of this license are maintained (including mandatory attribution, prohibition of modification without permission, and provision of unlimited access to the Author).
+   6.4. Sample Notification:
+
+       From: user@example.com
+       To: slavazaharov095@gmail.com
+       Cc: vk.com/slaviktop4ik
+       Subject: Notification of SlCore Usage
+
+       Hello Vyacheslav,
+
+       This is to notify you that your SlCore Code is being used in our commercial project "ProjectName".
+       Please confirm your consent by replying with the exact text:
+       “I confirm!”
+
+       Regards,
+       Ivan User
+
+7. No Warranty
+   The Code is provided “as is”, without any warranties, express or implied.
+
+8. Legal Liability
+   Violation of this license may result in legal claims and lawsuits by the Author.
+
+9. Limitation of Liability
+   In no event shall the Author be liable for any indirect, incidental, consequential, special or exemplary damages (including loss of data, loss of profits or business interruption) arising out of the use of or inability to use the Code, even if advised of the possibility of such damages.
+
+10. Other Rights
+    All rights not explicitly granted in this license are reserved by the Author.
+
+11. Support and Updates
+    The Author is not obligated to provide support, updates, or bug fixes for the Code. Users may report issues, but the Author is under no obligation to address them.
+
+12. Transfer of Rights
+    The rights granted under this license are non-transferable without the Author’s prior written consent.
+
+13. Compatibility
+    This license does not affect the user’s obligation to comply with licenses of any third-party libraries or components included in or used by the Code.
+
+14. Governing Law and Jurisdiction
+    This license shall be governed by and construed in accordance with the laws of the Russian Federation.
+    Any disputes arising from this license shall be subject to the exclusive jurisdiction of the courts of the Russian Federation.
+
+15. Force Majeure
+    Neither party shall be liable for failure to perform obligations due to causes beyond reasonable control.
+
+16. Feedback
+    Users are encouraged to submit feedback and suggestions to the Author, but the Author is under no obligation to act on such feedback.
+
+17. Reporting Bugs and Fixes
+    Users are encouraged to report any bugs, issues, or vulnerabilities found in the Code to the Author. The Author may, at their sole discretion, choose to fix or address such reports, but there is no obligation or guarantee to provide any fixes, updates, or support.
+
+18. License Language, Translation, and Validity
+    18.1. This license is officially valid only in Russian and English.
+    18.2. The full text of the license in Russian must be provided in a file named “LICENSE-SlDEV-RU”.
+    18.3. The full text of the license in English must be provided in a file named “LICENSE-SlDEV-EN”.
+    18.4. Any translations into other languages are provided for convenience only and have no legal force.
+    18.5. Use of the Code without both official files (“LICENSE-SlDEV-RU” and “LICENSE-SlDEV-EN”) or based on an unofficial translation constitutes a clear violation of the license terms and requires compensation to the Author in the amount of 15,000 (fifteen thousand) Russian rubles.
+
+19. License Updates
+    If the Author releases a new version of the Code under a modified license, the new license applies only to the new version; existing versions remain governed by the version of the license under which they were released.
+
+---
+
+Contact for agreements and inquiries:
+Vyacheslav Zakharov
+slavazaharov095@gmail.com
+vk.com/slaviktop4ik
