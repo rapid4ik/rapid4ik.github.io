@@ -1,1264 +1,629 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Slava Zaharov | SlDev</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=VT323&display=swap');
-        
-        :root {
-            --neon-green: #39ff14;
-            --neon-purple: #bc13fe;
-            --neon-blue: #1b03a3;
-            --neon-pink: #ff00ff;
-            --neon-cyan: #00ffff;
-            --dark-bg: #0a0a0a;
-            --window-blue: rgba(0, 60, 100, 0.3);
-        }
-        
-        body {
-            font-family: 'Share Tech Mono', monospace;
-            background-color: var(--dark-bg);
-            color: var(--neon-green);
-            overflow-x: hidden;
-        }
-        
-        .hacker-font {
-            font-family: 'VT323', monospace;
-        }
-        
-        .scanline {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                to bottom,
-                rgba(255, 255, 255, 0) 0%,
-                rgba(255, 255, 255, 0) 50%,
-                rgba(0, 0, 0, 0.2) 51%,
-                rgba(0, 0, 0, 0) 52%,
-                rgba(0, 0, 0, 0) 100%
-            );
-            background-size: 100% 8px;
-            pointer-events: none;
-            z-index: 9999;
-            animation: scanline 8s linear infinite;
-            opacity: 0.4;
-        }
-        
-        .glitch {
-            position: relative;
-        }
-        
-        .glitch::before, .glitch::after {
-            content: attr(data-text);
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0.8;
-        }
-        
-        .glitch::before {
-            color: var(--neon-purple);
-            animation: glitch-effect 3s infinite;
-            z-index: -2;
-        }
-        
-        .glitch::after {
-            color: var(--neon-blue);
-            animation: glitch-effect 2s infinite reverse;
-            z-index: -1;
-        }
-        
-        .terminal {
-            border: 1px solid var(--neon-green);
-            box-shadow: 0 0 10px var(--neon-green), 
-                        inset 0 0 10px var(--neon-green);
-            position: relative;
-            overflow: hidden;
-            background-color: rgba(10, 10, 10, 0.8);
-        }
-        
-        .terminal::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: repeating-linear-gradient(
-                0deg,
-                rgba(57, 255, 20, 0.05),
-                rgba(57, 255, 20, 0.05) 1px,
-                transparent 1px,
-                transparent 2px
-            );
-            pointer-events: none;
-        }
-        
-        .matrix-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            opacity: 0.3;
-        }
-        
-        .hacker-btn {
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s;
-        }
-        
-        .hacker-btn::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                90deg,
-                transparent,
-                rgba(57, 255, 20, 0.4),
-                transparent
-            );
-            transition: all 0.5s;
-        }
-        
-        .hacker-btn:hover::before {
-            left: 100%;
-        }
-        
-        .pulse {
-            animation: pulse 2s infinite;
-        }
-        
-        .flicker {
-            animation: flicker 0.5s infinite alternate;
-        }
-        
-        .typing {
-            border-right: 3px solid var(--neon-green);
-            white-space: nowrap;
-            overflow: hidden;
-            animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
-        }
-        
-        .loading-bar {
-            height: 4px;
-            background: linear-gradient(90deg, transparent, var(--neon-green), transparent);
-            background-size: 200% 100%;
-            animation: loading 2s linear infinite;
-        }
-        
-        .hexagon {
-            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-        }
-        
-        .hexagon-bg {
-            background: conic-gradient(
-                from 45deg,
-                var(--neon-purple),
-                var(--neon-blue),
-                var(--neon-green),
-                var(--neon-purple)
-            );
-            animation: rotateColors 8s linear infinite;
-        }
-        
-        .repo-card {
-            position: relative;
-            overflow: hidden;
-            transition: transform 0.3s;
-        }
-        
-        .repo-card:hover {
-            transform: translateY(-5px);
-        }
-        
-        .repo-card::before {
-            content: "";
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(
-                to bottom right,
-                rgba(57, 255, 20, 0.1) 0%,
-                rgba(57, 255, 20, 0) 20%,
-                rgba(57, 255, 20, 0) 80%,
-                rgba(57, 255, 20, 0.1) 100%
-            );
-            transform: rotate(45deg);
-            transition: all 0.5s;
-        }
-        
-        .repo-card:hover::before {
-            top: 0;
-            left: 0;
-        }
-        
-        .binary-rain {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                to bottom,
-                rgba(0, 0, 0, 0.9) 0%,
-                rgba(0, 0, 0, 0) 50%,
-                rgba(0, 0, 0, 0.9) 100%
-            );
-            z-index: -1;
-        }
-        
-        /* Window effect for snow */
-        .window-effect {
-            position: relative;
-            border: 2px solid var(--neon-cyan);
-            box-shadow: 0 0 15px var(--neon-cyan), 
-                       inset 0 0 15px var(--neon-cyan);
-            background-color: var(--window-blue);
-            overflow: hidden;
-        }
-        
-        .window-effect::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: repeating-linear-gradient(
-                0deg,
-                rgba(0, 255, 255, 0.05),
-                rgba(0, 255, 255, 0.05) 1px,
-                transparent 1px,
-                transparent 3px
-            );
-            pointer-events: none;
-        }
-        
-        .window-effect::after {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: repeating-linear-gradient(
-                90deg,
-                rgba(0, 255, 255, 0.05),
-                rgba(0, 255, 255, 0.05) 1px,
-                transparent 1px,
-                transparent 3px
-            );
-            pointer-events: none;
-        }
-        
-        /* Snowflake */
-        .snowflake {
-            position: absolute;
-            color: white;
-            font-size: 1em;
-            text-shadow: 0 0 5px var(--neon-cyan);
-            user-select: none;
-            pointer-events: none;
-            animation: snow-fall linear forwards;
-        }
-        
-        /* Language bar */
-        .language-bar {
-            height: 6px;
-            border-radius: 3px;
-            margin-top: 8px;
-            background: linear-gradient(90deg, var(--neon-purple), var(--neon-blue));
-        }
-        
-        .language-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 6px;
-        }
-        
-        .language-color {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            margin-right: 8px;
-            flex-shrink: 0;
-        }
-        
-        /* Activity graph */
-        .activity-graph {
-            display: grid;
-            grid-template-columns: repeat(52, 1fr);
-            grid-gap: 3px;
-            padding: 10px;
-        }
-        
-        .activity-cell {
-            width: 10px;
-            height: 10px;
-            border-radius: 2px;
-            background-color: rgba(57, 255, 20, 0.1);
-            transition: all 0.3s;
-        }
-        
-        .activity-cell:hover {
-            transform: scale(1.5);
-        }
-        
-        /* Holographic effect */
-        .holographic {
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .holographic::before {
-            content: "";
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(
-                to bottom right,
-                transparent,
-                transparent,
-                transparent,
-                rgba(57, 255, 20, 0.1),
-                transparent,
-                transparent,
-                transparent
-            );
-            transform: rotate(45deg);
-            animation: hologram 6s linear infinite;
-        }
-        
-        /* Window control buttons */
-        .window-control {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s;
-            position: relative;
-            cursor: pointer;
-        }
-        
-        .window-control:hover {
-            transform: scale(1.2);
-        }
-        
-        .window-control::after {
-            content: attr(data-tooltip);
-            position: absolute;
-            bottom: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 12px;
-            white-space: nowrap;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.2s;
-            font-family: 'Share Tech Mono', monospace;
-        }
-        
-        .window-control:hover::after {
-            opacity: 1;
-        }
-        
-        .close-btn {
-            background-color: #ff5f56;
-        }
-        
-        .minimize-btn {
-            background-color: #ffbd2e;
-        }
-        
-        .maximize-btn {
-            background-color: #27c93f;
-        }
-        
-        /* Animations */
-        @keyframes scanline {
-            0% { transform: translateY(-100%); }
-            100% { transform: translateY(100%); }
-        }
-        
-        @keyframes glitch-effect {
-            0% { transform: translate(0); }
-            20% { transform: translate(-3px, 3px); }
-            40% { transform: translate(-3px, -3px); }
-            60% { transform: translate(3px, 3px); }
-            80% { transform: translate(3px, -3px); }
-            100% { transform: translate(0); }
-        }
-        
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(57, 255, 20, 0.7); }
-            70% { box-shadow: 0 0 0 10px rgba(57, 255, 20, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(57, 255, 20, 0); }
-        }
-        
-        @keyframes flicker {
-            0%, 19.999%, 22%, 62.999%, 64%, 64.999%, 70%, 100% { opacity: 1; }
-            20%, 21.999%, 63%, 63.999%, 65%, 69.999% { opacity: 0.4; }
-        }
-        
-        @keyframes typing {
-            from { width: 0; }
-            to { width: 100%; }
-        }
-        
-        @keyframes blink-caret {
-            from, to { border-color: transparent; }
-            50% { border-color: var(--neon-green); }
-        }
-        
-        @keyframes loading {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
-        }
-        
-        @keyframes rotateColors {
-            0% { filter: hue-rotate(0deg); }
-            100% { filter: hue-rotate(360deg); }
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-        
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
-            20%, 40%, 60%, 80% { transform: translateX(5px); }
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        @keyframes neon-flicker {
-            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
-                text-shadow: 0 0 5px var(--neon-green),
-                             0 0 10px var(--neon-green),
-                             0 0 20px var(--neon-green),
-                             0 0 40px var(--neon-purple),
-                             0 0 80px var(--neon-purple),
-                             0 0 90px var(--neon-purple),
-                             0 0 100px var(--neon-purple),
-                             0 0 150px var(--neon-purple);
-            }
-            20%, 24%, 55% {       
-                text-shadow: none;
-            }
-        }
-        
-        @keyframes border-glow {
-            0%, 100% {
-                box-shadow: 0 0 5px var(--neon-green),
-                            inset 0 0 5px var(--neon-green);
-            }
-            50% {
-                box-shadow: 0 0 20px var(--neon-green),
-                            inset 0 0 20px var(--neon-green);
-            }
-        }
-        
-        @keyframes binary-fall {
-            0% {
-                transform: translateY(-100%);
-                opacity: 0;
-            }
-            10% {
-                opacity: 1;
-            }
-            90% {
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(100vh);
-                opacity: 0;
-            }
-        }
-        
-        @keyframes snow-fall {
-            0% {
-                transform: translateY(-10px) translateX(0);
-                opacity: 0;
-            }
-            10% {
-                opacity: 1;
-            }
-            90% {
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(100vh) translateX(calc(var(--random-x) * 10px));
-                opacity: 0;
-            }
-        }
-        
-        @keyframes hologram {
-            0% {
-                transform: translateX(-30%) translateY(-30%) rotate(45deg);
-            }
-            100% {
-                transform: translateX(30%) translateY(30%) rotate(45deg);
-            }
-        }
-        
-        @keyframes window-flicker {
-            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
-                box-shadow: 0 0 15px var(--neon-cyan), 
-                           inset 0 0 15px var(--neon-cyan);
-            }
-            20%, 24%, 55% {       
-                box-shadow: 0 0 5px var(--neon-cyan), 
-                           inset 0 0 5px var(--neon-cyan);
-            }
-        }
-        
-        /* Custom animations classes */
-        .animate-float {
-            animation: float 3s ease-in-out infinite;
-        }
-        
-        .animate-shake {
-            animation: shake 0.5s ease-in-out infinite;
-        }
-        
-        .animate-spin-slow {
-            animation: spin 8s linear infinite;
-        }
-        
-        .animate-neon-flicker {
-            animation: neon-flicker 1.5s infinite;
-        }
-        
-        .animate-border-glow {
-            animation: border-glow 2s infinite;
-        }
-        
-        .animate-binary-fall {
-            position: absolute;
-            animation: binary-fall linear;
-            font-family: 'VT323', monospace;
-            color: var(--neon-green);
-            text-shadow: 0 0 5px var(--neon-green);
-        }
-        
-        .animate-window-flicker {
-            animation: window-flicker 3s infinite;
-        }
-        
-        /* Custom scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-        
-        ::-webkit-scrollbar-track {
-            background: rgba(10, 10, 10, 0.5);
-        }
-        
-        ::-webkit-scrollbar-thumb {
-            background: var(--neon-green);
-            border-radius: 4px;
-        }
-        
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--neon-purple);
-        }
-        
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .terminal {
-                padding: 1rem;
-            }
-            
-            .hexagon {
-                width: 120px;
-                height: 120px;
-            }
-            
-            .activity-graph {
-                grid-template-columns: repeat(26, 1fr);
-            }
-        }
-    </style>
-</head>
-<body class="relative">
-    <!-- Matrix background effect -->
-    <div class="matrix-bg" id="matrix-bg"></div>
-    
-    <!-- Scanlines overlay -->
-    <div class="scanline"></div>
-    
-    <!-- Binary rain effect -->
-    <div class="binary-rain" id="binary-rain"></div>
-    
-    <!-- Snow outside window effect -->
-    <div class="fixed top-0 left-0 w-full h-full pointer-events-none z-0" id="snow-container"></div>
-    
-    <!-- Main container -->
-    <div class="container mx-auto px-4 py-8 relative z-10">
-        <!-- Hacking terminal header -->
-        <div class="terminal mb-8 p-6 animate-border-glow">
-            <div class="flex items-center mb-4">
-                <!-- Window control buttons -->
-                <div class="flex space-x-2 mr-3">
-                    <div class="window-control close-btn" data-tooltip="Close" onclick="closeWindow()">
-                        <span class="opacity-0 group-hover:opacity-100">×</span>
-                    </div>
-                    <div class="window-control minimize-btn" data-tooltip="Minimize" onclick="minimizeWindow()">
-                        <span class="opacity-0 group-hover:opacity-100">-</span>
-                    </div>
-                    <div class="window-control maximize-btn" data-tooltip="Maximize" onclick="maximizeWindow()">
-                        <span class="opacity-0 group-hover:opacity-100">+</span>
-                    </div>
-                </div>
-                <div class="ml-4 hacker-font text-xl">
-                    <span class="text-gray-400">root@sldev:</span>
-                    <span class="text-white">~</span>
-                    <span class="text-gray-400">$</span>
-                    <span class="typing"> loading user profile...</span>
-                </div>
-            </div>
-            
-            <div class="loading-bar mb-4"></div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- Profile section -->
-                <div class="col-span-1 flex flex-col items-center">
-                    <div class="hexagon hexagon-bg w-40 h-40 flex items-center justify-center mb-4 animate-spin-slow">
-                        <img id="avatar" src="https://github.com/rapid4ik.png" alt="Profile" class="hexagon w-[90%] h-[90%] object-cover">
-                    </div>
-                    
-                    <h1 class="glitch text-3xl font-bold mb-2 text-center" data-text="Slava Zaharov">
-                        <span class="animate-neon-flicker">Slava Zaharov</span>
-                    </h1>
-                    
-                    <div class="hacker-font text-lg text-center mb-4">
-                        <span class="flicker" id="bio">[LOADING BIO...]</span>
-                    </div>
-                    
-                    <!-- Window effect with snow outside -->
-                    <div class="window-effect w-full h-32 mb-6 animate-window-flicker relative overflow-hidden">
-                        <div class="absolute inset-0 flex items-center justify-center">
-                            <div class="text-center">
-                                <i class="fas fa-city text-3xl text-cyan-500 mb-2"></i>
-                                <p class="hacker-font text-cyan-500">CYBER CITY</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Stats section -->
-                <div class="col-span-1 md:col-span-2">
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                        <div class="terminal p-4 text-center hover:animate-shake">
-                            <div class="hacker-font text-4xl mb-2" id="repos">--</div>
-                            <div class="text-sm uppercase tracking-wider">Repositories</div>
-                        </div>
-                        <div class="terminal p-4 text-center hover:animate-shake">
-                            <div class="hacker-font text-4xl mb-2" id="stars">--</div>
-                            <div class="text-sm uppercase tracking-wider">Stars</div>
-                        </div>
-                        <div class="terminal p-4 text-center hover:animate-shake">
-                            <div class="hacker-font text-4xl mb-2" id="followers">--</div>
-                            <div class="text-sm uppercase tracking-wider">Followers</div>
-                        </div>
-                        <div class="terminal p-4 text-center hover:animate-shake">
-                            <div class="hacker-font text-4xl mb-2" id="following">--</div>
-                            <div class="text-sm uppercase tracking-wider">Following</div>
-                        </div>
-                    </div>
-                    
-                    <div class="terminal mt-4 p-4">
-                        <div class="flex flex-wrap gap-2">
-                            <div class="hacker-btn px-3 py-1 border border-green-500 rounded hacker-font text-sm">
-                                <i class="fas fa-code mr-1"></i> Developer
-                            </div>
-                            <div class="hacker-btn px-3 py-1 border border-purple-500 rounded hacker-font text-sm">
-                                <i class="fas fa-terminal mr-1"></i> Hacker
-                            </div>
-                            <div class="hacker-btn px-3 py-1 border border-blue-500 rounded hacker-font text-sm">
-                                <i class="fas fa-project-diagram mr-1"></i> Open Source
-                            </div>
-                            <!-- <div class="hacker-btn px-3 py-1 border border-pink-500 rounded hacker-font text-sm">
-                                <i class="fas fa-robot mr-1"></i> AI Enthusiast
-                            </div> -->
-                        </div>
-                    </div>
-                    
-                    <!-- Language distribution -->
-                    <div class="terminal mt-4 p-4">
-                        <h3 class="hacker-font text-lg mb-3 flex items-center">
-                            <i class="fas fa-code-branch mr-2"></i> LANGUAGE DISTRIBUTION
-                        </h3>
-                        <div id="language-stats" class="mt-2">
-                            <div class="flex justify-center items-center h-20">
-                                <div class="terminal w-16 h-16 flex items-center justify-center animate-spin-slow">
-                                    <i class="fas fa-circle-notch text-2xl"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Repositories section -->
-        <div class="terminal p-6 mb-8 animate-border-glow">
-            <div class="flex items-center mb-6">
-                <!-- Window control buttons -->
-                <div class="flex space-x-2 mr-3">
-                    <div class="window-control close-btn" data-tooltip="Close" onclick="closeWindow()">
-                        <span class="opacity-0 group-hover:opacity-100">×</span>
-                    </div>
-                    <div class="window-control minimize-btn" data-tooltip="Minimize" onclick="minimizeWindow()">
-                        <span class="opacity-0 group-hover:opacity-100">-</span>
-                    </div>
-                    <div class="window-control maximize-btn" data-tooltip="Maximize" onclick="maximizeWindow()">
-                        <span class="opacity-0 group-hover:opacity-100">+</span>
-                    </div>
-                </div>
-                <div class="ml-4 hacker-font text-xl">
-                    <span class="text-gray-400">root@sldev:</span>
-                    <span class="text-white">~</span>
-                    <span class="text-gray-400">$</span>
-                    <span class="typing"> scanning repositories...</span>
-                </div>
-            </div>
-            
-            <div class="loading-bar mb-6"></div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="repositories">
-                <!-- Loading spinner -->
-                <div class="col-span-1 md:col-span-2 lg:col-span-3 flex justify-center py-12">
-                    <div class="terminal w-16 h-16 flex items-center justify-center animate-spin-slow">
-                        <i class="fas fa-circle-notch text-2xl"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- GitHub activity graph -->
-        <div class="terminal p-6 mb-8 animate-border-glow">
-            <div class="flex items-center mb-6">
-                <!-- Window control buttons -->
-                <div class="flex space-x-2 mr-3">
-                    <div class="window-control close-btn" data-tooltip="Close" onclick="closeWindow()">
-                        <span class="opacity-0 group-hover:opacity-100">×</span>
-                    </div>
-                    <div class="window-control minimize-btn" data-tooltip="Minimize" onclick="minimizeWindow()">
-                        <span class="opacity-0 group-hover:opacity-100">-</span>
-                    </div>
-                    <div class="window-control maximize-btn" data-tooltip="Maximize" onclick="maximizeWindow()">
-                        <span class="opacity-0 group-hover:opacity-100">+</span>
-                    </div>
-                </div>
-                <div class="ml-4 hacker-font text-xl">
-                    <span class="text-gray-400">root@sldev:</span>
-                    <span class="text-white">~</span>
-                    <span class="text-gray-400">$</span>
-                    <span class="typing"> analyzing activity...</span>
-                </div>
-            </div>
-            
-            <div class="loading-bar mb-6"></div>
-            
-            <div class="flex flex-col md:flex-row gap-6">
-                <div class="flex-1">
-                    <h3 class="hacker-font text-lg mb-3 flex items-center">
-                        <i class="fas fa-calendar-alt mr-2"></i> CONTRIBUTION GRAPH
-                    </h3>
-                    <div class="terminal p-4 flex justify-center">
-                        <div class="activity-graph" id="activity-graph">
-                            <!-- Will be filled by JavaScript -->
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="flex-1">
-                    <h3 class="hacker-font text-lg mb-3 flex items-center">
-                        <i class="fas fa-chart-line mr-2"></i> ACTIVITY STATS
-                    </h3>
-                    <div class="terminal p-4">
-                        <div class="grid grid-cols-2 gap-4">
-                            <div class="text-center">
-                                <div class="hacker-font text-3xl mb-2" id="commits-year">--</div>
-                                <div class="text-sm uppercase tracking-wider">Commits (Year)</div>
-                            </div>
-                            <div class="text-center">
-                                <div class="hacker-font text-3xl mb-2" id="commits-month">--</div>
-                                <div class="text-sm uppercase tracking-wider">Commits (Month)</div>
-                            </div>
-                            <div class="text-center">
-                                <div class="hacker-font text-3xl mb-2" id="prs">--</div>
-                                <div class="text-sm uppercase tracking-wider">Pull Requests</div>
-                            </div>
-                            <div class="text-center">
-                                <div class="hacker-font text-3xl mb-2" id="issues">--</div>
-                                <div class="text-sm uppercase tracking-wider">Issues</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Access denied joke -->
-        <div class="terminal p-6 text-center mb-8 animate-border-glow">
-            <div class="hacker-font text-xl mb-4 text-red-500 animate-shake">
-                <i class="fas fa-lock mr-2"></i> ACCESS DENIED
-            </div>
-            <p class="mb-4">Just kidding! Everything is open source here.</p>
-            <div class="flex justify-center">
-                <a href="https://github.com/rapid4ik" target="_blank" class="hacker-btn px-6 py-2 border border-green-500 rounded hacker-font text-lg hover:animate-float">
-                    <i class="fab fa-github mr-2"></i> View Full Profile
-                </a>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Footer -->
-    <footer class="terminal mx-4 mb-4 p-4 text-center hacker-font animate-border-glow">
-        <p class="mb-2">System Status: <span class="text-green-500">OPERATIONAL</span></p>
-        <p>© 2025 Slava Zaharov | All systems secured</p>
-    </footer>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>rapid4ik — GitHub Portfolio</title>
+  <meta name="description" content="Неоновый портфолио-сайт с GitHub API: профиль, статистика, репозитории, языки." />
+  <meta name="theme-color" content="#05060a" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js" defer></script>
+  <style>
+    :root{
+      --bg: #05060a;
+      --panel: rgba(15,18,32,0.55);
+      --glass: rgba(20,25,45,0.55);
+      --text: #e6f1ff;
+      --muted: #9fb3c8;
+      --neon-pink: #ff2bd6;
+      --neon-cyan: #00f0ff;
+      --neon-purple:#9b5cff;
+      --neon-green:#28f7a6;
+      --card-radius: 18px;
+      --shadow-neon: 0 0 12px rgba(0,240,255,.55), 0 0 24px rgba(155,92,255,.35);
+      --ring: 0 0 0 2px rgba(0,240,255,.35), 0 0 24px rgba(155,92,255,.25);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      background: radial-gradient(1200px 800px at 20% 10%, rgba(255,43,214,.12), transparent 60%),
+                  radial-gradient(1200px 800px at 80% 20%, rgba(0,240,255,.10), transparent 60%),
+                  radial-gradient(1000px 700px at 50% 90%, rgba(155,92,255,.10), transparent 60%),
+                  var(--bg);
+      color: var(--text);
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, "Helvetica Neue", Arial, "Apple Color Emoji","Segoe UI Emoji";
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
+    .container{max-width:1200px;margin:0 auto;padding:32px 20px 80px}
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Create matrix background
-            createMatrixEffect();
-            
-            // Create binary rain effect
-            createBinaryRain();
-            
-            // Create snow effect
-            createSnowEffect();
-            
-            // Fetch user data
-            axios.get('https://api.github.com/users/rapid4ik')
-                .then(function(response) {
-                    const user = response.data;
-                    
-                    // Update profile section
-                    document.getElementById('bio').textContent = user.bio || 'Cyber Security Enthusiast | Code Hacker';
-                    
-                    // Animate stats counting
-                    animateCount('followers', user.followers);
-                    animateCount('following', user.following);
-                    animateCount('repos', user.public_repos);
-                    
-                    // Fetch all repositories to calculate stars and languages
-                    axios.get(user.repos_url + '?per_page=100')
-                        .then(function(repoResponse) {
-                            const repos = repoResponse.data;
-                            const stars = repos.reduce((acc, repo) => acc + repo.stargazers_count, 0);
-                            animateCount('stars', stars);
-                            
-                            // Calculate language distribution
-                            calculateLanguageStats(repos);
-                        });
-                    
-                    // Fetch contribution data (simulated since GitHub API doesn't provide this directly)
-                    simulateContributionData();
-                })
-                .catch(function(error) {
-                    console.error('Error fetching user data:', error);
-                    document.getElementById('bio').textContent = 'ERROR LOADING PROFILE';
-                });
-            
-            // Fetch repositories
-            axios.get('https://api.github.com/users/rapid4ik/repos?sort=updated&direction=desc&per_page=30')
-                .then(function(response) {
-                    const repos = response.data;
-                    const reposContainer = document.getElementById('repositories');
-                    
-                    // Clear loading spinner
-                    reposContainer.innerHTML = '';
-                    
-                    if (repos.length === 0) {
-                        reposContainer.innerHTML = `
-                            <div class="col-span-3 text-center py-8">
-                                <div class="terminal p-4">
-                                    <i class="fas fa-exclamation-triangle text-yellow-500 text-4xl mb-4"></i>
-                                    <p>NO REPOSITORIES FOUND</p>
-                                </div>
-                            </div>
-                        `;
-                        return;
-                    }
-                    
-                    repos.forEach(repo => {
-                        if (repo.fork) return; // Skip forks
-                        
-                        const repoCard = document.createElement('div');
-                        repoCard.className = 'repo-card terminal p-4';
-                        
-                        // Format last updated date
-                        const updatedDate = new Date(repo.updated_at);
-                        const formattedDate = updatedDate.toLocaleDateString('en-US', {
-                            year: 'numeric',
-                            month: 'short',
-                            day: 'numeric'
-                        });
-                        
-                        // Get primary language (fallback to empty string)
-                        const language = repo.language || '';
-                        
-                        // Check if repo has releases
-                        const hasReleases = repo.has_releases || repo.has_downloads;
-                        
-                        // Check if repo has pages
-                        const hasPages = repo.has_pages;
-                        
-                        repoCard.innerHTML = `
-                            <div class="h-full flex flex-col">
-                                <div class="flex justify-between items-start mb-3">
-                                    <h3 class="text-lg font-semibold truncate">
-                                        <a href="${repo.html_url}" target="_blank" class="hover:text-green-500 transition-colors">${repo.name}</a>
-                                    </h3>
-                                    <div class="flex items-center text-yellow-500">
-                                        <i class="fas fa-star mr-1"></i>
-                                        <span class="hacker-font">${repo.stargazers_count}</span>
-                                    </div>
-                                </div>
-                                
-                                <p class="text-gray-400 text-sm mb-4 flex-grow">${repo.description || 'No description provided.'}</p>
-                                
-                                <div class="flex flex-wrap gap-2 mb-4">
-                                    ${language ? `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-900 text-green-400">${language}</span>` : ''}
-                                    ${repo.license ? `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-900 text-purple-400">${repo.license.spdx_id || 'License'}</span>` : ''}
-                                    ${hasReleases ? `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-900 text-blue-400">Releases</span>` : ''}
-                                    ${hasPages ? `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-pink-900 text-pink-400">Pages</span>` : ''}
-                                    ${repo.archived ? `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-900 text-gray-400">Archived</span>` : ''}
-                                </div>
-                                
-                                <div class="flex justify-between items-center text-xs text-gray-500 hacker-font">
-                                    <span>UPDATED ${formattedDate.toUpperCase()}</span>
-                                    <span>${repo.size} KB</span>
-                                </div>
-                            </div>
-                        `;
-                        
-                        reposContainer.appendChild(repoCard);
-                    });
-                })
-                .catch(function(error) {
-                    console.error('Error fetching repositories:', error);
-                    document.getElementById('repositories').innerHTML = `
-                        <div class="col-span-3 text-center py-8">
-                            <div class="terminal p-4">
-                                <i class="fas fa-skull-crossbones text-red-500 text-4xl mb-4"></i>
-                                <p>CONNECTION TERMINATED</p>
-                                <p class="text-sm mt-2">Failed to load repositories. System will retry...</p>
-                            </div>
-                        </div>
-                    `;
-                });
-        });
-        
-        function animateCount(elementId, targetNumber) {
-            const element = document.getElementById(elementId);
-            const duration = 2000; // Animation duration in ms
-            const startTime = performance.now();
-            const startNumber = 0;
-            
-            function updateNumber(currentTime) {
-                const elapsedTime = currentTime - startTime;
-                const progress = Math.min(elapsedTime / duration, 1);
-                const currentNumber = Math.floor(progress * targetNumber);
-                
-                element.textContent = currentNumber;
-                
-                if (progress < 1) {
-                    requestAnimationFrame(updateNumber);
-                } else {
-                    element.textContent = targetNumber;
-                }
-            }
-            
-            requestAnimationFrame(updateNumber);
+    header{
+      display:grid;grid-template-columns:120px 1fr;gap:24px;align-items:center;
+      background: linear-gradient(180deg, rgba(0,240,255,.08), rgba(155,92,255,.06));
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: var(--card-radius);
+      padding: 20px; backdrop-filter: blur(10px);
+      box-shadow: var(--shadow-neon);
+    }
+    .avatar{
+      width:110px;height:110px;border-radius:50%;object-fit:cover;border:2px solid rgba(0,240,255,.45);box-shadow:0 0 0 4px rgba(155,92,255,.15), 0 8px 30px rgba(0,0,0,.35)
+    }
+    .title{
+      font-family: Orbitron, Inter, sans-serif;letter-spacing:.5px;
+      font-size: clamp(24px, 3.4vw, 46px);
+      font-weight: 800;
+      margin: 0 0 4px;
+      text-shadow: 0 0 8px rgba(0,240,255,.6), 0 0 18px rgba(255,43,214,.4);
+    }
+    .handle{color:var(--neon-cyan);font-family:Orbitron,Inter,sans-serif;font-weight:600}
+    .bio{color:var(--muted);margin-top:6px}
+
+    .cta-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px}
+    .btn{
+      appearance:none;border:none;cursor:pointer;position:relative;
+      padding:10px 14px;border-radius:12px;font-weight:700;
+      background: linear-gradient(90deg, rgba(0,240,255,.2), rgba(155,92,255,.2));
+      color:var(--text);
+      box-shadow: var(--shadow-neon);
+      outline: none;
+      transition: transform .15s ease, box-shadow .15s ease, filter .15s ease;
+    }
+    .btn:hover{transform: translateY(-1px);filter: brightness(1.08)}
+    .btn:active{transform: translateY(0)}
+
+    .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:14px}
+    .stat{
+      border-radius:14px;background:var(--panel);backdrop-filter:blur(10px);
+      border:1px solid rgba(255,255,255,.06);padding:12px 14px;text-align:center
+    }
+    .stat .num{font-family:Orbitron,Inter,sans-serif;font-size:22px;font-weight:800}
+    .stat .label{font-size:12px;color:var(--muted)}
+
+    .section-title{margin:36px 0 12px;font-family:Orbitron,Inter,sans-serif;font-weight:800;letter-spacing:.4px}
+
+    .panel{background:var(--glass);border:1px solid rgba(255,255,255,.06);border-radius:var(--card-radius);padding:18px;backdrop-filter:blur(8px);box-shadow: var(--shadow-neon)}
+
+    #chartWrap{display:grid;grid-template-columns:1fr;gap:16px}
+    #legend{display:flex;flex-wrap:wrap;gap:10px}
+    .legend-item{display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06)}
+    .legend-dot{width:10px;height:10px;border-radius:50%}
+
+    .toolbar{display:flex;gap:12px;align-items:center;justify-content:space-between;margin:8px 0 14px;flex-wrap:wrap}
+    .search{flex:1;position:relative;min-width:240px}
+    .search input{width:100%;padding:12px 14px 12px 40px;border-radius:12px;border:1px solid rgba(255,255,255,.08);background:rgba(0,0,0,.25);color:var(--text);outline:none;box-shadow: var(--ring)}
+    .search svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);opacity:.6}
+
+    .repo-grid{display:grid;grid-template-columns:repeat( auto-fit, minmax(260px, 1fr) );gap:14px}
+    .repo{position:relative;border-radius:16px;padding:16px;background:linear-gradient(180deg, rgba(0,240,255,.06), rgba(155,92,255,.06));border:1px solid rgba(255,255,255,.06);backdrop-filter:blur(8px);cursor:pointer;transition: transform .15s ease, box-shadow .2s ease}
+    .repo:hover{transform:translateY(-2px);box-shadow: var(--shadow-neon)}
+    .repo h3{margin:0 0 6px;font-size:16px}
+    .repo .desc{color:var(--muted);font-size:13px;min-height:38px}
+    .repo .meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;font-size:12px;color:var(--muted)}
+    .pill{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08)}
+    .langbar{margin-top:12px;height:8px;border-radius:999px;overflow:hidden;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08)}
+    .langseg{height:100%}
+    .repo-footer{display:flex;justify-content:space-between;align-items:center;margin-top:12px;font-size:12px;color:var(--muted)}
+
+    .notice{padding:12px;border-radius:12px;background:rgba(255,255,255,.05);border:1px dashed rgba(255,255,255,.12);color:var(--muted)}
+    .error{border-color: rgba(255, 71, 87, .5); color:#ff9fa8}
+
+    footer{margin-top:40px;text-align:center;color:var(--muted);font-size:12px}
+
+    /* ===== Модал токена и адаптив ===== */
+    .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:1000}
+    .modal-backdrop.open{display:flex}
+    .modal{width:min(560px,92vw);background:var(--glass);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:18px;box-shadow:var(--shadow-neon)}
+    .modal h3{margin:0 0 6px;font-family:Orbitron,Inter,sans-serif}
+    .modal .muted{color:var(--muted);margin:0 0 10px}
+    .modal .small{font-size:12px}
+    .modal .row{display:flex;gap:10px}
+    .modal input{flex:1;padding:12px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(0,0,0,.25);color:var(--text);outline:none}
+    .modal .actions{margin-top:12px;display:flex;gap:10px;flex-wrap:wrap}
+
+    @media (max-width: 420px){
+      .container{padding:24px 14px 64px}
+      header{grid-template-columns:68px 1fr;padding:14px}
+      .avatar{width:64px;height:64px}
+      .title{font-size:clamp(22px,6vw,34px)}
+      .btn{padding:9px 12px}
+      .repo{padding:14px}
+      .stats{grid-template-columns:1fr 1fr;gap:8px}
+    }
+    @media (min-width: 1024px){
+      .repo-grid{grid-template-columns:repeat(auto-fit, minmax(280px, 1fr))}
+    }
+    @media (min-width: 1400px){
+      .container{max-width:1320px}
+      .repo-grid{grid-template-columns:repeat(auto-fit, minmax(300px, 1fr))}
+    }
+    @media (hover: none){
+      .btn:hover, .repo:hover{transform:none}
+    }
+    @media (prefers-reduced-motion: reduce){
+      *{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+      header,.panel,.repo{box-shadow:none}
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <img id="avatar" class="avatar" alt="avatar" src="" loading="lazy" />
+      <div>
+        <h1 class="title"><span id="name">…</span> <span class="handle" id="handle"></span></h1>
+        <p class="bio" id="bio"></p>
+        <div class="cta-row">
+          <a id="profileLink" class="btn" href="#" target="_blank" rel="noopener">Открыть GitHub</a>
+          <button id="copyLink" class="btn" title="Скопировать ссылку на сайт">Скопировать ссылку</button>
+          <button id="tokenBtn" class="btn" title="Добавить/очистить GitHub токен">🔑 Токен</button>
+        </div>
+        <div class="stats" id="stats">
+          <div class="stat"><div class="num" id="repoCount">—</div><div class="label">Публичные репозитории</div></div>
+          <div class="stat"><div class="num" id="followers">—</div><div class="label">Подписчики</div></div>
+          <div class="stat"><div class="num" id="following">—</div><div class="label">Подписки</div></div>
+          <div class="stat"><div class="num" id="gists">—</div><div class="label">Gists</div></div>
+        </div>
+      </div>
+    </header>
+
+    <h2 class="section-title">Языки в проектах</h2>
+    <div class="panel" id="chartWrap">
+      <div class="notice" id="chartNotice">Секундочку… собираю статистику по языкам во всех публичных репозиториях. Это может занять пару секунд.</div>
+      <canvas id="langChart" height="180" aria-label="Диаграмма распределения языков" role="img"></canvas>
+      <div id="legend"></div>
+    </div>
+
+    <div class="toolbar">
+      <div class="search">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 21l-4.3-4.3M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <input id="search" placeholder="Поиск по репозиториям… (имя, описание, язык)" />
+      </div>
+      <div class="pill" id="repoTotal">Репозиториев: —</div>
+      <div class="pill" id="lastSync">Обновлено: —</div>
+      <div class="pill" id="sourcePill">Источник: —</div>
+      <button class="btn" id="refreshBtn" title="Принудительно перечитать data/*.json">Обновить</button>
+    </div>
+
+    <section class="repo-grid" id="repoGrid" aria-live="polite"></section>
+
+    <div id="alerts" style="margin-top:16px"></div>
+
+    <!-- Modal: GitHub Token -->
+    <div id="tokenModal" class="modal-backdrop" aria-hidden="true">
+      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="tokenTitle">
+        <h3 id="tokenTitle">GitHub токен</h3>
+        <p class="muted">Опционально: увеличит лимит API до ~5000 запросов/час.</p>
+        <div class="row"><input id="tokenInput" type="password" placeholder="ghp_... / github_pat_..." /></div>
+        <div class="actions">
+          <button id="tokenSave" class="btn">Сохранить</button>
+          <button id="tokenClear" class="btn">Очистить</button>
+          <button id="tokenClose" class="btn">Закрыть</button>
+        </div>
+        <p class="muted small">Токен хранится в вашем браузере (localStorage). Никогда не коммитьте его в репозиторий.</p>
+      </div>
+    </div>
+
+    <footer>
+      Сделано с ❤️ и неоном · Данные из <a href="https://docs.github.com/rest" target="_blank" rel="noopener">GitHub API</a> или из <code>/data/*.json</code>
+    </footer>
+  </div>
+
+  <script>
+  // ====== Настройки ======
+  const USERNAME = new URL(location.href).searchParams.get('u') || 'rapid4ik';
+  const GITHUB_TOKEN = null; // или строка токена. Лучше хранить в localStorage.
+
+  // Неоновая палитра
+  const NEON_COLORS = [
+    '#00f0ff', '#ff2bd6', '#9b5cff', '#28f7a6', '#ff9f1a', '#2ee6de', '#f368e0', '#54a0ff', '#ff6b6b', '#48dbfb', '#c56cf0', '#1dd1a1'
+  ];
+
+  let TOKEN = localStorage.getItem('gh_token') || GITHUB_TOKEN;
+
+  // Режим периодического чтения готовых JSON (которые собирает GitHub Actions)
+  const USE_JSON_FIRST = true;                 // сначала пробуем data/*.json
+  const JSON_BASE = '/data';                   // папка с выгрузкой
+  const JSON_CANDIDATES = [                    // кандидаты для единого файла
+    `${JSON_BASE}/summary.json`,
+    `${JSON_BASE}/data.json`,
+    `${JSON_BASE}/github.json`,
+    `${JSON_BASE}/out.json`
+  ];
+  const REFRESH_MS = 5 * 60 * 1000;            // каждые 5 минут обновляем данные
+  let lastUpdatedAt = null;
+
+  const getHeaders = () => {
+    return TOKEN ? { 'Authorization': 'Bearer ' + TOKEN } : {};
+  };
+
+  const $ = (sel, root=document) => root.querySelector(sel);
+  const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
+
+  const state = {
+    profile: null,
+    repos: [],
+    filtered: [],
+    langsByRepo: new Map(),
+    langTotals: {},
+    chart: null,
+  };
+
+  function fmt(n){
+    return new Intl.NumberFormat('ru-RU').format(n);
+  }
+  function timeAgo(isoStr){
+    const d = new Date(isoStr);
+    const diff = (Date.now()-d)/1000;
+    const units = [ ['г.',365*24*3600], ['мес.',30*24*3600], ['д.',24*3600], ['ч.',3600], ['мин.',60] ];
+    for(const [name,sec] of units){ if(diff>=sec) return Math.floor(diff/sec) + ' ' + name + ' назад'; }
+    return 'только что';
+  }
+
+  async function ghFetch(url){
+    const res = await fetch(url, { headers: { ...getHeaders(), 'Accept': 'application/vnd.github+json' } });
+    if(res.status===403){
+      const remaining = res.headers.get('X-RateLimit-Remaining');
+      const reset = res.headers.get('X-RateLimit-Reset');
+      const msg = remaining==='0'
+        ? `Достигнут лимит GitHub API. Попробуйте позже${reset?`, или после ${new Date(+reset*1000).toLocaleTimeString('ru-RU')}`:''}.`
+        : 'Доступ ограничен GitHub API.';
+      throw new Error(msg);
+    }
+    if(!res.ok){
+      const text = await res.text().catch(()=>res.statusText);
+      throw new Error(text || res.statusText);
+    }
+    return { data: await res.json(), headers: res.headers };
+  }
+
+  // ===== Работа с готовыми JSON (Actions) =====
+  async function fetchJSON(path){
+    try{
+      const r = await fetch(path + (path.includes('?')?'&':'?') + 't=' + Date.now(), { cache: 'no-store' });
+      if(!r.ok) return null;
+      return await r.json();
+    }catch{ return null; }
+  }
+
+  function setLastSync(iso){
+    lastUpdatedAt = iso;
+    const el = $('#lastSync');
+    if(el) el.textContent = 'Обновлено: ' + (iso ? timeAgo(iso) : '—');
+  }
+  function setSource(src){
+    const el = $('#sourcePill');
+    if(el) el.textContent = 'Источник: ' + src;
+  }
+
+  function renderRepos(repos){
+    const grid = $('#repoGrid');
+    grid.innerHTML = '';
+    if(repos.length===0){
+      grid.innerHTML = '<div class="notice">Ничего не найдено по текущему фильтру.</div>';
+      return;
+    }
+    const frag = document.createDocumentFragment();
+    for(const r of repos){
+      const card = document.createElement('article');
+      card.className = 'repo';
+      card.innerHTML = `
+        <h3>${r.name}</h3>
+        <p class="desc">${r.description ? escapeHtml(r.description) : 'Без описания'}</p>
+        <div class="meta">
+          <span class="pill" title="Основной язык">🧠 ${r.language || '—'}</span>
+          <span class="pill" title="⭐ Stars">⭐ ${fmt(r.stargazers_count || 0)}</span>
+          <span class="pill" title="🍴 Forks">🍴 ${fmt(r.forks_count || 0)}</span>
+        </div>
+        <div class="langbar" aria-label="Доли языков в репозитории" role="img"></div>
+        <div class="repo-footer">
+          <span>Обновлён: ${timeAgo(r.pushed_at || r.updated_at)}</span>
+          <span>▶︎</span>
+        </div>
+      `;
+      card.addEventListener('click', ()=>window.open(r.html_url,'_blank','noopener'));
+      card.dataset.fullName = r.full_name;
+      frag.appendChild(card);
+      const langs = r.languages || state.langsByRepo.get(r.full_name);
+      if(langs) updateRepoLangBar(r.full_name, langs);
+    }
+    grid.appendChild(frag);
+  }
+
+  function escapeHtml(s){
+    return (s||'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[c]));
+  }
+
+  function updateRepoLangBar(fullName, langs){
+    const card = document.querySelector(\`.repo[data-full-name="\${CSS.escape(fullName)}"]\`);
+    if(!card) return;
+    const bar = card.querySelector('.langbar');
+    const total = Object.values(langs||{}).reduce((a,b)=>a+b,0) || 0;
+    bar.innerHTML = '';
+    if(total===0) return;
+    const entries = Object.entries(langs).sort((a,b)=>b[1]-a[1]).slice(0,6);
+    entries.forEach(([lang, bytes], i)=>{
+      const seg = document.createElement('div');
+      seg.className = 'langseg';
+      seg.style.width = (bytes*100/total).toFixed(2)+'%';
+      seg.style.background = NEON_COLORS[i % NEON_COLORS.length];
+      bar.appendChild(seg);
+    });
+  }
+
+  function renderLangChart(){
+    const totals = state.langTotals || {};
+    const entries = Object.entries(totals).sort((a,b)=>b[1]-a[1]);
+    if(entries.length===0) return;
+    const top = entries.slice(0, 12);
+    const other = entries.slice(12).reduce((acc,[,v])=>acc+v,0);
+    const labels = top.map(([k])=>k);
+    const data = top.map(([,v])=>v);
+    if(other>0){ labels.push('Other'); data.push(other); }
+
+    const ctx = $('#langChart').getContext('2d');
+    if(state.chart){ state.chart.destroy(); }
+    state.chart = new Chart(ctx, {
+      type:'doughnut',
+      data:{
+        labels,
+        datasets:[{
+          data,
+          backgroundColor: labels.map((_,i)=>NEON_COLORS[i%NEON_COLORS.length]),
+          borderWidth: 0,
+        }]
+      },
+      options:{
+        responsive:true,
+        plugins:{
+          legend:{ display:false },
+          tooltip:{ callbacks:{ label:(ctx)=> `${ctx.label}: ${fmt(ctx.parsed)} байт` } }
+        },
+        cutout:'60%'
+      }
+    });
+
+    const legend = $('#legend');
+    legend.innerHTML = '';
+    labels.forEach((label,i)=>{
+      const el = document.createElement('div');
+      el.className='legend-item';
+      el.innerHTML = `<span class="legend-dot" style="background:${NEON_COLORS[i%NEON_COLORS.length]}"></span>${label}`;
+      legend.appendChild(el);
+    });
+  }
+
+  function renderAfterData(){
+    $('#repoTotal').textContent = `Репозиториев: ${fmt(state.repos.length)}`;
+    renderRepos(state.filtered = state.repos);
+    for(const r of state.repos){
+      const langs = r.languages || state.langsByRepo.get(r.full_name);
+      if(langs) updateRepoLangBar(r.full_name, langs);
+    }
+    $('#chartNotice').style.display='none';
+    renderLangChart();
+  }
+
+  async function loadFromJSONCombinedOrSplit(showAlert=false){
+    const alerts = $('#alerts');
+
+    // 1) Единый файл
+    for(const p of JSON_CANDIDATES){
+      const pkg = await fetchJSON(p);
+      if(pkg && (pkg.profile || pkg.user) && (pkg.repos || pkg.repositories)){
+        const profile = pkg.profile || pkg.user;
+        const repos   = pkg.repos || pkg.repositories;
+        const totals  = pkg.langTotals || pkg.languages || {};
+        const updated = pkg.updatedAt || pkg.generatedAt || pkg.updated || null;
+
+        state.profile = profile;
+        $('#avatar').src = profile.avatar_url;
+        $('#name').textContent = profile.name || profile.login;
+        $('#handle').textContent = '@'+profile.login;
+        $('#bio').textContent = profile.bio || '';
+        $('#profileLink').href = profile.html_url;
+        $('#repoCount').textContent = fmt(profile.public_repos);
+        $('#followers').textContent = fmt(profile.followers);
+        $('#following').textContent = fmt(profile.following);
+        $('#gists').textContent = fmt(profile.public_gists || 0);
+
+        state.repos = repos;
+        state.langTotals = totals;
+        state.langsByRepo = new Map(repos.map(r=>[r.full_name, r.languages||{}]));
+
+        renderAfterData();
+        setLastSync((updated ? new Date(updated) : new Date()).toISOString());
+        setSource('JSON (summary)');
+        if(showAlert) alerts.innerHTML = `<div class="notice">Загружено из ${p}.</div>`;
+        return true;
+      }
+    }
+
+    // 2) Три файла
+    const profile = await fetchJSON(`${JSON_BASE}/profile.json`);
+    const repos   = await fetchJSON(`${JSON_BASE}/repos.json`);
+    const totals  = await fetchJSON(`${JSON_BASE}/langTotals.json`);
+    if(profile && repos && totals){
+      state.profile = profile;
+      $('#avatar').src = profile.avatar_url;
+      $('#name').textContent = profile.name || profile.login;
+      $('#handle').textContent = '@'+profile.login;
+      $('#bio').textContent = profile.bio || '';
+      $('#profileLink').href = profile.html_url;
+      $('#repoCount').textContent = fmt(profile.public_repos);
+      $('#followers').textContent = fmt(profile.followers);
+      $('#following').textContent = fmt(profile.following);
+      $('#gists').textContent = fmt(profile.public_gists || 0);
+
+      state.repos = repos;
+      state.langTotals = totals;
+      state.langsByRepo = new Map(repos.map(r=>[r.full_name, r.languages||{}]));
+
+      renderAfterData();
+      setLastSync(new Date().toISOString());
+      setSource('JSON (split)');
+      if(showAlert) alerts.innerHTML = '<div class="notice">Данные обновлены из data/*.json.</div>';
+      return true;
+    } else {
+      if(showAlert) alerts.innerHTML = '<div class="notice error">Не удалось загрузить data/*.json. Использую прямые запросы к API.</div>';
+      return false;
+    }
+  }
+
+  async function loadProfile(){
+    const { data } = await ghFetch(`https://api.github.com/users/${USERNAME}`);
+    state.profile = data;
+    $('#avatar').src = data.avatar_url;
+    $('#name').textContent = data.name || data.login;
+    $('#handle').textContent = '@'+data.login;
+    $('#bio').textContent = data.bio || '';
+    $('#profileLink').href = data.html_url;
+    $('#repoCount').textContent = fmt(data.public_repos);
+    $('#followers').textContent = fmt(data.followers);
+    $('#following').textContent = fmt(data.following);
+    $('#gists').textContent = fmt(data.public_gists || 0);
+  }
+
+  async function loadAllRepos(){
+    const all = [];
+    let page = 1;
+    while(true){
+      const { data, headers } = await ghFetch(`https://api.github.com/users/${USERNAME}/repos?per_page=100&sort=updated&direction=desc&page=${page}`);
+      all.push(...data.filter(r=>!r.fork));
+      const link = headers.get('Link')||'';
+      if(!/rel="next"/.test(link)) break;
+      page++;
+    }
+    all.sort((a,b)=> b.stargazers_count - a.stargazers_count || new Date(b.updated_at)-new Date(a.updated_at));
+    state.repos = state.filtered = all;
+    $('#repoTotal').textContent = `Репозиториев: ${fmt(all.length)}`;
+    renderRepos(all);
+  }
+
+  // Ограничение параллелизма
+  async function mapLimit(items, limit, worker){
+    const ret = [];
+    let i = 0; let active = 0;
+    return new Promise((resolve, reject)=>{
+      const next = ()=>{
+        if(i===items.length && active===0) return resolve(ret);
+        while(active<limit && i<items.length){
+          const idx = i++; active++;
+          Promise.resolve(worker(items[idx], idx)).then(v=>{ret[idx]=v; active--; next();}).catch(err=>reject(err));
         }
-        
-        function createMatrixEffect() {
-            const canvas = document.createElement('canvas');
-            canvas.id = 'matrix-canvas';
-            document.getElementById('matrix-bg').appendChild(canvas);
-            
-            const ctx = canvas.getContext('2d');
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            
-            const katakana = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン';
-            const latin = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-            const nums = '0123456789';
-            const alphabet = katakana + latin + nums;
-            
-            const fontSize = 16;
-            const columns = canvas.width / fontSize;
-            const rainDrops = [];
-            
-            for (let x = 0; x < columns; x++) {
-                rainDrops[x] = 1;
-            }
-            
-            const draw = () => {
-                ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-                
-                ctx.fillStyle = '#39ff14';
-                ctx.font = fontSize + 'px monospace';
-                
-                for (let i = 0; i < rainDrops.length; i++) {
-                    const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
-                    ctx.fillText(text, i * fontSize, rainDrops[i] * fontSize);
-                    
-                    if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-                        rainDrops[i] = 0;
-                    }
-                    rainDrops[i]++;
-                }
-            };
-            
-            setInterval(draw, 30);
-            
-            window.addEventListener('resize', () => {
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
-            });
+      };
+      next();
+    });
+  }
+
+  async function loadLanguagesForRepos(){
+    const repos = state.repos;
+    const alerts = $('#alerts');
+    try{
+      await mapLimit(repos, 4, async (r)=>{
+        const { data } = await ghFetch(`https://api.github.com/repos/${r.full_name}/languages`);
+        state.langsByRepo.set(r.full_name, data);
+        for(const [lang, bytes] of Object.entries(data)){
+          state.langTotals[lang] = (state.langTotals[lang]||0) + bytes;
         }
-        
-        function createBinaryRain() {
-            const container = document.getElementById('binary-rain');
-            const characters = '01';
-            const fontSize = 16;
-            const columns = Math.floor(window.innerWidth / fontSize);
-            
-            for (let i = 0; i < columns; i++) {
-                const binaryChar = document.createElement('div');
-                binaryChar.className = 'animate-binary-fall';
-                binaryChar.style.left = `${i * fontSize}px`;
-                binaryChar.style.animationDuration = `${Math.random() * 3 + 2}s`;
-                binaryChar.style.animationDelay = `${Math.random() * 2}s`;
-                binaryChar.textContent = characters.charAt(Math.floor(Math.random() * characters.length));
-                container.appendChild(binaryChar);
-                
-                // Make it rain continuously
-                setInterval(() => {
-                    const newChar = document.createElement('div');
-                    newChar.className = 'animate-binary-fall';
-                    newChar.style.left = `${i * fontSize}px`;
-                    newChar.style.animationDuration = `${Math.random() * 3 + 2}s`;
-                    newChar.textContent = characters.charAt(Math.floor(Math.random() * characters.length));
-                    container.appendChild(newChar);
-                    
-                    // Remove after animation completes
-                    setTimeout(() => {
-                        newChar.remove();
-                    }, (parseFloat(newChar.style.animationDuration) * 1000));
-                }, Math.random() * 2000 + 1000);
-            }
-        }
-        
-        function createSnowEffect() {
-            const container = document.getElementById('snow-container');
-            const snowflakes = ['❄', '✻', '✺', '✵', '✸', '✹'];
-            
-            function createSnowflake() {
-                const snowflake = document.createElement('div');
-                snowflake.className = 'snowflake';
-                snowflake.textContent = snowflakes[Math.floor(Math.random() * snowflakes.length)];
-                snowflake.style.left = `${Math.random() * 100}%`;
-                snowflake.style.fontSize = `${Math.random() * 10 + 10}px`;
-                snowflake.style.opacity = Math.random() * 0.5 + 0.3;
-                snowflake.style.setProperty('--random-x', Math.random() * 2 - 1);
-                snowflake.style.animationDuration = `${Math.random() * 10 + 5}s`;
-                
-                container.appendChild(snowflake);
-                
-                // Remove after animation completes
-                setTimeout(() => {
-                    snowflake.remove();
-                }, (parseFloat(snowflake.style.animationDuration) * 1000));
-            }
-            
-            // Create initial snowflakes
-            for (let i = 0; i < 50; i++) {
-                setTimeout(createSnowflake, Math.random() * 5000);
-            }
-            
-            // Keep creating snowflakes
-            setInterval(createSnowflake, 300);
-        }
-        
-        function calculateLanguageStats(repos) {
-            const languageStats = {};
-            let totalBytes = 0;
-            
-            // Filter out repos without languages and count bytes
-            repos.forEach(repo => {
-                if (repo.language) {
-                    if (!languageStats[repo.language]) {
-                        languageStats[repo.language] = 0;
-                    }
-                    // Using size as a proxy for language usage since GitHub API doesn't provide bytes per language
-                    languageStats[repo.language] += repo.size || 0;
-                    totalBytes += repo.size || 0;
-                }
-            });
-            
-            // Convert to array and sort
-            const languages = Object.keys(languageStats).map(language => {
-                return {
-                    name: language,
-                    percent: Math.round((languageStats[language] / totalBytes) * 100),
-                    color: getLanguageColor(language)
-                };
-            }).sort((a, b) => b.percent - a.percent);
-            
-            // Display top 5 languages
-            const languageStatsContainer = document.getElementById('language-stats');
-            languageStatsContainer.innerHTML = '';
-            
-            if (languages.length === 0) {
-                languageStatsContainer.innerHTML = '<p class="text-gray-500">No language data available</p>';
-                return;
-            }
-            
-            const topLanguages = languages.slice(0, 5);
-            
-            // Create language items
-            topLanguages.forEach(lang => {
-                const langItem = document.createElement('div');
-                langItem.className = 'language-item mb-2';
-                
-                langItem.innerHTML = `
-                    <div class="flex justify-between items-center w-full">
-                        <div class="flex items-center">
-                            <div class="language-color" style="background-color: ${lang.color}"></div>
-                            <span class="text-sm">${lang.name}</span>
-                        </div>
-                        <span class="hacker-font text-xs">${lang.percent}%</span>
-                    </div>
-                    <div class="language-bar" style="width: ${lang.percent}%; background-color: ${lang.color}"></div>
-                `;
-                
-                languageStatsContainer.appendChild(langItem);
-            });
-            
-            // Add "Other" category if there are more languages
-            if (languages.length > 5) {
-                const otherPercent = languages.slice(5).reduce((acc, lang) => acc + lang.percent, 0);
-                
-                const otherItem = document.createElement('div');
-                otherItem.className = 'language-item mb-2';
-                
-                otherItem.innerHTML = `
-                    <div class="flex justify-between items-center w-full">
-                        <div class="flex items-center">
-                            <div class="language-color" style="background-color: #666"></div>
-                            <span class="text-sm">Other</span>
-                        </div>
-                        <span class="hacker-font text-xs">${otherPercent}%</span>
-                    </div>
-                    <div class="language-bar" style="width: ${otherPercent}%; background-color: #666"></div>
-                `;
-                
-                languageStatsContainer.appendChild(otherItem);
-            }
-        }
-        
-        function getLanguageColor(language) {
-            // GitHub language colors (approximate)
-            const colors = {
-                'JavaScript': '#f1e05a',
-                'TypeScript': '#3178c6',
-                'Python': '#3572A5',
-                'Java': '#b07219',
-                'C++': '#f34b7d',
-                'C#': '#178600',
-                'PHP': '#4F5D95',
-                'Ruby': '#701516',
-                'Go': '#00ADD8',
-                'Rust': '#dea584',
-                'Swift': '#ffac45',
-                'Kotlin': '#F18E33',
-                'HTML': '#e34c26',
-                'CSS': '#563d7c',
-                'Shell': '#89e051',
-                'Dart': '#00B4AB',
-                'R': '#198CE7',
-                'Scala': '#c22d40',
-                'Objective-C': '#438eff',
-                'Vue': '#2c3e50',
-                'React': '#61dafb',
-                'Angular': '#dd0031',
-                'Svelte': '#ff3e00'
-            };
-            
-            return colors[language] || '#39ff14';
-        }
-        
-        function simulateContributionData() {
-            // Simulate GitHub contribution graph
-            const activityGraph = document.getElementById('activity-graph');
-            
-            // Clear any existing cells
-            activityGraph.innerHTML = '';
-            
-            // Create cells for each week (52 weeks)
-            for (let i = 0; i < 52 * 7; i++) {
-                const cell = document.createElement('div');
-                cell.className = 'activity-cell';
-                
-                // Random activity level (0-4)
-                const activityLevel = Math.floor(Math.random() * 5);
-                
-                // Set color based on activity level
-                if (activityLevel > 0) {
-                    const intensity = activityLevel * 0.25;
-                    cell.style.backgroundColor = `rgba(57, 255, 20, ${intensity})`;
-                    cell.title = `${activityLevel} contribution${activityLevel !== 1 ? 's' : ''}`;
-                }
-                
-                activityGraph.appendChild(cell);
-            }
-            
-            // Simulate stats
-            animateCount('commits-year', Math.floor(Math.random() * 500) + 100);
-            animateCount('commits-month', Math.floor(Math.random() * 50) + 10);
-            animateCount('prs', Math.floor(Math.random() * 30) + 5);
-            animateCount('issues', Math.floor(Math.random() * 20) + 5);
-        }
-    </script>
+        updateRepoLangBar(r.full_name, data);
+      });
+      $('#chartNotice').style.display='none';
+      renderLangChart();
+    }catch(err){
+      alerts.innerHTML = `<div class="notice error">${escapeHtml(String(err.message||err))}</div>`;
+      $('#chartNotice').textContent = 'Не удалось построить диаграмму языков.';
+    }
+  }
+
+  function hookSearch(){
+    $('#search').addEventListener('input', (e)=>{
+      const q = e.target.value.toLowerCase().trim();
+      if(!q){ state.filtered = state.repos; renderRepos(state.filtered); return; }
+      state.filtered = state.repos.filter(r=>
+        (r.name && r.name.toLowerCase().includes(q)) ||
+        (r.description && r.description.toLowerCase().includes(q)) ||
+        (r.language && (r.language.toLowerCase().includes(q)))
+      );
+      renderRepos(state.filtered);
+      for(const r of state.filtered){
+        const langs = r.languages || state.langsByRepo.get(r.full_name);
+        if(langs) updateRepoLangBar(r.full_name, langs);
+      }
+    });
+  }
+
+  function hookCopy(){
+    $('#copyLink').addEventListener('click', async ()=>{
+      try{ await navigator.clipboard.writeText(location.href); $('#copyLink').textContent='Ссылка скопирована!'; setTimeout(()=>$('#copyLink').textContent='Скопировать ссылку', 1500);}catch{alert('Не удалось скопировать :(')}
+    });
+  }
+
+  // Окно для управления токеном
+  function hookToken(){
+    const btn = $('#tokenBtn');
+    const modal = $('#tokenModal');
+    const input = $('#tokenInput');
+    const save = $('#tokenSave');
+    const clearBtn = $('#tokenClear');
+    const close = $('#tokenClose');
+
+    if(!btn) return;
+
+    const open = () => { input.value = localStorage.getItem('gh_token') || ''; modal.classList.add('open'); setTimeout(()=>input.focus(), 0); };
+    const hide = () => modal.classList.remove('open');
+
+    btn.addEventListener('click', open);
+    close.addEventListener('click', hide);
+    modal.addEventListener('click', (e)=>{ if(e.target===modal) hide(); });
+
+    save.addEventListener('click', ()=>{
+      const v = input.value.trim();
+      if(!v){ alert('Вставьте токен вида ghp_... / github_pat_...'); return; }
+      localStorage.setItem('gh_token', v);
+      TOKEN = v;
+      hide();
+      location.reload();
+    });
+
+    clearBtn.addEventListener('click', ()=>{
+      localStorage.removeItem('gh_token');
+      TOKEN = null;
+      hide();
+      location.reload();
+    });
+  }
+
+  function hookRefresh(){
+    const btn = $('#refreshBtn');
+    if(!btn) return;
+    btn.addEventListener('click', ()=> loadFromJSONCombinedOrSplit(true));
+  }
+
+  async function init(){
+    try{
+      const ok = USE_JSON_FIRST ? await loadFromJSONCombinedOrSplit(false) : false;
+      hookSearch();
+      hookCopy();
+      hookToken();
+      hookRefresh();
+
+      if(!ok){
+        await loadProfile();
+        await loadAllRepos();
+        loadLanguagesForRepos();
+        setSource('API');
+      } else {
+        setInterval(()=> loadFromJSONCombinedOrSplit(true), REFRESH_MS);
+      }
+    }catch(err){
+      $('#alerts').innerHTML = `<div class="notice error">${escapeHtml(String(err.message||err))}</div>`;
+    }
+  }
+
+  init();
+  </script>
 </body>
 </html>
