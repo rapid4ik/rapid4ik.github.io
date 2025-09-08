@@ -1,9 +1,9 @@
 // scripts/build-data.mjs
 import fs from "fs";
-import path from "path";
 
 const USERNAME = process.env.GH_USERNAME || "rapid4ik";
-const TOKEN = process.env.GH_PAT || process.env.GH_TOKEN || process.env.GITHUB_TOKEN || "";
+// Приоритет: пользовательский секрет GH_TOKEN, потом GH_PAT, потом встроенный GITHUB_TOKEN
+const TOKEN = process.env.GH_TOKEN || process.env.GH_PAT || process.env.GITHUB_TOKEN || "";
 
 const headers = {
   "User-Agent": "rapid4ik-data-bot",
@@ -27,9 +27,24 @@ async function fetchAllRepos(username) {
     all.push(...pageItems.filter(r => !r.fork));
     if (pageItems.length < 100) break;
   }
-  // сортировка: по звёздам, потом по обновлению
   all.sort((a,b) => b.stargazers_count - a.stargazers_count || new Date(b.updated_at) - new Date(a.updated_at));
   return all;
+}
+
+// Ограничение параллелизма
+async function mapLimit(items, limit, worker){
+  const ret = [];
+  let i = 0; let active = 0;
+  return new Promise((resolve, reject)=>{
+    const next = ()=>{
+      if(i===items.length && active===0) return resolve(ret);
+      while(active<limit && i<items.length){
+        const idx = i++; active++;
+        Promise.resolve(worker(items[idx], idx)).then(v=>{ret[idx]=v; active--; next();}).catch(err=>reject(err));
+      }
+    };
+    next();
+  });
 }
 
 async function main() {
@@ -38,13 +53,13 @@ async function main() {
 
   // Языки по каждому репо + суммарно
   const langTotals = {};
-  for (const r of repos) {
+  await mapLimit(repos, 6, async (r)=>{
     const langs = await gh(`https://api.github.com/repos/${r.full_name}/languages`);
-    r._languages = langs; // положим внутрь репо (удобно для сайта)
+    r._languages = langs;
     for (const [lang, bytes] of Object.entries(langs)) {
       langTotals[lang] = (langTotals[lang] || 0) + bytes;
     }
-  }
+  });
 
   // Ужимаем репо до нужных полей
   const slimRepos = repos.map(r => ({
@@ -61,11 +76,22 @@ async function main() {
   }));
 
   fs.mkdirSync("data", { recursive: true });
+
+  // Раздельные файлы
   fs.writeFileSync("data/profile.json", JSON.stringify(profile, null, 2));
   fs.writeFileSync("data/repos.json", JSON.stringify(slimRepos, null, 2));
   fs.writeFileSync("data/langTotals.json", JSON.stringify(langTotals, null, 2));
 
-  console.log(`✔ profile.json, repos.json, langTotals.json обновлены.
+  // Сводный файл
+  const summary = {
+    updatedAt: new Date().toISOString(),
+    profile,
+    repos: slimRepos,
+    langTotals
+  };
+  fs.writeFileSync("data/data.json", JSON.stringify(summary, null, 2));
+
+  console.log(`✔ Сгенерированы data/profile.json, data/repos.json, data/langTotals.json и data/data.json
 Профиль: ${profile.login}, репозиториев: ${slimRepos.length}, языков: ${Object.keys(langTotals).length}`);
 }
 
