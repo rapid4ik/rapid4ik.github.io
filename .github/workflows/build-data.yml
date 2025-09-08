@@ -25,9 +25,10 @@ jobs:
       - name: Build JSON files
         env:
           GH_USERNAME: rapid4ik
-          GH_PAT: ${{ secrets.GH_PAT }}         # твой PAT из Secrets
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}    # твой секрет
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          node -v
           node scripts/build-data.mjs
 
       - name: Commit & push if changed
