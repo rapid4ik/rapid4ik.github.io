@@ -24,7 +24,7 @@ async function fetchAllRepos(username) {
   const all = [];
   for (let page = 1; ; page++) {
     const pageItems = await gh(`https://api.github.com/users/${username}/repos?per_page=100&page=${page}&type=owner&sort=updated&direction=desc`);
-    all.push(...pageItems.filter(r => !r.fork));
+    all.push(...pageItems);
     if (pageItems.length < 100) break;
   }
   all.sort((a,b) => b.stargazers_count - a.stargazers_count || new Date(b.updated_at) - new Date(a.updated_at));
