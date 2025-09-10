@@ -1,9 +1,10 @@
+<!DOCTYPE html>
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>rapid4ik — GitHub Portfolio (JSON only)</title>
-  <meta name="description" content="Неоновый портфолио-сайт. Источник данных — только /data/*.json, обновляемые GitHub Actions." />
+  <title>rapid4ik — GitHub Portfolio</title>
+  <meta name="description" content="Неоновый портфолио-сайт." />
   <meta name="theme-color" content="#05060a" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -38,63 +39,29 @@
       overflow-x: hidden;
     }
     .container{max-width:1200px;margin:0 auto;padding:32px 20px 80px}
-
-    header{
-      display:grid;grid-template-columns:120px 1fr;gap:24px;align-items:center;
-      background: linear-gradient(180deg, rgba(0,240,255,.08), rgba(155,92,255,.06));
-      border: 1px solid rgba(255,255,255,.08);
-      border-radius: var(--card-radius);
-      padding: 20px; backdrop-filter: blur(10px);
-      box-shadow: var(--shadow-neon);
-    }
-    .avatar{
-      width:110px;height:110px;border-radius:50%;object-fit:cover;border:2px solid rgba(0,240,255,.45);box-shadow:0 0 0 4px rgba(155,92,255,.15), 0 8px 30px rgba(0,0,0,.35)
-    }
-    .title{
-      font-family: Orbitron, Inter, sans-serif;letter-spacing:.5px;
-      font-size: clamp(24px, 3.4vw, 46px);
-      font-weight: 800;
-      margin: 0 0 4px;
-      text-shadow: 0 0 8px rgba(0,240,255,.6), 0 0 18px rgba(255,43,214,.4);
-    }
+    header{display:grid;grid-template-columns:120px 1fr;gap:24px;align-items:center;background: linear-gradient(180deg, rgba(0,240,255,.08), rgba(155,92,255,.06));border: 1px solid rgba(255,255,255,.08);border-radius: var(--card-radius);padding: 20px; backdrop-filter: blur(10px);box-shadow: var(--shadow-neon)}
+    .avatar{width:110px;height:110px;border-radius:50%;object-fit:cover;border:2px solid rgba(0,240,255,.45);box-shadow:0 0 0 4px rgba(155,92,255,.15), 0 8px 30px rgba(0,0,0,.35)}
+    .title{font-family: Orbitron, Inter, sans-serif;letter-spacing:.5px;font-size: clamp(24px, 3.4vw, 46px);font-weight: 800;margin: 0 0 4px;text-shadow: 0 0 8px rgba(0,240,255,.6), 0 0 18px rgba(255,43,214,.4)}
     .handle{color:var(--neon-cyan);font-family:Orbitron,Inter,sans-serif;font-weight:600}
     .bio{color:var(--muted);margin-top:6px}
-
     .cta-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px}
-    .btn{
-      appearance:none;border:none;cursor:pointer;position:relative;
-      padding:10px 14px;border-radius:12px;font-weight:700;
-      background: linear-gradient(90deg, rgba(0,240,255,.2), rgba(155,92,255,.2));
-      color:var(--text);
-      box-shadow: var(--shadow-neon);
-      outline: none;
-      transition: transform .15s ease, box-shadow .15s ease, filter .15s ease;
-    }
+    .btn{appearance:none;border:none;cursor:pointer;position:relative;padding:10px 14px;border-radius:12px;font-weight:700;background: linear-gradient(90deg, rgba(0,240,255,.2), rgba(155,92,255,.2));color:var(--text);box-shadow: var(--shadow-neon);outline: none;transition: transform .15s ease, box-shadow .15s ease, filter .15s ease}
     .btn:hover{transform: translateY(-1px);filter: brightness(1.08)}
     .btn:active{transform: translateY(0)}
-
     .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:14px}
-    .stat{
-      border-radius:14px;background:var(--panel);backdrop-filter:blur(10px);
-      border:1px solid rgba(255,255,255,.06);padding:12px 14px;text-align:center
-    }
+    .stat{border-radius:14px;background:var(--panel);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.06);padding:12px 14px;text-align:center}
     .stat .num{font-family:Orbitron,Inter,sans-serif;font-size:22px;font-weight:800}
     .stat .label{font-size:12px;color:var(--muted)}
-
     .section-title{margin:36px 0 12px;font-family:Orbitron,Inter,sans-serif;font-weight:800;letter-spacing:.4px}
-
     .panel{background:var(--glass);border:1px solid rgba(255,255,255,.06);border-radius:var(--card-radius);padding:18px;backdrop-filter:blur(8px);box-shadow: var(--shadow-neon)}
-
     #chartWrap{display:grid;grid-template-columns:1fr;gap:16px}
     #legend{display:flex;flex-wrap:wrap;gap:10px}
     .legend-item{display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06)}
     .legend-dot{width:10px;height:10px;border-radius:50%}
-
     .toolbar{display:flex;gap:12px;align-items:center;justify-content:space-between;margin:8px 0 14px;flex-wrap:wrap}
     .search{flex:1;position:relative;min-width:240px}
     .search input{width:100%;padding:12px 14px 12px 40px;border-radius:12px;border:1px solid rgba(255,255,255,.08);background:rgba(0,0,0,.25);color:var(--text);outline:none;box-shadow: var(--ring)}
     .search svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);opacity:.6}
-
     .repo-grid{display:grid;grid-template-columns:repeat( auto-fit, minmax(260px, 1fr) );gap:14px}
     .repo{position:relative;border-radius:16px;padding:16px;background:linear-gradient(180deg, rgba(0,240,255,.06), rgba(155,92,255,.06));border:1px solid rgba(255,255,255,.06);backdrop-filter:blur(8px);cursor:pointer;transition: transform .15s ease, box-shadow .2s ease}
     .repo:hover{transform:translateY(-2px);box-shadow: var(--shadow-neon)}
@@ -105,36 +72,14 @@
     .langbar{margin-top:12px;height:8px;border-radius:999px;overflow:hidden;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08)}
     .langseg{height:100%}
     .repo-footer{display:flex;justify-content:space-between;align-items:center;margin-top:12px;font-size:12px;color:var(--muted)}
-
     .notice{padding:12px;border-radius:12px;background:rgba(255,255,255,.05);border:1px dashed rgba(255,255,255,.12);color:var(--muted)}
     .error{border-color: rgba(255, 71, 87, .5); color:#ff9fa8}
-
     footer{margin-top:40px;text-align:center;color:var(--muted);font-size:12px}
-
-    /* ===== Адаптив ===== */
-    @media (max-width: 420px){
-      .container{padding:24px 14px 64px}
-      header{grid-template-columns:68px 1fr;padding:14px}
-      .avatar{width:64px;height:64px}
-      .title{font-size:clamp(22px,6vw,34px)}
-      .btn{padding:9px 12px}
-      .repo{padding:14px}
-      .stats{grid-template-columns:1fr 1fr;gap:8px}
-    }
-    @media (min-width: 1024px){
-      .repo-grid{grid-template-columns:repeat(auto-fit, minmax(280px, 1fr))}
-    }
-    @media (min-width: 1400px){
-      .container{max-width:1320px}
-      .repo-grid{grid-template-columns:repeat(auto-fit, minmax(300px, 1fr))}
-    }
-    @media (hover: none){
-      .btn:hover, .repo:hover{transform:none}
-    }
-    @media (prefers-reduced-motion: reduce){
-      *{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
-      header,.panel,.repo{box-shadow:none}
-    }
+    @media (max-width: 420px){.container{padding:24px 14px 64px}header{grid-template-columns:68px 1fr;padding:14px}.avatar{width:64px;height:64px}.title{font-size:clamp(22px,6vw,34px)}.btn{padding:9px 12px}.repo{padding:14px}.stats{grid-template-columns:1fr 1fr;gap:8px}}
+    @media (min-width: 1024px){.repo-grid{grid-template-columns:repeat(auto-fit, minmax(280px, 1fr))}}
+    @media (min-width: 1400px){.container{max-width:1320px}.repo-grid{grid-template-columns:repeat(auto-fit, minmax(300px, 1fr))}}
+    @media (hover: none){.btn:hover, .repo:hover{transform:none}}
+    @media (prefers-reduced-motion: reduce){*{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}header,.panel,.repo{box-shadow:none}}
   </style>
 </head>
 <body>
@@ -143,7 +88,7 @@
       <img id="avatar" class="avatar" alt="avatar" src="" loading="lazy" />
       <div>
         <h1 class="title"><span id="name">…</span> <span class="handle" id="handle"></span></h1>
-        <p class="bio" id="bio"></></p>
+        <p class="bio" id="bio"></p>
         <div class="cta-row">
           <a id="profileLink" class="btn" href="#" target="_blank" rel="noopener">Открыть GitHub</a>
           <button id="copyLink" class="btn" title="Скопировать ссылку на сайт">Скопировать ссылку</button>
@@ -187,14 +132,8 @@
   <script>
   // ====== JSON-only режим: ТОЛЬКО из /data, БЕЗ запросов в API ======
 
-  // Определяем базовый путь (работает и для user-pages, и для project-pages)
-  const ROOT = (()=>{
-    let p = location.pathname;
-    if (p.endsWith('/index.html')) p = p.slice(0, -'/index.html'.length);
-    if (p.endsWith('/')) p = p.slice(0, -1);
-    return p;
-  })();
-  const JSON_BASE = (ROOT || '') + '/data';
+  // Жёстко указываем абсолютный путь для user-pages:
+  const JSON_BASE = location.origin + '/data';
   const JSON_CANDIDATES = [
     `${JSON_BASE}/summary.json`,
     `${JSON_BASE}/data.json`,
@@ -206,14 +145,7 @@
   const $ = (sel, root=document) => root.querySelector(sel);
   const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
 
-  const state = {
-    profile: null,
-    repos: [],
-    filtered: [],
-    langsByRepo: new Map(),
-    langTotals: {},
-    chart: null,
-  };
+  const state = { profile:null, repos:[], filtered:[], langsByRepo:new Map(), langTotals:{}, chart:null };
 
   function fmt(n){ return new Intl.NumberFormat('ru-RU').format(n); }
   function timeAgo(isoStr){
@@ -223,19 +155,20 @@
     for(const [name,sec] of units){ if(diff>=sec) return Math.floor(diff/sec) + ' ' + name + ' назад'; }
     return 'только что';
   }
-
   async function fetchJSON(path){
     try{
       const r = await fetch(path + (path.includes('?')?'&':'?') + 't=' + Date.now(), { cache: 'no-store' });
-      if(!r.ok) return null;
+      if(!r.ok) throw new Error(`${r.status} ${r.statusText}`);
       return await r.json();
-    }catch{ return null; }
+    }catch(e){
+      const alerts = $('#alerts');
+      alerts.innerHTML = `<div class="notice error">Ошибка загрузки ${path}: ${String(e.message||e)}</div>`;
+      return null;
+    }
   }
-
   function escapeHtml(s){
     return (s||'').replace(/[&<>\"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;','\\'':'&#39;'}[c]));
   }
-
   function updateRepoLangBar(fullName, langs){
     const card = document.querySelector(\`.repo[data-full-name="\${CSS.escape(fullName)}"]\`);
     if(!card) return;
@@ -244,15 +177,15 @@
     bar.innerHTML = '';
     if(total===0) return;
     const entries = Object.entries(langs).sort((a,b)=>b[1]-a[1]).slice(0,6);
+    const colors = ['#00f0ff','#ff2bd6','#9b5cff','#28f7a6','#ff9f1a','#2ee6de'];
     entries.forEach(([lang, bytes], i)=>{
       const seg = document.createElement('div');
       seg.className = 'langseg';
       seg.style.width = (bytes*100/total).toFixed(2)+'%';
-      seg.style.background = ['#00f0ff','#ff2bd6','#9b5cff','#28f7a6','#ff9f1a','#2ee6de'][i % 6];
+      seg.style.background = colors[i % colors.length];
       bar.appendChild(seg);
     });
   }
-
   function renderRepos(repos){
     const grid = $('#repoGrid');
     grid.innerHTML = '';
@@ -286,7 +219,6 @@
     }
     grid.appendChild(frag);
   }
-
   function renderLangChart(){
     const totals = state.langTotals || {};
     const entries = Object.entries(totals).sort((a,b)=>b[1]-a[1]);
@@ -296,20 +228,11 @@
     const labels = top.map(([k])=>k);
     const data = top.map(([,v])=>v);
     if(other>0){ labels.push('Other'); data.push(other); }
-
-    const ctx = $('#langChart').getContext('2d');
+    const ctx = document.getElementById('langChart').getContext('2d');
+    if(!window.Chart){ return; } // safety
     if(state.chart){ state.chart.destroy(); }
-    state.chart = new Chart(ctx, {
-      type:'doughnut',
-      data:{ labels, datasets:[{ data, borderWidth: 0 }] },
-      options:{
-        responsive:true,
-        plugins:{ legend:{ display:false }, tooltip:{ callbacks:{ label:(ctx)=> `${ctx.label}: ${fmt(ctx.parsed)} байт` } } },
-        cutout:'60%'
-      }
-    });
-
-    const legend = $('#legend');
+    state.chart = new Chart(ctx, { type:'doughnut', data:{ labels, datasets:[{ data, borderWidth: 0 }] }, options:{ responsive:true, plugins:{ legend:{ display:false }, tooltip:{ callbacks:{ label:(ctx)=> `${ctx.label}: ${fmt(ctx.parsed)} байт` } } }, cutout:'60%' } });
+    const legend = document.getElementById('legend');
     legend.innerHTML = '';
     labels.forEach((label)=>{
       const el = document.createElement('div');
@@ -318,21 +241,18 @@
       legend.appendChild(el);
     });
   }
-
   function renderAfterData(){
-    $('#repoTotal').textContent = `Репозиториев: ${fmt(state.repos.length)}`;
+    document.getElementById('repoTotal').textContent = `Репозиториев: ${fmt(state.repos.length)}`;
     renderRepos(state.filtered = state.repos);
     for(const r of state.repos){
       const langs = r.languages || state.langsByRepo.get(r.full_name);
       if(langs) updateRepoLangBar(r.full_name, langs);
     }
-    $('#chartNotice').style.display='none';
+    document.getElementById('chartNotice').style.display='none';
     renderLangChart();
   }
-
   async function loadFromJSON(showAlert=false){
-    const alerts = $('#alerts');
-
+    const alerts = document.getElementById('alerts');
     // 1) Единый файл
     for(const p of JSON_CANDIDATES){
       const pkg = await fetchJSON(p);
@@ -341,55 +261,47 @@
         const repos   = pkg.repos || pkg.repositories;
         const totals  = pkg.langTotals || pkg.languages || {};
         const updated = pkg.updatedAt || pkg.generatedAt || pkg.updated || null;
-
-        // профиль
         state.profile = profile;
-        $('#avatar').src = profile.avatar_url;
-        $('#name').textContent = profile.name || profile.login;
-        $('#handle').textContent = '@'+profile.login;
-        $('#bio').textContent = profile.bio || '';
-        $('#profileLink').href = profile.html_url;
-        $('#repoCount').textContent = fmt(profile.public_repos);
-        $('#followers').textContent = fmt(profile.followers);
-        $('#following').textContent = fmt(profile.following);
-        $('#gists').textContent = fmt(profile.public_gists || 0);
-
-        // данные
+        document.getElementById('avatar').src = profile.avatar_url;
+        document.getElementById('name').textContent = profile.name || profile.login;
+        document.getElementById('handle').textContent = '@'+profile.login;
+        document.getElementById('bio').textContent = profile.bio || '';
+        document.getElementById('profileLink').href = profile.html_url;
+        document.getElementById('repoCount').textContent = fmt(profile.public_repos);
+        document.getElementById('followers').textContent = fmt(profile.followers);
+        document.getElementById('following').textContent = fmt(profile.following);
+        document.getElementById('gists').textContent = fmt(profile.public_gists || 0);
         state.repos = repos;
         state.langTotals = totals;
         state.langsByRepo = new Map(repos.map(r=>[r.full_name, r.languages||{}]));
-
         renderAfterData();
         const iso = (updated ? new Date(updated) : new Date()).toISOString();
-        $('#lastSync').textContent = 'Обновлено: ' + (iso ? timeAgo(iso) : '—');
+        document.getElementById('lastSync').textContent = 'Обновлено: ' + (iso ? timeAgo(iso) : '—');
         if(showAlert) alerts.innerHTML = `<div class="notice">Загружено из ${p}.</div>`;
         return true;
       }
     }
-
     // 2) Три файла
     const profile = await fetchJSON(`${JSON_BASE}/profile.json`);
     const repos   = await fetchJSON(`${JSON_BASE}/repos.json`);
     const totals  = await fetchJSON(`${JSON_BASE}/langTotals.json`);
     if(profile && repos && totals){
       state.profile = profile;
-      $('#avatar').src = profile.avatar_url;
-      $('#name').textContent = profile.name || profile.login;
-      $('#handle').textContent = '@'+profile.login;
-      $('#bio').textContent = profile.bio || '';
-      $('#profileLink').href = profile.html_url;
-      $('#repoCount').textContent = fmt(profile.public_repos);
-      $('#followers').textContent = fmt(profile.followers);
-      $('#following').textContent = fmt(profile.following);
-      $('#gists').textContent = fmt(profile.public_gists || 0);
-
+      document.getElementById('avatar').src = profile.avatar_url;
+      document.getElementById('name').textContent = profile.name || profile.login;
+      document.getElementById('handle').textContent = '@'+profile.login;
+      document.getElementById('bio').textContent = profile.bio || '';
+      document.getElementById('profileLink').href = profile.html_url;
+      document.getElementById('repoCount').textContent = fmt(profile.public_repos);
+      document.getElementById('followers').textContent = fmt(profile.followers);
+      document.getElementById('following').textContent = fmt(profile.following);
+      document.getElementById('gists').textContent = fmt(profile.public_gists || 0);
       state.repos = repos;
       state.langTotals = totals;
       state.langsByRepo = new Map(repos.map(r=>[r.full_name, r.languages||{}]));
-
       renderAfterData();
       const iso = new Date().toISOString();
-      $('#lastSync').textContent = 'Обновлено: ' + (iso ? timeAgo(iso) : '—');
+      document.getElementById('lastSync').textContent = 'Обновлено: ' + (iso ? timeAgo(iso) : '—');
       if(showAlert) alerts.innerHTML = '<div class="notice">Данные обновлены из data/*.json.</div>';
       return true;
     } else {
@@ -397,9 +309,8 @@
       return false;
     }
   }
-
   function hookSearch(){
-    $('#search').addEventListener('input', (e)=>{
+    document.getElementById('search').addEventListener('input', (e)=>{
       const q = e.target.value.toLowerCase().trim();
       if(!q){ state.filtered = state.repos; renderRepos(state.filtered); return; }
       state.filtered = state.repos.filter(r=>
@@ -414,33 +325,27 @@
       }
     });
   }
-
   function hookCopy(){
-    $('#copyLink').addEventListener('click', async ()=>{
-      try{ await navigator.clipboard.writeText(location.href); $('#copyLink').textContent='Ссылка скопирована!'; setTimeout(()=>$('#copyLink').textContent='Скопировать ссылку', 1500);}catch{alert('Не удалось скопировать :(')}
+    document.getElementById('copyLink').addEventListener('click', async ()=>{
+      try{ await navigator.clipboard.writeText(location.href); const b=document.getElementById('copyLink'); b.textContent='Ссылка скопирована!'; setTimeout(()=>b.textContent='Скопировать ссылку', 1500);}catch{alert('Не удалось скопировать :(')}
     });
   }
-
   function hookRefresh(){
-    const btn = $('#refreshBtn');
+    const btn = document.getElementById('refreshBtn');
     if(!btn) return;
     btn.addEventListener('click', ()=> loadFromJSON(true));
   }
 
-  async function init(){
-    hookSearch();
-    hookCopy();
-    hookRefresh();
-
-    const ok = await loadFromJSON(false);
-    if(!ok){
-      $('#alerts').innerHTML = '<div class="notice error">Не удалось загрузить JSON. Убедись, что GitHub Actions создал файлы в /data и они лежат в той же ветке, откуда отдаются Pages.</div>';
-    } else {
-      setInterval(()=> loadFromJSON(true), REFRESH_MS);
-    }
+  // Ждём, пока загрузится Chart.js, чтобы не словить ReferenceError
+  function startWhenReady(){
+    const ready = !!window.Chart;
+    if(!ready){ return setTimeout(startWhenReady, 60); }
+    hookSearch(); hookCopy(); hookRefresh();
+    loadFromJSON(false).then(ok=>{
+      if(ok) setInterval(()=> loadFromJSON(true), REFRESH_MS);
+    });
   }
-
-  init();
+  document.addEventListener('DOMContentLoaded', startWhenReady);
   </script>
 </body>
 </html>
