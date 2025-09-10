@@ -309,10 +309,10 @@
     const labels = top.map(([k])=>k);
     const data = top.map(([,v])=>v);
     if(other>0){ labels.push('Other'); data.push(other); }
-    const ctx = document.getElementById('langChart').getContext('2d');
+    const ctx = $('langChart').getContext('2d');
     if(state.chart){ state.chart.destroy(); }
     state.chart = new Chart(ctx, { type:'doughnut', data:{ labels, datasets:[{ data, borderWidth: 0 }] }, options:{ responsive:true, plugins:{ legend:{ display:false }, tooltip:{ callbacks:{ label:(ctx)=> `${ctx.label}: ${fmt(ctx.parsed)} байт` } } }, cutout:'60%' } });
-    const legend = document.getElementById('legend');
+    const legend = $('legend');
     legend.innerHTML = '';
     labels.forEach((label)=>{
       const el = document.createElement('div');
@@ -329,16 +329,16 @@
     const updated = pkg.updatedAt || pkg.generatedAt || pkg.updated || null;
 
     // профиль
-    document.getElementById('avatar').src = profile.avatar_url || '';
-    document.getElementById('name').textContent = profile.name || profile.login || '—';
-    document.getElementById('handle').textContent = profile.login ? '@'+profile.login : '';
-    document.getElementById('bio').textContent = profile.bio || '';
-    document.getElementById('profileLink').href = profile.html_url || '#';
-    document.getElementById('repoCount').textContent = fmt(profile.public_repos || 0);
-    document.getElementById('followers').textContent = fmt(profile.followers || 0);
-    document.getElementById('following').textContent = fmt(profile.following || 0);
-    document.getElementById('gists').textContent = fmt(profile.public_gists || 0);
-    document.getElementById('lastSync').textContent = 'Обновлено: ' + (updated ? timeAgo(updated) : '—');
+    $('avatar').src = profile.avatar_url || '';
+    $('name').textContent = profile.name || profile.login || '—';
+    $('handle').textContent = profile.login ? '@'+profile.login : '';
+    $('bio').textContent = profile.bio || '';
+    $('profileLink').href = profile.html_url || '#';
+    $('repoCount').textContent = fmt(profile.public_repos || 0);
+    $('followers').textContent = fmt(profile.followers || 0);
+    $('following').textContent = fmt(profile.following || 0);
+    $('gists').textContent = fmt(profile.public_gists || 0);
+    $('lastSync').textContent = 'Обновлено: ' + (updated ? timeAgo(updated) : '—');
 
     // данные
     state.repos = repos;
@@ -346,26 +346,26 @@
     state.langTotals = totals;
     state.langsByRepo = new Map(repos.map(r=>[r.full_name, r.languages||{}]));
 
-    document.getElementById('repoTotal').textContent = `Репозиториев: ${fmt(repos.length)}`;
+    $('repoTotal').textContent = `Репозиториев: ${fmt(repos.length)}`;
     renderRepos(repos);
-    document.getElementById('chartNotice').style.display='none';
+    $('chartNotice').style.display='none';
     renderLangChart();
   }
-
-  async function reload(showAlert=false){
-    try{
-      const pkg = await fetchJSON(JSON_URL);
-      renderAll(pkg);
-      if(showAlert){
-        document.getElementById('alerts').innerHTML = '<div class="notice">Данные обновлены из /data/data.json.</div>';
-      }
-    }catch(err){
-      document.getElementById('alerts').innerHTML = '<div class="notice error">Ошибка чтения /data/data.json: '+ String(err.message||err) +'</div>';
+    
+async function reload(showAlert = false) {
+  try {
+    const pkg = await fetchJSON(JSON_URL);
+    renderAll(pkg); // твоя функция, которая всё рисует
+    if (showAlert) {
+      $('#alerts').innerHTML = '<div class="notice">Данные обновлены из /data/data.json.</div>';
     }
+  } catch (err) {
+    $('#alerts').innerHTML = '<div class="notice error">Ошибка чтения /data/data.json: ' + String(err.message || err) + '</div>';
   }
+}
 
   function hookSearch(){
-    document.getElementById('search').addEventListener('input', (e)=>{
+    $('search').addEventListener('input', (e)=>{
       const q = e.target.value.toLowerCase().trim();
       if(!q){ state.filtered = state.repos; renderRepos(state.filtered); return; }
       state.filtered = state.repos.filter(r=>
@@ -382,10 +382,10 @@
   }
 
   function hookCopy(){
-    document.getElementById('copyLink').addEventListener('click', async ()=>{
+    $('copyLink').addEventListener('click', async ()=>{
       try{
         await navigator.clipboard.writeText(location.href);
-        const b=document.getElementById('copyLink');
+        const b=$('copyLink');
         b.textContent='Ссылка скопирована!';
         setTimeout(()=>b.textContent='Скопировать ссылку', 1500);
       }catch{ alert('Не удалось скопировать :('); }
@@ -393,7 +393,7 @@
   }
 
   function hookRefresh(){
-    document.getElementById('refreshBtn').addEventListener('click', ()=> reload(true));
+    $('refreshBtn').addEventListener('click', ()=> reload(true));
   }
 
   function startWhenReady(){
