@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2025-09-10T04:00:36.450Z",
+  "updatedAt": "2025-09-10T04:28:28.515Z",
   "profile": {
     "login": "rapid4ik",
     "id": 118283118,
@@ -28,7 +28,7 @@
     "hireable": null,
     "bio": null,
     "twitter_username": null,
-    "public_repos": 14,
+    "public_repos": 13,
     "public_gists": 0,
     "followers": 0,
     "following": 3,
@@ -37,20 +37,6 @@
   },
   "repos": [
     {
-      "name": "SlRenderBase",
-      "full_name": "rapid4ik/SlRenderBase",
-      "html_url": "https://github.com/rapid4ik/SlRenderBase",
-      "description": "Лёгкий «иммедиейт-рендер» фреймворк для WPF с экранной системой в духе Minecraft Fabric",
-      "language": "C#",
-      "stargazers_count": 1,
-      "forks_count": 0,
-      "updated_at": "2025-09-10T03:59:02Z",
-      "pushed_at": "2025-09-10T03:57:20Z",
-      "languages": {
-        "C#": 46029
-      }
-    },
-    {
       "name": "rapid4ik.github.io",
       "full_name": "rapid4ik/rapid4ik.github.io",
       "html_url": "https://github.com/rapid4ik/rapid4ik.github.io",
@@ -58,10 +44,10 @@
       "language": "HTML",
       "stargazers_count": 1,
       "forks_count": 0,
-      "updated_at": "2025-09-10T03:57:37Z",
-      "pushed_at": "2025-09-10T03:57:34Z",
+      "updated_at": "2025-09-10T04:01:04Z",
+      "pushed_at": "2025-09-10T04:01:01Z",
       "languages": {
-        "HTML": 34665,
+        "HTML": 22707,
         "JavaScript": 3086
       }
     },
@@ -185,10 +171,9 @@
     }
   ],
   "langTotals": {
-    "C#": 46029,
-    "Kotlin": 10245,
-    "HTML": 34665,
+    "HTML": 22707,
     "JavaScript": 9817,
+    "Kotlin": 10245,
     "Java": 177857
   }
 }
