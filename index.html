@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>rapid4ik — GitHub Portfolio (JSON URL only)</title>
-  <meta name="description" content="Неоновый портфолио-сайт. Источник данных — только https://rapid4ik.github.io/data/data.json" />
+  <title>rapid4ik — GitHub Portfolio</title>
+  <meta name="description" content="Неоновый портфолио-сайт." />
   <meta name="theme-color" content="#05060a" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -172,6 +172,7 @@
       </div>
       <div class="pill" id="repoTotal">Репозиториев: —</div>
       <div class="pill" id="lastSync">Обновлено: —</div>
+      <div class="pill" id="sourcePill">Источник: data.json</div>
       <button class="btn" id="refreshBtn" title="Принудительно перечитать JSON">Обновить</button>
     </div>
 
@@ -271,8 +272,6 @@
       const card = document.createElement('article');
       card.className = 'repo';
       card.dataset.fullName = r.full_name;
-      
-      // Исправленный шаблон строки - убраны лишние обратные слеши
       card.innerHTML = `
         <h3>${escapeHtml(r.name)}</h3>
         <p class="desc">${r.description ? escapeHtml(r.description) : 'Без описания'}</p>
@@ -287,7 +286,6 @@
           <span>▶︎</span>
         </div>
       `;
-      
       card.addEventListener('click', ()=>window.open(r.html_url,'_blank','noopener'));
       frag.appendChild(card);
       const langs = r.languages || state.langsByRepo.get(r.full_name);
@@ -360,6 +358,7 @@
     $('#following').textContent = fmt(profile.following || 0);
     $('#gists').textContent = fmt(profile.public_gists || 0);
     $('#lastSync').textContent = 'Обновлено: ' + (updated ? timeAgo(updated) : '—');
+    $('#sourcePill').textContent = 'Источник: data.json';
 
     // данные
     state.repos = repos;
@@ -377,9 +376,6 @@
     try {
       const pkg = await fetchJSON(JSON_URL);
       renderAll(pkg);
-      if (showAlert) {
-        $('#alerts').innerHTML = '<div class="notice">Данные обновлены из /data/data.json.</div>';
-      }
     } catch (err) {
       $('#alerts').innerHTML = '<div class="notice error">Ошибка чтения /data/data.json: ' + String(err.message || err) + '</div>';
     }
