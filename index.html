@@ -216,19 +216,16 @@
         credentials: 'omit',
         redirect: 'follow',
         referrerPolicy: 'no-referrer',
-        headers: {
-          'Accept': 'application/json'
-          // НЕЛЬЗЯ: 'User-Agent'
-        },
+        headers: { 'Accept': 'application/json' },
         signal: controller.signal
       });
       clearTimeout(timer);
       if (!r.ok) throw new Error(`${r.status} ${r.statusText}`);
 
-      // Парсим из текста на случай неправильного Content-Type
       const text = await r.text();
       try {
-        Console.Log(JSON.parse(text));
+        // Убрана опечатка Console.Log -> console.log
+        console.log(JSON.parse(text));
         return JSON.parse(text);
       } catch {
         throw new Error('Invalid JSON body');
@@ -236,7 +233,6 @@
     } catch (e) {
       clearTimeout(timer);
       lastErr = e;
-      // небольшой backoff перед повтором
       await new Promise(res => setTimeout(res, 300 * (i + 1)));
     }
   }
