@@ -228,6 +228,7 @@
       // Парсим из текста на случай неправильного Content-Type
       const text = await r.text();
       try {
+        Console.Log(JSON.parse(text));
         return JSON.parse(text);
       } catch {
         throw new Error('Invalid JSON body');
