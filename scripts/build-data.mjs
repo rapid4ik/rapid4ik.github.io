@@ -1,8 +1,6 @@
-// scripts/build-data.mjs
 import fs from "fs";
 
 const USERNAME = process.env.GH_USERNAME || "rapid4ik";
-// Приоритет: пользовательский секрет GH_TOKEN, потом GH_PAT, потом встроенный GITHUB_TOKEN
 const TOKEN = process.env.GH_TOKEN || process.env.GH_PAT || process.env.GITHUB_TOKEN || "";
 
 const headers = {
@@ -24,14 +22,13 @@ async function fetchAllRepos(username) {
   const all = [];
   for (let page = 1; ; page++) {
     const pageItems = await gh(`https://api.github.com/users/${username}/repos?per_page=100&page=${page}&type=owner&sort=updated&direction=desc`);
-    all.push(...pageItems);
+    all.push(...pageItems.filter(r => !r.fork));
     if (pageItems.length < 100) break;
   }
   all.sort((a,b) => b.stargazers_count - a.stargazers_count || new Date(b.updated_at) - new Date(a.updated_at));
   return all;
 }
 
-// Ограничение параллелизма
 async function mapLimit(items, limit, worker){
   const ret = [];
   let i = 0; let active = 0;
@@ -51,7 +48,6 @@ async function main() {
   const profile = await gh(`https://api.github.com/users/${USERNAME}`);
   const repos = await fetchAllRepos(USERNAME);
 
-  // Языки по каждому репо + суммарно
   const langTotals = {};
   await mapLimit(repos, 6, async (r)=>{
     const langs = await gh(`https://api.github.com/repos/${r.full_name}/languages`);
@@ -61,7 +57,6 @@ async function main() {
     }
   });
 
-  // Ужимаем репо до нужных полей
   const slimRepos = repos.map(r => ({
     name: r.name,
     full_name: r.full_name,
