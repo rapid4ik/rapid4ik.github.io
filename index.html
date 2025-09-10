@@ -1,425 +1,838 @@
 <!DOCTYPE html>
 <html lang="ru">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>rapid4ik — GitHub Portfolio</title>
-  <meta name="description" content="Неоновый портфолио-сайт." />
-  <meta name="theme-color" content="#05060a" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js" defer></script>
-  <style>
-    :root{
-      --bg: #05060a;
-      --panel: rgba(15,18,32,0.55);
-      --glass: rgba(20,25,45,0.55);
-      --text: #e6f1ff;
-      --muted: #9fb3c8;
-      --neon-pink: #ff2bd6;
-      --neon-cyan: #00f0ff;
-      --neon-purple:#9b5cff;
-      --neon-green:#28f7a6;
-      --card-radius: 18px;
-      --shadow-neon: 0 0 12px rgba(0,240,255,.55), 0 0 24px rgba(155,92,255,.35);
-      --ring: 0 0 0 2px rgba(0,240,255,.35), 0 0 24px rgba(155,92,255,.25);
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      background: radial-gradient(1200px 800px at 20% 10%, rgba(255,43,214,.12), transparent 60%),
-                  radial-gradient(1200px 800px at 80% 20%, rgba(0,240,255,.10), transparent 60%),
-                  radial-gradient(1000px 700px at 50% 90%, rgba(155,92,255,.10), transparent 60%),
-                  var(--bg);
-      color: var(--text);
-      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, "Helvetica Neue", Arial, "Apple Color Emoji","Segoe UI Emoji";
-      line-height: 1.5;
-      overflow-x: hidden;
-    }
-    .container{max-width:1200px;margin:0 auto;padding:32px 20px 80px}
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>rapid4ik — GitHub Portfolio</title>
+        <meta name="description" content="Неоновый портфолио-сайт." />
+        <meta name="theme-color" content="#05060a" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js" defer></script>
+        <style>
+            :root {
+                --bg: #05060a;
+                --panel: rgba(15, 18, 32, 0.55);
+                --glass: rgba(20, 25, 45, 0.55);
+                --text: #e6f1ff;
+                --muted: #9fb3c8;
+                --neon-pink: #ff2bd6;
+                --neon-cyan: #00f0ff;
+                --neon-purple: #9b5cff;
+                --neon-green: #28f7a6;
+                --card-radius: 18px;
+                --shadow-neon: 0 0 12px rgba(0, 240, 255, 0.55), 0 0 24px rgba(155, 92, 255, 0.35);
+                --ring: 0 0 0 2px rgba(0, 240, 255, 0.35), 0 0 24px rgba(155, 92, 255, 0.25);
+            }
+            * {
+                box-sizing: border-box;
+            }
+            html,
+            body {
+                height: 100%;
+            }
+            body {
+                margin: 0;
+                background: radial-gradient(1200px 800px at 20% 10%, rgba(255, 43, 214, 0.12), transparent 60%), radial-gradient(1200px 800px at 80% 20%, rgba(0, 240, 255, 0.1), transparent 60%),
+                    radial-gradient(1000px 700px at 50% 90%, rgba(155, 92, 255, 0.1), transparent 60%), var(--bg);
+                color: var(--text);
+                font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
+                line-height: 1.5;
+                overflow-x: hidden;
+            }
+            .container {
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 32px 20px 80px;
+            }
 
-    header{
-      display:grid;grid-template-columns:120px 1fr;gap:24px;align-items:center;
-      background: linear-gradient(180deg, rgba(0,240,255,.08), rgba(155,92,255,.06));
-      border: 1px solid rgba(255,255,255,.08);
-      border-radius: var(--card-radius);
-      padding: 20px; backdrop-filter: blur(10px);
-      box-shadow: var(--shadow-neon);
-    }
-    .avatar{
-      width:110px;height:110px;border-radius:50%;object-fit:cover;border:2px solid rgba(0,240,255,.45);box-shadow:0 0 0 4px rgba(155,92,255,.15), 0 8px 30px rgba(0,0,0,.35)
-    }
-    .title{
-      font-family: Orbitron, Inter, sans-serif;letter-spacing:.5px;
-      font-size: clamp(24px, 3.4vw, 46px);
-      font-weight: 800;
-      margin: 0 0 4px;
-      text-shadow: 0 0 8px rgba(0,240,255,.6), 0 0 18px rgba(255,43,214,.4);
-    }
-    .handle{color:var(--neon-cyan);font-family:Orbitron,Inter,sans-serif;font-weight:600}
-    .bio{color:var(--muted);margin-top:6px}
+            header {
+                display: grid;
+                grid-template-columns: 120px 1fr;
+                gap: 24px;
+                align-items: center;
+                background: linear-gradient(180deg, rgba(0, 240, 255, 0.08), rgba(155, 92, 255, 0.06));
+                border: 1px solid rgba(255, 255, 255, 0.08);
+                border-radius: var(--card-radius);
+                padding: 20px;
+                backdrop-filter: blur(10px);
+                box-shadow: var(--shadow-neon);
+            }
+            .avatar {
+                width: 110px;
+                height: 110px;
+                border-radius: 50%;
+                object-fit: cover;
+                border: 2px solid rgba(0, 240, 255, 0.45);
+                box-shadow: 0 0 0 4px rgba(155, 92, 255, 0.15), 0 8px 30px rgba(0, 0, 0, 0.35);
+            }
+            .title {
+                font-family: Orbitron, Inter, sans-serif;
+                letter-spacing: 0.5px;
+                font-size: clamp(24px, 3.4vw, 46px);
+                font-weight: 800;
+                margin: 0 0 4px;
+                text-shadow: 0 0 8px rgba(0, 240, 255, 0.6), 0 0 18px rgba(255, 43, 214, 0.4);
+            }
+            .handle {
+                color: var(--neon-cyan);
+                font-family: Orbitron, Inter, sans-serif;
+                font-weight: 600;
+            }
+            .bio {
+                color: var(--muted);
+                margin-top: 6px;
+            }
 
-    .cta-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px}
-    .btn{
-      appearance:none;border:none;cursor:pointer;position:relative;
-      padding:10px 14px;border-radius:12px;font-weight:700;
-      background: linear-gradient(90deg, rgba(0,240,255,.2), rgba(155,92,255,.2));
-      color:var(--text);
-      box-shadow: var(--shadow-neon);
-      outline: none;
-      transition: transform .15s ease, box-shadow .15s ease, filter .15s ease;
-    }
-    .btn:hover{transform: translateY(-1px);filter: brightness(1.08)}
-    .btn:active{transform: translateY(0)}
+            .cta-row {
+                display: flex;
+                gap: 12px;
+                flex-wrap: wrap;
+                margin-top: 12px;
+            }
+            .btn {
+                appearance: none;
+                border: none;
+                cursor: pointer;
+                position: relative;
+                padding: 10px 14px;
+                border-radius: 12px;
+                font-weight: 700;
+                background: linear-gradient(90deg, rgba(0, 240, 255, 0.2), rgba(155, 92, 255, 0.2));
+                color: var(--text);
+                box-shadow: var(--shadow-neon);
+                outline: none;
+                transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+            }
+            .btn:hover {
+                transform: translateY(-1px);
+                filter: brightness(1.08);
+            }
+            .btn:active {
+                transform: translateY(0);
+            }
 
-    .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:14px}
-    .stat{
-      border-radius:14px;background:var(--panel);backdrop-filter:blur(10px);
-      border:1px solid rgba(255,255,255,.06);padding:12px 14px;text-align:center
-    }
-    .stat .num{font-family:Orbitron,Inter,sans-serif;font-size:22px;font-weight:800}
-    .stat .label{font-size:12px;color:var(--muted)}
+            .stats {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 12px;
+                margin-top: 14px;
+            }
+            .stat {
+                border-radius: 14px;
+                background: var(--panel);
+                backdrop-filter: blur(10px);
+                border: 1px solid rgba(255, 255, 255, 0.06);
+                padding: 12px 14px;
+                text-align: center;
+            }
+            .stat .num {
+                font-family: Orbitron, Inter, sans-serif;
+                font-size: 22px;
+                font-weight: 800;
+            }
+            .stat .label {
+                font-size: 12px;
+                color: var(--muted);
+            }
 
-    .section-title{margin:36px 0 12px;font-family:Orbitron,Inter,sans-serif;font-weight:800;letter-spacing:.4px}
+            .section-title {
+                margin: 36px 0 12px;
+                font-family: Orbitron, Inter, sans-serif;
+                font-weight: 800;
+                letter-spacing: 0.4px;
+            }
 
-    .panel{background:var(--glass);border:1px solid rgba(255,255,255,.06);border-radius:var(--card-radius);padding:18px;backdrop-filter:blur(8px);box-shadow: var(--shadow-neon)}
+            .panel {
+                background: var(--glass);
+                border: 1px solid rgba(255, 255, 255, 0.06);
+                border-radius: var(--card-radius);
+                padding: 18px;
+                backdrop-filter: blur(8px);
+                box-shadow: var(--shadow-neon);
+            }
 
-    #chartWrap{display:grid;grid-template-columns:1fr;gap:16px}
-    #legend{display:flex;flex-wrap:wrap;gap:10px}
-    .legend-item{display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06)}
-    .legend-dot{width:10px;height:10px;border-radius:50%}
+            #chartWrap {
+                display: grid;
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+            .chart-box {
+                max-width: 560px;
+                height: 240px;
+                margin: 0 auto;
+            }
+            #legend {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+                justify-content: center;
+            }
+            .legend-item {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                padding: 6px 10px;
+                border-radius: 999px;
+                background: rgba(255, 255, 255, 0.04);
+                border: 1px solid rgba(255, 255, 255, 0.06);
+            }
+            .legend-dot {
+                width: 10px;
+                height: 10px;
+                border-radius: 50%;
+            }
 
-    .toolbar{display:flex;gap:12px;align-items:center;justify-content:space-between;margin:8px 0 14px;flex-wrap:wrap}
-    .search{flex:1;position:relative;min-width:240px}
-    .search input{width:100%;padding:12px 14px 12px 40px;border-radius:12px;border:1px solid rgba(255,255,255,.08);background:rgba(0,0,0,.25);color:var(--text);outline:none;box-shadow: var(--ring)}
-    .search svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);opacity:.6}
+            .langbar {
+                position: relative;
+            }
+            .langbar:empty {
+                display: none;
+            }
+            .langseg {
+                position: relative;
+                height: 100%;
+                min-width: 2px;
+            }
+            .langseg + .langseg {
+                box-shadow: inset 1px 0 0 rgba(0, 0, 0, 0.25);
+            } /* тонкий разделитель между сегментами */
+            .langseg::after {
+                content: attr(data-tip);
+                position: absolute;
+                inset: auto auto 110% 0;
+                transform: translateX(-50%);
+                white-space: nowrap;
+                font-size: 12px;
+                padding: 4px 6px;
+                border-radius: 6px;
+                background: rgba(0, 0, 0, 0.75);
+                color: #fff;
+                opacity: 0;
+                pointer-events: none;
+                transition: opacity 0.12s ease;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+            }
+            .langseg:hover::after {
+                opacity: 1;
+            }
+            .langbar {
+                display: flex;
+                align-items: stretch;
+            }
+            .langseg {
+                flex: 0 0 auto;
+            }
 
-    .repo-grid{display:grid;grid-template-columns:repeat( auto-fit, minmax(260px, 1fr) );gap:14px}
-    .repo{position:relative;border-radius:16px;padding:16px;background:linear-gradient(180deg, rgba(0,240,255,.06), rgba(155,92,255,.06));border:1px solid rgba(255,255,255,.06);backdrop-filter:blur(8px);cursor:pointer;transition: transform .15s ease, box-shadow .2s ease}
-    .repo:hover{transform:translateY(-2px);box-shadow: var(--shadow-neon)}
-    .repo h3{margin:0 0 6px;font-size:16px}
-    .repo .desc{color:var(--muted);font-size:13px;min-height:38px}
-    .repo .meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;font-size:12px;color:var(--muted)}
-    .pill{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08)}
-    .langbar{margin-top:12px;height:8px;border-radius:999px;overflow:hidden;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08)}
-    .langseg{height:100%}
-    .repo-footer{display:flex;justify-content:space-between;align-items:center;margin-top:12px;font-size:12px;color:var(--muted)}
+            .toolbar {
+                display: flex;
+                gap: 12px;
+                align-items: center;
+                justify-content: space-between;
+                margin: 8px 0 14px;
+                flex-wrap: wrap;
+            }
+            .search {
+                flex: 1;
+                position: relative;
+                min-width: 240px;
+            }
+            .search input {
+                width: 100%;
+                padding: 12px 14px 12px 40px;
+                border-radius: 12px;
+                border: 1px solid rgba(255, 255, 255, 0.08);
+                background: rgba(0, 0, 0, 0.25);
+                color: var(--text);
+                outline: none;
+                box-shadow: var(--ring);
+            }
+            .search svg {
+                position: absolute;
+                left: 12px;
+                top: 50%;
+                transform: translateY(-50%);
+                opacity: 0.6;
+            }
 
-    .notice{padding:12px;border-radius:12px;background:rgba(255,255,255,.05);border:1px dashed rgba(255,255,255,.12);color:var(--muted)}
-    .error{border-color: rgba(255, 71, 87, .5); color:#ff9fa8}
+            .repo-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+                gap: 14px;
+            }
+            .repo {
+                position: relative;
+                border-radius: 16px;
+                padding: 16px;
+                background: linear-gradient(180deg, rgba(0, 240, 255, 0.06), rgba(155, 92, 255, 0.06));
+                border: 1px solid rgba(255, 255, 255, 0.06);
+                backdrop-filter: blur(8px);
+                cursor: pointer;
+                transition: transform 0.15s ease, box-shadow 0.2s ease;
+            }
+            .repo:hover {
+                transform: translateY(-2px);
+                box-shadow: var(--shadow-neon);
+            }
+            .repo h3 {
+                margin: 0 0 6px;
+                font-size: 16px;
+            }
+            .repo .desc {
+                color: var(--muted);
+                font-size: 13px;
+                min-height: 38px;
+            }
+            .repo .meta {
+                display: flex;
+                gap: 10px;
+                flex-wrap: wrap;
+                margin-top: 10px;
+                font-size: 12px;
+                color: var(--muted);
+            }
+            .pill {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                padding: 6px 10px;
+                border-radius: 999px;
+                background: rgba(255, 255, 255, 0.04);
+                border: 1px solid rgba(255, 255, 255, 0.08);
+            }
+            .langbar {
+                margin-top: 12px;
+                height: 8px;
+                border-radius: 999px;
+                overflow: hidden;
+                background: rgba(255, 255, 255, 0.06);
+                border: 1px solid rgba(255, 255, 255, 0.08);
+            }
+            .langseg {
+                height: 100%;
+            }
+            .repo-footer {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-top: 12px;
+                font-size: 12px;
+                color: var(--muted);
+            }
 
-    footer{margin-top:40px;text-align:center;color:var(--muted);font-size:12px}
+            .notice {
+                padding: 12px;
+                border-radius: 12px;
+                background: rgba(255, 255, 255, 0.05);
+                border: 1px dashed rgba(255, 255, 255, 0.12);
+                color: var(--muted);
+            }
+            .error {
+                border-color: rgba(255, 71, 87, 0.5);
+                color: #ff9fa8;
+            }
 
-    /* ===== Адаптив ===== */
-    @media (max-width: 420px){
-      .container{padding:24px 14px 64px}
-      header{grid-template-columns:68px 1fr;padding:14px}
-      .avatar{width:64px;height:64px}
-      .title{font-size:clamp(22px,6vw,34px)}
-      .btn{padding:9px 12px}
-      .repo{padding:14px}
-      .stats{grid-template-columns:1fr 1fr;gap:8px}
-    }
-    @media (min-width: 1024px){
-      .repo-grid{grid-template-columns:repeat(auto-fit, minmax(280px, 1fr))}
-    }
-    @media (min-width: 1400px){
-      .container{max-width:1320px}
-      .repo-grid{grid-template-columns:repeat(auto-fit, minmax(300px, 1fr))}
-    }
-    @media (hover: none){
-      .btn:hover, .repo:hover{transform:none}
-    }
-    @media (prefers-reduced-motion: reduce){
-      *{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
-      header,.panel,.repo{box-shadow:none}
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <header>
-      <img id="avatar" class="avatar" alt="avatar" src="" loading="lazy" />
-      <div>
-        <h1 class="title"><span id="name">…</span> <span class="handle" id="handle"></span></h1>
-        <p class="bio" id="bio"></p>
-        <div class="cta-row">
-          <a id="profileLink" class="btn" href="#" target="_blank" rel="noopener">Открыть GitHub</a>
-          <button id="copyLink" class="btn" title="Скопировать ссылку на сайт">Скопировать ссылку</button>
+            footer {
+                margin-top: 40px;
+                text-align: center;
+                color: var(--muted);
+                font-size: 12px;
+            }
+
+            /* ===== Адаптив ===== */
+            @media (max-width: 420px) {
+                .container {
+                    padding: 24px 14px 64px;
+                }
+                header {
+                    grid-template-columns: 68px 1fr;
+                    padding: 14px;
+                }
+                .avatar {
+                    width: 64px;
+                    height: 64px;
+                }
+                .title {
+                    font-size: clamp(22px, 6vw, 34px);
+                }
+                .btn {
+                    padding: 9px 12px;
+                }
+                .repo {
+                    padding: 14px;
+                }
+                .stats {
+                    grid-template-columns: 1fr 1fr;
+                    gap: 8px;
+                }
+                .chart-box {
+                    max-width: 100%;
+                    height: 200px;
+                }
+            }
+            @media (min-width: 1024px) {
+                .repo-grid {
+                    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                }
+            }
+            @media (min-width: 1400px) {
+                .container {
+                    max-width: 1320px;
+                }
+                .repo-grid {
+                    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                }
+            }
+            @media (hover: none) {
+                .btn:hover,
+                .repo:hover {
+                    transform: none;
+                }
+            }
+            @media (prefers-reduced-motion: reduce) {
+                * {
+                    animation-duration: 0.01ms !important;
+                    animation-iteration-count: 1 !important;
+                    transition-duration: 0.01ms !important;
+                    scroll-behavior: auto !important;
+                }
+                header,
+                .panel,
+                .repo {
+                    box-shadow: none;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <header>
+                <img id="avatar" class="avatar" alt="avatar" src="" loading="lazy" />
+                <div>
+                    <h1 class="title"><span id="name">…</span> <span class="handle" id="handle"></span></h1>
+                    <p class="bio" id="bio"></p>
+                    <div class="cta-row">
+                        <a id="profileLink" class="btn" href="#" target="_blank" rel="noopener">Открыть GitHub</a>
+                        <button id="copyLink" class="btn" title="Скопировать ссылку на сайт">Скопировать ссылку</button>
+                    </div>
+                    <div class="stats" id="stats">
+                        <div class="stat">
+                            <div class="num" id="repoCount">—</div>
+                            <div class="label">Публичные репозитории</div>
+                        </div>
+                        <div class="stat">
+                            <div class="num" id="followers">—</div>
+                            <div class="label">Подписчики</div>
+                        </div>
+                        <div class="stat">
+                            <div class="num" id="following">—</div>
+                            <div class="label">Подписки</div>
+                        </div>
+                        <div class="stat">
+                            <div class="num" id="gists">—</div>
+                            <div class="label">Gists</div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <h2 class="section-title">Языки в проектах</h2>
+            <div class="panel" id="chartWrap">
+                <div class="notice" id="chartNotice">Читаю <code>https://rapid4ik.github.io/data/data.json</code>…</div>
+                <div class="chart-box"><canvas id="langChart" aria-label="Диаграмма распределения языков" role="img"></canvas></div>
+                <div id="legend"></div>
+            </div>
+
+            <div class="toolbar">
+                <div class="search">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M21 21l-4.3-4.3M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                    </svg>
+                    <input id="search" placeholder="Поиск по репозиториям… (имя, описание, язык)" />
+                </div>
+                <div class="pill" id="repoTotal">Репозиториев: —</div>
+                <div class="pill" id="lastSync">Обновлено: —</div>
+                <button class="btn" id="refreshBtn" title="Принудительно перечитать JSON">Обновить</button>
+            </div>
+
+            <section class="repo-grid" id="repoGrid" aria-live="polite"></section>
+
+            <div id="alerts" style="margin-top: 16px;"></div>
+
+            <footer>Источник данных: <code>https://rapid4ik.github.io/data/data.json</code> · Автообновление каждые 5 минут</footer>
         </div>
-        <div class="stats" id="stats">
-          <div class="stat"><div class="num" id="repoCount">—</div><div class="label">Публичные репозитории</div></div>
-          <div class="stat"><div class="num" id="followers">—</div><div class="label">Подписчики</div></div>
-          <div class="stat"><div class="num" id="following">—</div><div class="label">Подписки</div></div>
-          <div class="stat"><div class="num" id="gists">—</div><div class="label">Gists</div></div>
-        </div>
+
+        <script>
+            /***** 1) Add this mapping & helper near the top of your <script> *****/
+            const LANG_COLORS = {
+                HTML: "#e34c26",
+                JavaScript: "#f1e05a",
+                TypeScript: "#3178c6",
+                CSS: "#563d7c",
+                SCSS: "#c6538c",
+                Sass: "#a53b70",
+                Less: "#1d365d",
+                Java: "#b07219",
+                Kotlin: "#A97BFF",
+                Python: "#3572A5",
+                C: "#555555",
+                "C++": "#f34b7d",
+                "C#": "#178600",
+                Go: "#00ADD8",
+                Rust: "#dea584",
+                Ruby: "#701516",
+                PHP: "#4F5D95",
+                Swift: "#ffac45",
+                "Objective-C": "#438eff",
+                Shell: "#89e051",
+                PowerShell: "#012456",
+                Lua: "#000080",
+                Scala: "#c22d40",
+                Haskell: "#5e5086",
+                Dart: "#00B4AB",
+                Elixir: "#6e4a7e",
+                "Vim Script": "#199f4b",
+                Makefile: "#427819",
+                Nix: "#7e7eff",
+                Perl: "#0298c3",
+                R: "#198CE7",
+                TeX: "#3D6117",
+                Julia: "#a270ba",
+                MATLAB: "#e16737",
+                Groovy: "#4298b8",
+                "Objective-C++": "#6866fb",
+                CoffeeScript: "#244776",
+                YAML: "#cb171e",
+                JSON: "#292929",
+                Markdown: "#083fa1",
+            };
+            function getLangColor(lang) {
+                if (LANG_COLORS[lang]) return LANG_COLORS[lang];
+                // fallback: stable color from name hash
+                let h = 0;
+                for (let i = 0; i < lang.length; i++) {
+                    h = (h * 31 + lang.charCodeAt(i)) | 0;
+                }
+                const hue = Math.abs(h) % 360;
+                const sat = 70;
+                const light = 50;
+                return `hsl(${hue} ${sat}% ${light}%)`;
+            }
+        </script>
+
+        <script>
+            // ===== Настройки =====
+            const JSON_URL = "https://rapid4ik.github.io/data/data.json";
+            const REFRESH_MS = 5 * 60 * 1000;
+
+            const $ = (sel, root = document) => root.querySelector(sel);
+            const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+
+            const state = { profile: null, repos: [], filtered: [], langsByRepo: new Map(), langTotals: {}, chart: null };
+
+            function fmt(n) {
+                return new Intl.NumberFormat("ru-RU").format(n);
+            }
+            function timeAgo(isoStr) {
+                const d = new Date(isoStr);
+                const diff = (Date.now() - d) / 1000;
+                const units = [
+                    ["г.", 365 * 24 * 3600],
+                    ["мес.", 30 * 24 * 3600],
+                    ["д.", 24 * 3600],
+                    ["ч.", 3600],
+                    ["мин.", 60],
+                ];
+                for (const [name, sec] of units) {
+                    if (diff >= sec) return Math.floor(diff / sec) + " " + name + " назад";
+                }
+                return "только что";
+            }
+
+            async function fetchJSON(url, { tries = 3, timeout = 8000 } = {}) {
+                let lastErr;
+                for (let i = 0; i < tries; i++) {
+                    const controller = new AbortController();
+                    const timer = setTimeout(() => controller.abort(new DOMException("Timeout", "AbortError")), timeout);
+                    try {
+                        const u = url + (url.includes("?") ? "&" : "?") + "t=" + Date.now();
+                        const r = await fetch(u, {
+                            cache: "no-store",
+                            mode: "cors",
+                            credentials: "omit",
+                            redirect: "follow",
+                            referrerPolicy: "no-referrer",
+                            headers: { Accept: "application/json" },
+                            signal: controller.signal,
+                        });
+                        clearTimeout(timer);
+                        if (!r.ok) throw new Error(`${r.status} ${r.statusText}`);
+
+                        const text = await r.text();
+                        try {
+                            return JSON.parse(text);
+                        } catch {
+                            throw new Error("Invalid JSON body");
+                        }
+                    } catch (e) {
+                        clearTimeout(timer);
+                        lastErr = e;
+                        await new Promise((res) => setTimeout(res, 300 * (i + 1)));
+                    }
+                }
+                throw lastErr;
+            }
+
+            function escapeHtml(s) {
+                return (s || "").replace(/[&<>\"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+            }
+
+            function updateRepoLangBar(fullName, langs) {
+                const card = document.querySelector(`.repo[data-full-name="${CSS.escape(fullName)}"]`);
+                if (!card) return;
+                const bar = card.querySelector(".langbar");
+                bar.innerHTML = "";
+
+                const entriesRaw = Object.entries(langs || {}).filter(([, v]) => v > 0);
+                if (entriesRaw.length === 0) return; // hidden by :empty
+
+                const repo = state.repos.find((r) => r.full_name === fullName);
+                const primary = repo && repo.language ? repo.language : null;
+
+                // Primary language first, then by bytes desc
+                const entries = entriesRaw.sort((a, b) => {
+                    if (a[0] === primary && b[0] !== primary) return -1;
+                    if (b[0] === primary && a[0] !== primary) return 1;
+                    return b[1] - a[1];
+                });
+
+                const totalBytes = entries.reduce((s, [, v]) => s + v, 0);
+                const rawPct = entries.map(([, v]) => (v / totalBytes) * 100);
+
+                // Make sure the bar is visually 100% wide (with a tiny min width per segment)
+                const MIN = 0.8; // percent
+                let widths = rawPct.map((p) => (p > 0 ? Math.max(p, MIN) : 0));
+                let sum = widths.reduce((a, b) => a + b, 0);
+
+                if (sum > 100) {
+                    // Reduce the largest segments until we hit exactly 100
+                    let diff = sum - 100;
+                    while (diff > 0.001) {
+                        let idx = widths.indexOf(Math.max(...widths));
+                        const canReduce = widths[idx] - MIN;
+                        const delta = Math.min(canReduce, diff);
+                        if (delta <= 0) break;
+                        widths[idx] -= delta;
+                        diff -= delta;
+                    }
+                } else if (sum < 100) {
+                    // Add the shortfall to the largest segment
+                    const idx = widths.indexOf(Math.max(...widths));
+                    widths[idx] += 100 - sum;
+                }
+
+                // Render segments
+                entries.forEach(([lang, bytes], i) => {
+                    const seg = document.createElement("div");
+                    seg.className = "langseg";
+                    seg.style.width = widths[i].toFixed(2) + "%";
+                    seg.style.background = getLangColor(lang);
+
+                    const pct = (bytes / totalBytes) * 100;
+                    const tip = `${lang}: ${pct.toFixed(2)}% (${fmt(bytes)} байт)`;
+                    seg.setAttribute("data-tip", tip);
+                    seg.title = tip;
+
+                    bar.appendChild(seg);
+                });
+            }
+
+            function renderRepos(repos) {
+                const grid = document.querySelector("#repoGrid");
+                grid.innerHTML = "";
+                if (repos.length === 0) {
+                    grid.innerHTML = '<div class="notice">Ничего не найдено по текущему фильтру.</div>';
+                    return;
+                }
+
+                const frag = document.createDocumentFragment();
+                for (const r of repos) {
+                    const card = document.createElement("article");
+                    card.className = "repo";
+                    card.dataset.fullName = r.full_name;
+                    card.innerHTML = `
+      <h3>${escapeHtml(r.name)}</h3>
+      <p class="desc">${r.description ? escapeHtml(r.description) : "Без описания"}</p>
+      <div class="meta">
+        <span class="pill" title="Основной язык">🧠 ${r.language || "—"}</span>
+        <span class="pill" title="⭐ Stars">⭐ ${fmt(r.stargazers_count || 0)}</span>
+        <span class="pill" title="🍴 Forks">🍴 ${fmt(r.forks_count || 0)}</span>
       </div>
-    </header>
-
-    <h2 class="section-title">Языки в проектах</h2>
-    <div class="panel" id="chartWrap">
-      <div class="notice" id="chartNotice">Читаю <code>https://rapid4ik.github.io/data/data.json</code>…</div>
-      <canvas id="langChart" height="180" aria-label="Диаграмма распределения языков" role="img"></canvas>
-      <div id="legend"></div>
-    </div>
-
-    <div class="toolbar">
-      <div class="search">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 21l-4.3-4.3M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-        <input id="search" placeholder="Поиск по репозиториям… (имя, описание, язык)" />
+      <div class="langbar" aria-label="Доли языков в репозитории" role="img"></div>
+      <div class="repo-footer">
+        <span>Обновлён: ${timeAgo(r.pushed_at || r.updated_at)}</span>
+        <span>▶︎</span>
       </div>
-      <div class="pill" id="repoTotal">Репозиториев: —</div>
-      <div class="pill" id="lastSync">Обновлено: —</div>
-      <div class="pill" id="sourcePill">Источник: data.json</div>
-      <button class="btn" id="refreshBtn" title="Принудительно перечитать JSON">Обновить</button>
-    </div>
+    `;
+                    card.addEventListener("click", () => window.open(r.html_url, "_blank", "noopener"));
+                    frag.appendChild(card);
+                }
 
-    <section class="repo-grid" id="repoGrid" aria-live="polite"></section>
+                // Вставляем карточки в DOM
+                grid.appendChild(frag);
 
-    <div id="alerts" style="margin-top:16px"></div>
+                // Теперь можно дорисовать языковые полоски
+                for (const r of repos) {
+                    const langs = r.languages || state.langsByRepo.get(r.full_name);
+                    if (langs) updateRepoLangBar(r.full_name, langs);
+                }
+            }
 
-    <footer>
-      Источник данных: <code>https://rapid4ik.github.io/data/data.json</code> · Автообновление каждые 5 минут
-    </footer>
-  </div>
+            function renderLangChart() {
+                const totals = state.langTotals || {};
+                const entries = Object.entries(totals).sort((a, b) => b[1] - a[1]);
+                if (entries.length === 0) return;
+                const top = entries.slice(0, 12);
+                const other = entries.slice(12).reduce((acc, [, v]) => acc + v, 0);
+                const labels = top.map(([k]) => k);
+                const data = top.map(([, v]) => v);
+                if (other > 0) {
+                    labels.push("Other");
+                    data.push(other);
+                }
 
-  <script>
-  // ===== Настройки =====
-  const JSON_URL = "https://rapid4ik.github.io/data/data.json";
-  const REFRESH_MS = 5 * 60 * 1000;
+                // Tooltip у курсора
+                if (window.Chart && Chart.Tooltip && Chart.Tooltip.positioners) {
+                    Chart.Tooltip.positioners.cursor = function (items, evtPos) {
+                        return evtPos;
+                    };
+                }
 
-  const $ = (sel, root=document) => root.querySelector(sel);
-  const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
+                // Цвета сегментов соответствуют языкам
+                const bgColors = labels.map((l) => (l === "Other" ? "#3b3f55" : getLangColor(l)));
 
-  const state = { profile:null, repos:[], filtered:[], langsByRepo:new Map(), langTotals:{}, chart:null };
+                const ctx = document.getElementById("langChart").getContext("2d");
+                if (state.chart) {
+                    state.chart.destroy();
+                }
+                state.chart = new Chart(ctx, {
+                    type: "doughnut",
+                    data: { labels, datasets: [{ data, backgroundColor: bgColors, borderWidth: 0, hoverOffset: 6 }] },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        // Важно: выбираем только тот сектор, который реально под курсором
+                        interaction: { mode: "nearest", intersect: true },
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                position: "cursor",
+                                intersect: true,
+                                callbacks: {
+                                    label: (ctx) => `${ctx.label}: ${fmt(ctx.parsed)} байт`,
+                                    labelColor: (ctx) => ({ borderColor: bgColors[ctx.dataIndex], backgroundColor: bgColors[ctx.dataIndex] }),
+                                },
+                            },
+                        },
+                        cutout: "60%",
+                    },
+                });
 
-  function fmt(n){ return new Intl.NumberFormat('ru-RU').format(n); }
-  function timeAgo(isoStr){
-    const d = new Date(isoStr);
-    const diff = (Date.now()-d)/1000;
-    const units = [ ['г.',365*24*3600], ['мес.',30*24*3600], ['д.',24*3600], ['ч.',3600], ['мин.',60] ];
-    for(const [name,sec] of units){ if(diff>=sec) return Math.floor(diff/sec) + ' ' + name + ' назад'; }
-    return 'только что';
-  }
+                const legend = document.getElementById("legend");
+                if (legend) {
+                    legend.innerHTML = "";
+                    labels.forEach((label, i) => {
+                        const el = document.createElement("div");
+                        el.className = "legend-item";
+                        el.innerHTML = `<span class="legend-dot" style="background-color: ${bgColors[i]}"></span>${label}`;
+                        legend.appendChild(el);
+                    });
+                }
+            }
 
-  async function fetchJSON(url, { tries = 3, timeout = 8000 } = {}) {
-    let lastErr;
-    for (let i = 0; i < tries; i++) {
-      const controller = new AbortController();
-      const timer = setTimeout(() => controller.abort(new DOMException('Timeout', 'AbortError')), timeout);
-      try {
-        const u = url + (url.includes('?') ? '&' : '?') + 't=' + Date.now();
-        const r = await fetch(u, {
-          cache: 'no-store',
-          mode: 'cors',
-          credentials: 'omit',
-          redirect: 'follow',
-          referrerPolicy: 'no-referrer',
-          headers: { 'Accept': 'application/json' },
-          signal: controller.signal
-        });
-        clearTimeout(timer);
-        if (!r.ok) throw new Error(`${r.status} ${r.statusText}`);
+            function renderAll(pkg) {
+                const profile = pkg.profile || pkg.user || {};
+                const repos = pkg.repos || pkg.repositories || [];
+                const totals = pkg.langTotals || pkg.languages || {};
+                const updated = pkg.updatedAt || pkg.generatedAt || pkg.updated || null;
 
-        const text = await r.text();
-        try {
-          return JSON.parse(text);
-        } catch {
-          throw new Error('Invalid JSON body');
-        }
-      } catch (e) {
-        clearTimeout(timer);
-        lastErr = e;
-        await new Promise(res => setTimeout(res, 300 * (i + 1)));
-      }
-    }
-    throw lastErr;
-  }
+                // профиль
+                document.getElementById("avatar").src = profile.avatar_url || "";
+                document.getElementById("name").textContent = profile.name || profile.login || "—";
+                document.getElementById("handle").textContent = profile.login ? "@" + profile.login : "";
+                document.getElementById("bio").textContent = profile.bio || "";
+                document.getElementById("profileLink").href = profile.html_url || "#";
+                document.getElementById("repoCount").textContent = fmt(profile.public_repos || 0);
+                document.getElementById("followers").textContent = fmt(profile.followers || 0);
+                document.getElementById("following").textContent = fmt(profile.following || 0);
+                document.getElementById("gists").textContent = fmt(profile.public_gists || 0);
+                document.getElementById("lastSync").textContent = "Обновлено: " + (updated ? timeAgo(updated) : "—");
 
-  function escapeHtml(s){
-    return (s||'').replace(/[&<>\"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;','\'':'&#39;'}[c]));
-  }
+                // данные
+                state.repos = repos;
+                state.filtered = repos;
+                state.langTotals = totals;
+                state.langsByRepo = new Map(repos.map((r) => [r.full_name, r.languages || {}]));
 
-  function updateRepoLangBar(fullName, langs){
-    const card = document.querySelector(`.repo[data-full-name="${CSS.escape(fullName)}"]`);
-    if(!card) return;
-    const bar = card.querySelector('.langbar');
-    const total = Object.values(langs||{}).reduce((a,b)=>a+b,0) || 0;
-    bar.innerHTML = '';
-    if(total===0) return;
-    const entries = Object.entries(langs).sort((a,b)=>b[1]-a[1]).slice(0,6);
-    const colors = ['#00f0ff','#ff2bd6','#9b5cff','#28f7a6','#ff9f1a','#2ee6de'];
-    entries.forEach(([lang, bytes], i)=>{
-      const seg = document.createElement('div');
-      seg.className = 'langseg';
-      seg.style.width = (bytes*100/total).toFixed(2)+'%';
-      seg.style.background = colors[i % colors.length];
-      bar.appendChild(seg);
-    });
-  }
+                document.getElementById("repoTotal").textContent = `Репозиториев: ${fmt(repos.length)}`;
+                renderRepos(repos);
+                document.getElementById("chartNotice").style.display = "none";
+                renderLangChart();
+            }
 
-  function renderRepos(repos){
-    const grid = $('#repoGrid');
-    grid.innerHTML = '';
-    if(repos.length===0){
-      grid.innerHTML = '<div class="notice">Ничего не найдено по текущему фильтру.</div>';
-      return;
-    }
-    const frag = document.createDocumentFragment();
-    for(const r of repos){
-      const card = document.createElement('article');
-      card.className = 'repo';
-      card.dataset.fullName = r.full_name;
-      card.innerHTML = `
-        <h3>${escapeHtml(r.name)}</h3>
-        <p class="desc">${r.description ? escapeHtml(r.description) : 'Без описания'}</p>
-        <div class="meta">
-          <span class="pill" title="Основной язык">🧠 ${r.language || '—'}</span>
-          <span class="pill" title="⭐ Stars">⭐ ${fmt(r.stargazers_count || 0)}</span>
-          <span class="pill" title="🍴 Forks">🍴 ${fmt(r.forks_count || 0)}</span>
-        </div>
-        <div class="langbar" aria-label="Доли языков в репозитории" role="img"></div>
-        <div class="repo-footer">
-          <span>Обновлён: ${timeAgo(r.pushed_at || r.updated_at)}</span>
-          <span>▶︎</span>
-        </div>
-      `;
-      card.addEventListener('click', ()=>window.open(r.html_url,'_blank','noopener'));
-      frag.appendChild(card);
-      const langs = r.languages || state.langsByRepo.get(r.full_name);
-      if(langs) updateRepoLangBar(r.full_name, langs);
-    }
-    grid.appendChild(frag);
-  }
+            async function reload(showAlert = false) {
+                try {
+                    const pkg = await fetchJSON(JSON_URL);
+                    renderAll(pkg);
+                } catch (err) {
+                    document.getElementById("alerts").innerHTML = '<div class="notice error">Ошибка чтения /data/data.json: ' + String(err.message || err) + "</div>";
+                }
+            }
 
-  function renderLangChart(){
-    const totals = state.langTotals || {};
-    const entries = Object.entries(totals).sort((a,b)=>b[1]-a[1]);
-    if(entries.length===0) return;
-    const top = entries.slice(0, 12);
-    const other = entries.slice(12).reduce((acc,[,v])=>acc+v,0);
-    const labels = top.map(([k])=>k);
-    const data = top.map(([,v])=>v);
-    if(other>0){ labels.push('Other'); data.push(other); }
-    const ctx = $('#langChart').getContext('2d');
-    if(state.chart){ state.chart.destroy(); }
-    state.chart = new Chart(ctx, { 
-      type:'doughnut', 
-      data:{ 
-        labels, 
-        datasets:[{ 
-          data, 
-          backgroundColor: [
-            '#00f0ff', '#ff2bd6', '#9b5cff', '#28f7a6', '#ff9f1a', '#2ee6de',
-            '#ff6b6b', '#4ecdc4', '#45b7d1', '#f9c74f', '#90be6d', '#f8961e'
-          ],
-          borderWidth: 0 
-        }] 
-      }, 
-      options:{ 
-        responsive:true, 
-        plugins:{ 
-          legend:{ display:false }, 
-          tooltip:{ 
-            callbacks:{ 
-              label:(ctx)=> `${ctx.label}: ${fmt(ctx.parsed)} байт` 
-            } 
-          } 
-        }, 
-        cutout:'60%' 
-      } 
-    });
-    const legend = $('#legend');
-    legend.innerHTML = '';
-    labels.forEach((label, i)=>{
-      const el = document.createElement('div');
-      el.className='legend-item';
-      el.innerHTML = `<span class="legend-dot" style="background-color: ${state.chart.data.datasets[0].backgroundColor[i]}"></span>${label}`;
-      legend.appendChild(el);
-    });
-  }
+            function hookSearch() {
+                document.getElementById("search").addEventListener("input", (e) => {
+                    const q = e.target.value.toLowerCase().trim();
+                    if (!q) {
+                        state.filtered = state.repos;
+                        renderRepos(state.filtered);
+                        return;
+                    }
+                    state.filtered = state.repos.filter((r) => (r.name && r.name.toLowerCase().includes(q)) || (r.description && r.description.toLowerCase().includes(q)) || (r.language && r.language.toLowerCase().includes(q)));
+                    renderRepos(state.filtered);
+                    for (const r of state.filtered) {
+                        const langs = r.languages || state.langsByRepo.get(r.full_name);
+                        if (langs) updateRepoLangBar(r.full_name, langs);
+                    }
+                });
+            }
 
-  function renderAll(pkg){
-    const profile = pkg.profile || pkg.user || {};
-    const repos   = pkg.repos || pkg.repositories || [];
-    const totals  = pkg.langTotals || pkg.languages || {};
-    const updated = pkg.updatedAt || pkg.generatedAt || pkg.updated || null;
+            function hookCopy() {
+                document.getElementById("copyLink").addEventListener("click", async () => {
+                    try {
+                        await navigator.clipboard.writeText(location.href);
+                        const b = document.getElementById("copyLink");
+                        b.textContent = "Ссылка скопирована!";
+                        setTimeout(() => (b.textContent = "Скопировать ссылку"), 1500);
+                    } catch {
+                        alert("Не удалось скопировать :(");
+                    }
+                });
+            }
 
-    // профиль
-    $('#avatar').src = profile.avatar_url || '';
-    $('#name').textContent = profile.name || profile.login || '—';
-    $('#handle').textContent = profile.login ? '@'+profile.login : '';
-    $('#bio').textContent = profile.bio || '';
-    $('#profileLink').href = profile.html_url || '#';
-    $('#repoCount').textContent = fmt(profile.public_repos || 0);
-    $('#followers').textContent = fmt(profile.followers || 0);
-    $('#following').textContent = fmt(profile.following || 0);
-    $('#gists').textContent = fmt(profile.public_gists || 0);
-    $('#lastSync').textContent = 'Обновлено: ' + (updated ? timeAgo(updated) : '—');
-    $('#sourcePill').textContent = 'Источник: data.json';
+            function hookRefresh() {
+                document.getElementById("refreshBtn").addEventListener("click", () => reload(true));
+            }
 
-    // данные
-    state.repos = repos;
-    state.filtered = repos;
-    state.langTotals = totals;
-    state.langsByRepo = new Map(repos.map(r=>[r.full_name, r.languages||{}]));
-
-    $('#repoTotal').textContent = `Репозиториев: ${fmt(repos.length)}`;
-    renderRepos(repos);
-    $('#chartNotice').style.display='none';
-    renderLangChart();
-  }
-    
-  async function reload(showAlert = false) {
-    try {
-      const pkg = await fetchJSON(JSON_URL);
-      renderAll(pkg);
-    } catch (err) {
-      $('#alerts').innerHTML = '<div class="notice error">Ошибка чтения /data/data.json: ' + String(err.message || err) + '</div>';
-    }
-  }
-
-  function hookSearch(){
-    $('#search').addEventListener('input', (e)=>{
-      const q = e.target.value.toLowerCase().trim();
-      if(!q){ state.filtered = state.repos; renderRepos(state.filtered); return; }
-      state.filtered = state.repos.filter(r=>
-        (r.name && r.name.toLowerCase().includes(q)) ||
-        (r.description && r.description.toLowerCase().includes(q)) ||
-        (r.language && (r.language.toLowerCase().includes(q)))
-      );
-      renderRepos(state.filtered);
-      for(const r of state.filtered){
-        const langs = r.languages || state.langsByRepo.get(r.full_name);
-        if(langs) updateRepoLangBar(r.full_name, langs);
-      }
-    });
-  }
-
-  function hookCopy(){
-    $('#copyLink').addEventListener('click', async ()=>{
-      try{
-        await navigator.clipboard.writeText(location.href);
-        const b=$('#copyLink');
-        b.textContent='Ссылка скопирована!';
-        setTimeout(()=>b.textContent='Скопировать ссылку', 1500);
-      }catch{ alert('Не удалось скопировать :('); }
-    });
-  }
-
-  function hookRefresh(){
-    $('#refreshBtn').addEventListener('click', ()=> reload(true));
-  }
-
-  function startWhenReady(){
-    if(!window.Chart) return setTimeout(startWhenReady, 50);
-    hookSearch(); hookCopy(); hookRefresh();
-    reload(false);
-    setInterval(()=> reload(true), REFRESH_MS);
-  }
-  document.addEventListener('DOMContentLoaded', startWhenReady);
-  </script>
-</body>
+            function startWhenReady() {
+                if (!window.Chart) return setTimeout(startWhenReady, 50);
+                hookSearch();
+                hookCopy();
+                hookRefresh();
+                reload(false);
+                setInterval(() => reload(true), REFRESH_MS);
+            }
+            document.addEventListener("DOMContentLoaded", startWhenReady);
+        </script>
+    </body>
 </html>
