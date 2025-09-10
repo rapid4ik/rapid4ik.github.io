@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>rapid4ik — GitHub Portfolio</title>
-  <meta name="description" content="Неоновый портфолио-сайт." />
+  <title>rapid4ik — GitHub Portfolio (JSON URL only)</title>
+  <meta name="description" content="Неоновый портфолио-сайт. Источник данных — только https://rapid4ik.github.io/data/data.json" />
   <meta name="theme-color" content="#05060a" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -39,29 +39,63 @@
       overflow-x: hidden;
     }
     .container{max-width:1200px;margin:0 auto;padding:32px 20px 80px}
-    header{display:grid;grid-template-columns:120px 1fr;gap:24px;align-items:center;background: linear-gradient(180deg, rgba(0,240,255,.08), rgba(155,92,255,.06));border: 1px solid rgba(255,255,255,.08);border-radius: var(--card-radius);padding: 20px; backdrop-filter: blur(10px);box-shadow: var(--shadow-neon)}
-    .avatar{width:110px;height:110px;border-radius:50%;object-fit:cover;border:2px solid rgba(0,240,255,.45);box-shadow:0 0 0 4px rgba(155,92,255,.15), 0 8px 30px rgba(0,0,0,.35)}
-    .title{font-family: Orbitron, Inter, sans-serif;letter-spacing:.5px;font-size: clamp(24px, 3.4vw, 46px);font-weight: 800;margin: 0 0 4px;text-shadow: 0 0 8px rgba(0,240,255,.6), 0 0 18px rgba(255,43,214,.4)}
+
+    header{
+      display:grid;grid-template-columns:120px 1fr;gap:24px;align-items:center;
+      background: linear-gradient(180deg, rgba(0,240,255,.08), rgba(155,92,255,.06));
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: var(--card-radius);
+      padding: 20px; backdrop-filter: blur(10px);
+      box-shadow: var(--shadow-neon);
+    }
+    .avatar{
+      width:110px;height:110px;border-radius:50%;object-fit:cover;border:2px solid rgba(0,240,255,.45);box-shadow:0 0 0 4px rgba(155,92,255,.15), 0 8px 30px rgba(0,0,0,.35)
+    }
+    .title{
+      font-family: Orbitron, Inter, sans-serif;letter-spacing:.5px;
+      font-size: clamp(24px, 3.4vw, 46px);
+      font-weight: 800;
+      margin: 0 0 4px;
+      text-shadow: 0 0 8px rgba(0,240,255,.6), 0 0 18px rgba(255,43,214,.4);
+    }
     .handle{color:var(--neon-cyan);font-family:Orbitron,Inter,sans-serif;font-weight:600}
     .bio{color:var(--muted);margin-top:6px}
+
     .cta-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px}
-    .btn{appearance:none;border:none;cursor:pointer;position:relative;padding:10px 14px;border-radius:12px;font-weight:700;background: linear-gradient(90deg, rgba(0,240,255,.2), rgba(155,92,255,.2));color:var(--text);box-shadow: var(--shadow-neon);outline: none;transition: transform .15s ease, box-shadow .15s ease, filter .15s ease}
+    .btn{
+      appearance:none;border:none;cursor:pointer;position:relative;
+      padding:10px 14px;border-radius:12px;font-weight:700;
+      background: linear-gradient(90deg, rgba(0,240,255,.2), rgba(155,92,255,.2));
+      color:var(--text);
+      box-shadow: var(--shadow-neon);
+      outline: none;
+      transition: transform .15s ease, box-shadow .15s ease, filter .15s ease;
+    }
     .btn:hover{transform: translateY(-1px);filter: brightness(1.08)}
     .btn:active{transform: translateY(0)}
+
     .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:14px}
-    .stat{border-radius:14px;background:var(--panel);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.06);padding:12px 14px;text-align:center}
+    .stat{
+      border-radius:14px;background:var(--panel);backdrop-filter:blur(10px);
+      border:1px solid rgba(255,255,255,.06);padding:12px 14px;text-align:center
+    }
     .stat .num{font-family:Orbitron,Inter,sans-serif;font-size:22px;font-weight:800}
     .stat .label{font-size:12px;color:var(--muted)}
+
     .section-title{margin:36px 0 12px;font-family:Orbitron,Inter,sans-serif;font-weight:800;letter-spacing:.4px}
+
     .panel{background:var(--glass);border:1px solid rgba(255,255,255,.06);border-radius:var(--card-radius);padding:18px;backdrop-filter:blur(8px);box-shadow: var(--shadow-neon)}
+
     #chartWrap{display:grid;grid-template-columns:1fr;gap:16px}
     #legend{display:flex;flex-wrap:wrap;gap:10px}
     .legend-item{display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06)}
     .legend-dot{width:10px;height:10px;border-radius:50%}
+
     .toolbar{display:flex;gap:12px;align-items:center;justify-content:space-between;margin:8px 0 14px;flex-wrap:wrap}
     .search{flex:1;position:relative;min-width:240px}
     .search input{width:100%;padding:12px 14px 12px 40px;border-radius:12px;border:1px solid rgba(255,255,255,.08);background:rgba(0,0,0,.25);color:var(--text);outline:none;box-shadow: var(--ring)}
     .search svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);opacity:.6}
+
     .repo-grid{display:grid;grid-template-columns:repeat( auto-fit, minmax(260px, 1fr) );gap:14px}
     .repo{position:relative;border-radius:16px;padding:16px;background:linear-gradient(180deg, rgba(0,240,255,.06), rgba(155,92,255,.06));border:1px solid rgba(255,255,255,.06);backdrop-filter:blur(8px);cursor:pointer;transition: transform .15s ease, box-shadow .2s ease}
     .repo:hover{transform:translateY(-2px);box-shadow: var(--shadow-neon)}
@@ -72,14 +106,36 @@
     .langbar{margin-top:12px;height:8px;border-radius:999px;overflow:hidden;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08)}
     .langseg{height:100%}
     .repo-footer{display:flex;justify-content:space-between;align-items:center;margin-top:12px;font-size:12px;color:var(--muted)}
+
     .notice{padding:12px;border-radius:12px;background:rgba(255,255,255,.05);border:1px dashed rgba(255,255,255,.12);color:var(--muted)}
     .error{border-color: rgba(255, 71, 87, .5); color:#ff9fa8}
+
     footer{margin-top:40px;text-align:center;color:var(--muted);font-size:12px}
-    @media (max-width: 420px){.container{padding:24px 14px 64px}header{grid-template-columns:68px 1fr;padding:14px}.avatar{width:64px;height:64px}.title{font-size:clamp(22px,6vw,34px)}.btn{padding:9px 12px}.repo{padding:14px}.stats{grid-template-columns:1fr 1fr;gap:8px}}
-    @media (min-width: 1024px){.repo-grid{grid-template-columns:repeat(auto-fit, minmax(280px, 1fr))}}
-    @media (min-width: 1400px){.container{max-width:1320px}.repo-grid{grid-template-columns:repeat(auto-fit, minmax(300px, 1fr))}}
-    @media (hover: none){.btn:hover, .repo:hover{transform:none}}
-    @media (prefers-reduced-motion: reduce){*{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}header,.panel,.repo{box-shadow:none}}
+
+    /* ===== Адаптив ===== */
+    @media (max-width: 420px){
+      .container{padding:24px 14px 64px}
+      header{grid-template-columns:68px 1fr;padding:14px}
+      .avatar{width:64px;height:64px}
+      .title{font-size:clamp(22px,6vw,34px)}
+      .btn{padding:9px 12px}
+      .repo{padding:14px}
+      .stats{grid-template-columns:1fr 1fr;gap:8px}
+    }
+    @media (min-width: 1024px){
+      .repo-grid{grid-template-columns:repeat(auto-fit, minmax(280px, 1fr))}
+    }
+    @media (min-width: 1400px){
+      .container{max-width:1320px}
+      .repo-grid{grid-template-columns:repeat(auto-fit, minmax(300px, 1fr))}
+    }
+    @media (hover: none){
+      .btn:hover, .repo:hover{transform:none}
+    }
+    @media (prefers-reduced-motion: reduce){
+      *{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+      header,.panel,.repo{box-shadow:none}
+    }
   </style>
 </head>
 <body>
@@ -104,7 +160,7 @@
 
     <h2 class="section-title">Языки в проектах</h2>
     <div class="panel" id="chartWrap">
-      <div class="notice" id="chartNotice">Жду файлы из <code>/data</code>…</div>
+      <div class="notice" id="chartNotice">Читаю <code>https://rapid4ik.github.io/data/data.json</code>…</div>
       <canvas id="langChart" height="180" aria-label="Диаграмма распределения языков" role="img"></canvas>
       <div id="legend"></div>
     </div>
@@ -116,8 +172,7 @@
       </div>
       <div class="pill" id="repoTotal">Репозиториев: —</div>
       <div class="pill" id="lastSync">Обновлено: —</div>
-      <div class="pill" id="sourcePill">Источник: JSON</div>
-      <button class="btn" id="refreshBtn" title="Принудительно перечитать data/*.json">Обновить</button>
+      <button class="btn" id="refreshBtn" title="Принудительно перечитать JSON">Обновить</button>
     </div>
 
     <section class="repo-grid" id="repoGrid" aria-live="polite"></section>
@@ -125,21 +180,13 @@
     <div id="alerts" style="margin-top:16px"></div>
 
     <footer>
-      Сделано с ❤️ и неоном · Источник данных: только <code>/data/*.json</code>
+      Источник данных: <code>https://rapid4ik.github.io/data/data.json</code> · Автообновление каждые 5 минут
     </footer>
   </div>
 
   <script>
-  // ====== JSON-only режим: ТОЛЬКО из /data, БЕЗ запросов в API ======
-
-  // Жёстко указываем абсолютный путь для user-pages:
-  const JSON_BASE = location.origin + '/data';
-  const JSON_CANDIDATES = [
-    `${JSON_BASE}/summary.json`,
-    `${JSON_BASE}/data.json`,
-    `${JSON_BASE}/github.json`,
-    `${JSON_BASE}/out.json`
-  ];
+  // ===== Настройки =====
+  const JSON_URL = "https://rapid4ik.github.io/data/data.json";
   const REFRESH_MS = 5 * 60 * 1000;
 
   const $ = (sel, root=document) => root.querySelector(sel);
@@ -155,20 +202,19 @@
     for(const [name,sec] of units){ if(diff>=sec) return Math.floor(diff/sec) + ' ' + name + ' назад'; }
     return 'только что';
   }
-  async function fetchJSON(path){
-    try{
-      const r = await fetch(path + (path.includes('?')?'&':'?') + 't=' + Date.now(), { cache: 'no-store' });
-      if(!r.ok) throw new Error(`${r.status} ${r.statusText}`);
-      return await r.json();
-    }catch(e){
-      const alerts = $('#alerts');
-      alerts.innerHTML = `<div class="notice error">Ошибка загрузки ${path}: ${String(e.message||e)}</div>`;
-      return null;
-    }
+
+  async function fetchJSON(url){
+    // bust cache to always fetch the latest
+    const u = url + (url.includes('?') ? '&' : '?') + 't=' + Date.now();
+    const r = await fetch(u, { cache: 'no-store' });
+    if(!r.ok) throw new Error(`${r.status} ${r.statusText}`);
+    return r.json();
   }
+
   function escapeHtml(s){
     return (s||'').replace(/[&<>\"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;','\\'':'&#39;'}[c]));
   }
+
   function updateRepoLangBar(fullName, langs){
     const card = document.querySelector(\`.repo[data-full-name="\${CSS.escape(fullName)}"]\`);
     if(!card) return;
@@ -186,6 +232,7 @@
       bar.appendChild(seg);
     });
   }
+
   function renderRepos(repos){
     const grid = $('#repoGrid');
     grid.innerHTML = '';
@@ -219,6 +266,7 @@
     }
     grid.appendChild(frag);
   }
+
   function renderLangChart(){
     const totals = state.langTotals || {};
     const entries = Object.entries(totals).sort((a,b)=>b[1]-a[1]);
@@ -229,7 +277,6 @@
     const data = top.map(([,v])=>v);
     if(other>0){ labels.push('Other'); data.push(other); }
     const ctx = document.getElementById('langChart').getContext('2d');
-    if(!window.Chart){ return; } // safety
     if(state.chart){ state.chart.destroy(); }
     state.chart = new Chart(ctx, { type:'doughnut', data:{ labels, datasets:[{ data, borderWidth: 0 }] }, options:{ responsive:true, plugins:{ legend:{ display:false }, tooltip:{ callbacks:{ label:(ctx)=> `${ctx.label}: ${fmt(ctx.parsed)} байт` } } }, cutout:'60%' } });
     const legend = document.getElementById('legend');
@@ -241,74 +288,49 @@
       legend.appendChild(el);
     });
   }
-  function renderAfterData(){
-    document.getElementById('repoTotal').textContent = `Репозиториев: ${fmt(state.repos.length)}`;
-    renderRepos(state.filtered = state.repos);
-    for(const r of state.repos){
-      const langs = r.languages || state.langsByRepo.get(r.full_name);
-      if(langs) updateRepoLangBar(r.full_name, langs);
-    }
+
+  function renderAll(pkg){
+    const profile = pkg.profile || pkg.user || {};
+    const repos   = pkg.repos || pkg.repositories || [];
+    const totals  = pkg.langTotals || pkg.languages || {};
+    const updated = pkg.updatedAt || pkg.generatedAt || pkg.updated || null;
+
+    // профиль
+    document.getElementById('avatar').src = profile.avatar_url || '';
+    document.getElementById('name').textContent = profile.name || profile.login || '—';
+    document.getElementById('handle').textContent = profile.login ? '@'+profile.login : '';
+    document.getElementById('bio').textContent = profile.bio || '';
+    document.getElementById('profileLink').href = profile.html_url || '#';
+    document.getElementById('repoCount').textContent = fmt(profile.public_repos || 0);
+    document.getElementById('followers').textContent = fmt(profile.followers || 0);
+    document.getElementById('following').textContent = fmt(profile.following || 0);
+    document.getElementById('gists').textContent = fmt(profile.public_gists || 0);
+    document.getElementById('lastSync').textContent = 'Обновлено: ' + (updated ? timeAgo(updated) : '—');
+
+    // данные
+    state.repos = repos;
+    state.filtered = repos;
+    state.langTotals = totals;
+    state.langsByRepo = new Map(repos.map(r=>[r.full_name, r.languages||{}]));
+
+    document.getElementById('repoTotal').textContent = `Репозиториев: ${fmt(repos.length)}`;
+    renderRepos(repos);
     document.getElementById('chartNotice').style.display='none';
     renderLangChart();
   }
-  async function loadFromJSON(showAlert=false){
-    const alerts = document.getElementById('alerts');
-    // 1) Единый файл
-    for(const p of JSON_CANDIDATES){
-      const pkg = await fetchJSON(p);
-      if(pkg && (pkg.profile || pkg.user) && (pkg.repos || pkg.repositories)){
-        const profile = pkg.profile || pkg.user;
-        const repos   = pkg.repos || pkg.repositories;
-        const totals  = pkg.langTotals || pkg.languages || {};
-        const updated = pkg.updatedAt || pkg.generatedAt || pkg.updated || null;
-        state.profile = profile;
-        document.getElementById('avatar').src = profile.avatar_url;
-        document.getElementById('name').textContent = profile.name || profile.login;
-        document.getElementById('handle').textContent = '@'+profile.login;
-        document.getElementById('bio').textContent = profile.bio || '';
-        document.getElementById('profileLink').href = profile.html_url;
-        document.getElementById('repoCount').textContent = fmt(profile.public_repos);
-        document.getElementById('followers').textContent = fmt(profile.followers);
-        document.getElementById('following').textContent = fmt(profile.following);
-        document.getElementById('gists').textContent = fmt(profile.public_gists || 0);
-        state.repos = repos;
-        state.langTotals = totals;
-        state.langsByRepo = new Map(repos.map(r=>[r.full_name, r.languages||{}]));
-        renderAfterData();
-        const iso = (updated ? new Date(updated) : new Date()).toISOString();
-        document.getElementById('lastSync').textContent = 'Обновлено: ' + (iso ? timeAgo(iso) : '—');
-        if(showAlert) alerts.innerHTML = `<div class="notice">Загружено из ${p}.</div>`;
-        return true;
+
+  async function reload(showAlert=false){
+    try{
+      const pkg = await fetchJSON(JSON_URL);
+      renderAll(pkg);
+      if(showAlert){
+        document.getElementById('alerts').innerHTML = '<div class="notice">Данные обновлены из /data/data.json.</div>';
       }
-    }
-    // 2) Три файла
-    const profile = await fetchJSON(`${JSON_BASE}/profile.json`);
-    const repos   = await fetchJSON(`${JSON_BASE}/repos.json`);
-    const totals  = await fetchJSON(`${JSON_BASE}/langTotals.json`);
-    if(profile && repos && totals){
-      state.profile = profile;
-      document.getElementById('avatar').src = profile.avatar_url;
-      document.getElementById('name').textContent = profile.name || profile.login;
-      document.getElementById('handle').textContent = '@'+profile.login;
-      document.getElementById('bio').textContent = profile.bio || '';
-      document.getElementById('profileLink').href = profile.html_url;
-      document.getElementById('repoCount').textContent = fmt(profile.public_repos);
-      document.getElementById('followers').textContent = fmt(profile.followers);
-      document.getElementById('following').textContent = fmt(profile.following);
-      document.getElementById('gists').textContent = fmt(profile.public_gists || 0);
-      state.repos = repos;
-      state.langTotals = totals;
-      state.langsByRepo = new Map(repos.map(r=>[r.full_name, r.languages||{}]));
-      renderAfterData();
-      const iso = new Date().toISOString();
-      document.getElementById('lastSync').textContent = 'Обновлено: ' + (iso ? timeAgo(iso) : '—');
-      if(showAlert) alerts.innerHTML = '<div class="notice">Данные обновлены из data/*.json.</div>';
-      return true;
-    } else {
-      if(showAlert) alerts.innerHTML = '<div class="notice error">Не найдено /data/data.json или три файла /data/profile.json, /data/repos.json, /data/langTotals.json.</div>';
-      return false;
+    }catch(err){
+      document.getElementById('alerts').innerHTML = '<div class="notice error">Ошибка чтения /data/data.json: '+ String(err.message||err) +'</div>';
     }
   }
+
   function hookSearch(){
     document.getElementById('search').addEventListener('input', (e)=>{
       const q = e.target.value.toLowerCase().trim();
@@ -325,25 +347,27 @@
       }
     });
   }
+
   function hookCopy(){
     document.getElementById('copyLink').addEventListener('click', async ()=>{
-      try{ await navigator.clipboard.writeText(location.href); const b=document.getElementById('copyLink'); b.textContent='Ссылка скопирована!'; setTimeout(()=>b.textContent='Скопировать ссылку', 1500);}catch{alert('Не удалось скопировать :(')}
+      try{
+        await navigator.clipboard.writeText(location.href);
+        const b=document.getElementById('copyLink');
+        b.textContent='Ссылка скопирована!';
+        setTimeout(()=>b.textContent='Скопировать ссылку', 1500);
+      }catch{ alert('Не удалось скопировать :('); }
     });
-  }
-  function hookRefresh(){
-    const btn = document.getElementById('refreshBtn');
-    if(!btn) return;
-    btn.addEventListener('click', ()=> loadFromJSON(true));
   }
 
-  // Ждём, пока загрузится Chart.js, чтобы не словить ReferenceError
+  function hookRefresh(){
+    document.getElementById('refreshBtn').addEventListener('click', ()=> reload(true));
+  }
+
   function startWhenReady(){
-    const ready = !!window.Chart;
-    if(!ready){ return setTimeout(startWhenReady, 60); }
+    if(!window.Chart) return setTimeout(startWhenReady, 50);
     hookSearch(); hookCopy(); hookRefresh();
-    loadFromJSON(false).then(ok=>{
-      if(ok) setInterval(()=> loadFromJSON(true), REFRESH_MS);
-    });
+    reload(false);
+    setInterval(()=> reload(true), REFRESH_MS);
   }
   document.addEventListener('DOMContentLoaded', startWhenReady);
   </script>
