@@ -203,13 +203,45 @@
     return 'только что';
   }
 
-  async function fetchJSON(url){
-    // bust cache to always fetch the latest
-    const u = url + (url.includes('?') ? '&' : '?') + 't=' + Date.now();
-    const r = await fetch(u, { cache: 'no-store' });
-    if(!r.ok) throw new Error(`${r.status} ${r.statusText}`);
-    return r.json();
+  async function fetchJSON(url, { tries = 3, timeout = 8000 } = {}) {
+  let lastErr;
+  for (let i = 0; i < tries; i++) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(new DOMException('Timeout', 'AbortError')), timeout);
+    try {
+      const u = url + (url.includes('?') ? '&' : '?') + 't=' + Date.now();
+      const r = await fetch(u, {
+        cache: 'no-store',
+        mode: 'cors',
+        credentials: 'omit',
+        redirect: 'follow',
+        referrerPolicy: 'no-referrer',
+        headers: {
+          'Accept': 'application/json'
+          // НЕЛЬЗЯ: 'User-Agent'
+        },
+        signal: controller.signal
+      });
+      clearTimeout(timer);
+      if (!r.ok) throw new Error(`${r.status} ${r.statusText}`);
+
+      // Парсим из текста на случай неправильного Content-Type
+      const text = await r.text();
+      try {
+        return JSON.parse(text);
+      } catch {
+        throw new Error('Invalid JSON body');
+      }
+    } catch (e) {
+      clearTimeout(timer);
+      lastErr = e;
+      // небольшой backoff перед повтором
+      await new Promise(res => setTimeout(res, 300 * (i + 1)));
+    }
   }
+  throw lastErr;
+}
+
 
   function escapeHtml(s){
     return (s||'').replace(/[&<>\"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;','\\'':'&#39;'}[c]));
