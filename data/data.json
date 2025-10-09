@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2025-10-09T15:22:37.495Z",
+  "updatedAt": "2025-10-09T15:34:07.953Z",
   "profile": {
     "login": "rapid4ik",
     "id": 118283118,
@@ -197,9 +197,9 @@
     }
   ],
   "langTotals": {
-    "HTML": 22707,
-    "JavaScript": 9817,
     "Kotlin": 10245,
-    "Java": 220094
+    "Java": 220094,
+    "HTML": 22707,
+    "JavaScript": 9817
   }
 }
