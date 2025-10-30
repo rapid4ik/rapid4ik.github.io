@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2025-10-30T05:43:18.199Z",
+  "updatedAt": "2025-10-30T05:56:02.786Z",
   "profile": {
     "login": "rapid4ik",
     "id": 118283118,
@@ -44,8 +44,8 @@
       "language": "HTML",
       "stargazers_count": 1,
       "forks_count": 0,
-      "updated_at": "2025-10-30T05:27:45Z",
-      "pushed_at": "2025-10-30T05:27:41Z",
+      "updated_at": "2025-10-30T05:43:23Z",
+      "pushed_at": "2025-10-30T05:43:18Z",
       "languages": {
         "HTML": 22707,
         "JavaScript": 3086
@@ -197,9 +197,9 @@
     }
   ],
   "langTotals": {
+    "Java": 220094,
     "HTML": 22707,
     "JavaScript": 9817,
-    "Java": 220094,
     "Kotlin": 10245
   }
 }
