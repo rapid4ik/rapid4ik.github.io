@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-07T23:06:05.440Z",
+  "updatedAt": "2026-08-07T23:45:23.434Z",
   "profile": {
     "login": "rapid4ik",
     "id": 118283118,
@@ -37,6 +37,21 @@
   },
   "repos": [
     {
+      "name": "rapid4ik.github.io",
+      "full_name": "rapid4ik/rapid4ik.github.io",
+      "html_url": "https://github.com/rapid4ik/rapid4ik.github.io",
+      "description": null,
+      "language": "HTML",
+      "stargazers_count": 2,
+      "forks_count": 0,
+      "updated_at": "2026-08-07T23:06:10Z",
+      "pushed_at": "2026-08-07T23:06:06Z",
+      "languages": {
+        "HTML": 22707,
+        "JavaScript": 3086
+      }
+    },
+    {
       "name": "SlCore",
       "full_name": "rapid4ik/SlCore",
       "html_url": "https://github.com/rapid4ik/SlCore",
@@ -48,21 +63,6 @@
       "pushed_at": "2025-08-05T10:11:49Z",
       "languages": {
         "Java": 112698
-      }
-    },
-    {
-      "name": "rapid4ik.github.io",
-      "full_name": "rapid4ik/rapid4ik.github.io",
-      "html_url": "https://github.com/rapid4ik/rapid4ik.github.io",
-      "description": null,
-      "language": "HTML",
-      "stargazers_count": 2,
-      "forks_count": 0,
-      "updated_at": "2026-08-07T22:22:52Z",
-      "pushed_at": "2026-08-07T22:22:48Z",
-      "languages": {
-        "HTML": 22707,
-        "JavaScript": 3086
       }
     },
     {
@@ -233,9 +233,9 @@
     }
   ],
   "langTotals": {
-    "Java": 220094,
-    "JavaScript": 9817,
     "HTML": 22707,
+    "JavaScript": 9817,
+    "Java": 220094,
     "Kotlin": 10245
   }
 }
