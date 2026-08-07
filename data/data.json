@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-07T20:57:25.233Z",
+  "updatedAt": "2026-08-07T21:47:35.789Z",
   "profile": {
     "login": "rapid4ik",
     "id": 118283118,
@@ -23,17 +23,17 @@
     "name": "rapid4ik",
     "company": null,
     "blog": "https://rapid4ik.github.io/",
-    "location": null,
+    "location": "Russia. Khabarovsk",
     "email": null,
     "hireable": null,
     "bio": null,
     "twitter_username": null,
     "public_repos": 22,
     "public_gists": 0,
-    "followers": 0,
+    "followers": 7,
     "following": 5,
     "created_at": "2022-11-15T14:10:44Z",
-    "updated_at": "2026-08-02T08:02:16Z"
+    "updated_at": "2026-08-07T21:42:41Z"
   },
   "repos": [
     {
@@ -44,8 +44,8 @@
       "language": "HTML",
       "stargazers_count": 2,
       "forks_count": 0,
-      "updated_at": "2026-08-07T20:09:19Z",
-      "pushed_at": "2026-08-07T20:09:02Z",
+      "updated_at": "2026-08-07T20:57:32Z",
+      "pushed_at": "2026-08-07T20:57:26Z",
       "languages": {
         "HTML": 22707,
         "JavaScript": 3086
