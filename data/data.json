@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-14T06:42:14.748Z",
+  "updatedAt": "2026-10-14T12:28:19.652Z",
   "profile": {
     "login": "rapid4ik",
     "id": 118283118,
@@ -28,12 +28,12 @@
     "hireable": null,
     "bio": null,
     "twitter_username": null,
-    "public_repos": 24,
+    "public_repos": 25,
     "public_gists": 0,
     "followers": 7,
     "following": 6,
     "created_at": "2022-11-15T14:10:44Z",
-    "updated_at": "2026-09-08T08:50:06Z"
+    "updated_at": "2026-10-14T09:55:55Z"
   },
   "repos": [
     {
@@ -44,8 +44,8 @@
       "language": "HTML",
       "stargazers_count": 2,
       "forks_count": 0,
-      "updated_at": "2026-10-14T01:39:46Z",
-      "pushed_at": "2026-10-14T01:39:42Z",
+      "updated_at": "2026-10-14T06:42:19Z",
+      "pushed_at": "2026-10-14T06:42:16Z",
       "languages": {
         "HTML": 22707,
         "JavaScript": 3086
@@ -91,6 +91,21 @@
       "pushed_at": "2025-06-26T15:06:25Z",
       "languages": {
         "JavaScript": 6731
+      }
+    },
+    {
+      "name": "RevancedMusic",
+      "full_name": "rapid4ik/RevancedMusic",
+      "html_url": "https://github.com/rapid4ik/RevancedMusic",
+      "description": "YouTube-Music Revanced patching with Revancify Tools (Root & Non-Root)",
+      "language": "Shell",
+      "stargazers_count": 1,
+      "forks_count": 0,
+      "updated_at": "2026-10-14T11:05:07Z",
+      "pushed_at": "2026-10-14T10:52:41Z",
+      "languages": {
+        "Shell": 32366,
+        "Python": 21753
       }
     },
     {
@@ -248,6 +263,8 @@
     "HTML": 22707,
     "JavaScript": 9817,
     "Java": 220094,
+    "Shell": 32366,
+    "Python": 21753,
     "Kotlin": 10245
   }
 }
